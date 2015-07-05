@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using jxGameFramework.Animations;
 using System.Windows;
 using System.IO;
@@ -151,7 +152,32 @@ namespace jxGameFramework.Components
         {
             var fs = new FileStream(Path, FileMode.Open,FileAccess.Read);
             var t = Texture2D.FromStream(gd,fs);
+            PreMultiplyAlphas(t);
             return t;
+        }
+
+        private static void PreMultiplyAlphas(Texture2D ret)
+        {
+            Byte4[] data = new Byte4[ret.Width * ret.Height];
+            ret.GetData<Byte4>(data);
+            for (int i = 0; i < data.Length; i++)
+            {
+                Vector4 vec = data[i].ToVector4();
+                float alpha = vec.W / 255.0f;
+                int a = (int)(vec.W);
+                int r = (int)(alpha * vec.X);
+                int g = (int)(alpha * vec.Y);
+                int b = (int)(alpha * vec.Z);
+                uint packed = (uint)(
+                    (a << 24) +
+                    (b << 16) +
+                    (g << 8) +
+                    r
+                    );
+
+                data[i].PackedValue = packed;
+            }
+            ret.SetData<Byte4>(data);
         }
     }
 }
