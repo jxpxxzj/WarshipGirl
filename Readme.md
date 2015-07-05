@@ -1,4 +1,4 @@
-Welcome To WarshipGirl.Welcome To WarshipGirl Git.
+**Welcome To WarshipGirl.**
 
 Wiki和开发文档编写中,暂时使用Readme.md发布相关信息.
 
