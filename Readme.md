@@ -20,7 +20,7 @@ msyh.ttc - %systemroot%/Fonts中复制微软雅黑字体
 
 jxGameFramework.dll - 自行编译
 
-Content文件夹 - WarshipGirl代码目录下
+Content文件夹 - WarshipGirl代码目录下,目前使用的是战舰少女 v1.3.3的素材
 
 
 Bass:
