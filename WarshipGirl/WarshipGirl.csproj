@@ -97,6 +97,12 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\jxGameFramework\jxGameFramework.csproj">
+      <Project>{22ed6b08-20e2-4411-9979-f83b5ad303ec}</Project>
+      <Name>jxGameFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->
   <Target Name="BeforeResolveReferences">
     <CreateProperty Value="$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows;$(AssemblySearchPaths)">

@@ -6,6 +6,9 @@ using Un4seen.Bass;
 
 namespace jxGameFramework.Audio
 {
+    /// <summary>
+    /// 音频播放器
+    /// </summary>
     public class AudioPlayer : IDisposable
     {
         public AudioPlayer(AudioStream stream)
@@ -81,6 +84,9 @@ namespace jxGameFramework.Audio
             Bass.BASS_Free();
         }
     }
+    /// <summary>
+    /// 音频流
+    /// </summary>
     public class AudioStream : IDisposable
     {
         public int StreamNumber { get; set; }

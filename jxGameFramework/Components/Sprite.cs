@@ -11,6 +11,9 @@ using System.IO;
 
 namespace jxGameFramework.Components
 {
+    /// <summary>
+    /// 定位方式
+    /// </summary>
     public enum Origins
     {
         TopLeft,
@@ -27,6 +30,9 @@ namespace jxGameFramework.Components
         
         Custom,
     }
+    /// <summary>
+    /// 精灵
+    /// </summary>
     public class Sprite : Component
     {
         public Texture2D Texture { get; set; }
@@ -135,7 +141,12 @@ namespace jxGameFramework.Components
                 }     
             }
         }
-
+        /// <summary>
+        /// 从文件创建Texture
+        /// </summary>
+        /// <param name="gd">GraphicsDevice</param>
+        /// <param name="Path">文件路径</param>
+        /// <returns>Texture2D</returns>
         public static Texture2D CreateTextureFromFile(GraphicsDevice gd,string Path)
         {
             var fs = new FileStream(Path, FileMode.Open,FileAccess.Read);

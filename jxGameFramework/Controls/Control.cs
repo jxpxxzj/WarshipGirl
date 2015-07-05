@@ -10,6 +10,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace jxGameFramework.Controls
 {
+    /// <summary>
+    /// 控件
+    /// </summary>
     public class Control : Sprite
     {
         public event EventHandler Click;

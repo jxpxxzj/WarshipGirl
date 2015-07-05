@@ -8,6 +8,9 @@ using Microsoft.Xna.Framework;
 
 namespace jxGameFramework.Components
 {
+    /// <summary>
+    /// 游戏组件
+    /// </summary>
     public abstract class Component
     {
         public GraphicsDevice GraphicsDevice { get; set; }

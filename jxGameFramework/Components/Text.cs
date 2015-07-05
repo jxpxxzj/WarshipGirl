@@ -9,9 +9,15 @@ using jxGameFramework.Data;
 
 namespace jxGameFramework.Components
 {
+    /// <summary>
+    /// 文本
+    /// </summary>
     public class Text : Component
     {
         private string _text;
+        /// <summary>
+        /// 文字
+        /// </summary>
         public string text
         {
             get

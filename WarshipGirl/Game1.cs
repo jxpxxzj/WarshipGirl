@@ -29,6 +29,8 @@ namespace WarshipGirl
             graphics.PreferredBackBufferWidth = 1024;
             graphics.PreferredBackBufferHeight = 768;
             this.IsMouseVisible = true;
+
+            //注释这两行以关闭无限fps
             graphics.SynchronizeWithVerticalRetrace = false;
             this.IsFixedTimeStep = false;
             
