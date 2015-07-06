@@ -9,6 +9,7 @@ Wiki和开发文档编写中,暂时使用Readme.md发布相关信息.
 
 程序使用**GPL v3**作为开源协议,详见LICENSE文件.
 
+贴吧地址：http://tieba.baidu.com/p/3872470837
 
 **编译和运行说明:**
 
