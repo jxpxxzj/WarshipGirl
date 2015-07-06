@@ -1,6 +1,6 @@
 **Welcome To WarshipGirl.**
 
-**！协议更换为GPL v3，版权问题正在尝试联系幻萌询问！**
+**！协议更换为GPL v3，版权问题正在尝试联系幻萌！**
 
 Wiki和开发文档编写中,暂时使用Readme.md发布相关信息.
 
