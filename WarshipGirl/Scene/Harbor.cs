@@ -51,23 +51,21 @@ namespace WarshipGirl.Scene
 
             collection = new Button()
             {
-                X = 10,
-                Y = 768,
+                Left = 10,
                 Text="图鉴",
-                OriginType=Origins.BottomLeft
+                Margin=Origins.BottomLeft
             };
             settings = new Button()
             {
-                X = 140,
-                Y = 768,
+                Left = 140,
                 Text = "设置",
-                OriginType = Origins.BottomLeft
+                Margin = Origins.BottomLeft
             };
             hude = new Sprite()
             {
-                X =280,
-                Y = 384,
-                OriginType = Origins.Center,
+                Left =-100,
+                Top = 0,
+                Margin = Origins.TopLeft,
                 Color = Color.White,
                 Width = 800,
                 Height = 800,
@@ -75,9 +73,7 @@ namespace WarshipGirl.Scene
             };
             expbar = new Sprite()
             {
-                X=0,
-                Y=0,
-                OriginType=Origins.TopLeft,
+                Margin=Origins.TopLeft,
                 Color=Color.White,
                 Width=222,
                 Height=75,
@@ -95,9 +91,9 @@ namespace WarshipGirl.Scene
 
             poss = new Control()
             {
-                X = 768,
-                Y = 192,
-                OriginType = Origins.Center,
+                Left = 668,
+                Top = 92,
+                Margin = Origins.TopLeft,
                 Color = Color.White,
                 Width = 185,
                 Height = 182,
@@ -105,9 +101,9 @@ namespace WarshipGirl.Scene
             };
             dock = new Control()
             {
-                X = 768,
-                Y = 440,
-                OriginType = Origins.Center,
+                Left = 668,
+                Top = 340,
+                Margin = Origins.TopLeft,
                 Color = Color.White,
                 Width = 185,
                 Height = 182,
@@ -115,9 +111,9 @@ namespace WarshipGirl.Scene
             };
             fact = new Control()
             {
-                X = 650,
-                Y = 315,
-                OriginType = Origins.Center,
+                Left = 550,
+                Top = 215,
+                Margin = Origins.TopLeft,
                 Color = Color.White,
                 Width = 185,
                 Height = 182,
@@ -126,9 +122,9 @@ namespace WarshipGirl.Scene
             fact.Click += fact_Click;
             trans = new Control()
             {
-                X = 885,
-                Y = 315,
-                OriginType = Origins.Center,
+                Left = 785,
+                Top = 215,
+                Margin = Origins.TopLeft,
                 Color = Color.White,
                 Width = 185,
                 Height = 182,
@@ -137,31 +133,27 @@ namespace WarshipGirl.Scene
 
             oilres = new ResourceLabel()
             {
-                X = 500,
-                Y = 0,
-                OriginType = Origins.TopCenter,
+                Left = 400,
+                Margin = Origins.TopLeft,
                 Type = ResourceType.Oil,
-                isBeginning=true
+                isBeginning = true
             };
             bulres = new ResourceLabel()
             {
-                X = 625,
-                Y = 0,
-                OriginType = Origins.TopCenter,
-                Type=ResourceType.Bullet
+                Left = 525,
+                Margin = Origins.TopLeft,
+                Type = ResourceType.Bullet
             };
             irores = new ResourceLabel()
             {
-                X = 750,
-                Y = 0,
-                OriginType = Origins.TopCenter,
+                Left = 650,
+                Margin = Origins.TopLeft,
                 Type = ResourceType.Iron
             };
             alures = new ResourceLabel()
             {
-                X = 875,
-                Y = 0,
-                OriginType = Origins.TopCenter,
+                Left = 775,
+                Margin = Origins.TopLeft,
                 Type = ResourceType.Aluminum
             };
 
@@ -179,19 +171,19 @@ namespace WarshipGirl.Scene
             //    LoopMode = LoopMode.Forever,
             //    EasingFunction = new Power()
             //};
-            this.CompList.Add(hude);
-            this.CompList.Add(collection);
-            this.CompList.Add(settings);
-            this.CompList.Add(poss);
-            this.CompList.Add(dock);
-            this.CompList.Add(fact);
-            this.CompList.Add(trans);
-            this.CompList.Add(expbar);
-            this.CompList.Add(level);
-            this.CompList.Add(oilres);
-            this.CompList.Add(bulres);
-            this.CompList.Add(irores);
-            this.CompList.Add(alures);
+            AddComponent(hude);
+            AddComponent(collection);
+            AddComponent(settings);
+            AddComponent(poss);
+            AddComponent(dock);
+            AddComponent(fact);
+            AddComponent(trans);
+            AddComponent(expbar);
+            AddComponent(level);
+            AddComponent(oilres);
+            AddComponent(bulres);
+            AddComponent(irores);
+            AddComponent(alures);
 
             this.Load += Harbor_Load;
             this.Unload += Harbor_Unload;
@@ -208,11 +200,37 @@ namespace WarshipGirl.Scene
         {
             player.Stop();
         }
-
+        int h = 10;
         void fact_Click(object sender, EventArgs e)
         {
-            var game = (Game1)ParentGame;
-            game.Navigate(game.factory);
+            //var ship = Server.ServerCommand.GetBuildableRandomShip();
+            //var s = new Ship64Img(ship)
+            //{
+            //    Left = 100,
+            //    Top = h,
+            //    SpriteBatch=this.SpriteBatch,
+            //    GraphicsDevice=this.GraphicsDevice
+            //};
+            //s.LoadContent();
+            //AddComponent(s);
+            //h += 75;
+
+            //var game = (Game1)ParentGame;
+            //var getship = new GetShip(Server.ServerCommand.GetBuildableRandomShip())
+            //{
+            //    ParentGame = this.ParentGame,
+            //    Color = Color.White,
+            //    Margin = Origins.Center,
+            //    SpriteBatch = this.SpriteBatch,
+            //    GraphicsDevice = this.GraphicsDevice,
+            //    Width = 1024,
+            //    Height = 768,
+            //    Parent=this
+            //};
+            //getship.LoadContent();
+            //game.Navigate(getship);
+
+            //game.Navigate(game.factory);
         }
     }
     partial class Harbor: BaseScene

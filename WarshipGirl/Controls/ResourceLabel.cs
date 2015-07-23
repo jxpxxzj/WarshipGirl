@@ -46,9 +46,10 @@ namespace WarshipGirl.Controls
                 Color=Color.White,
                 Width=(int)(restexture.Width / 2),
                 Height = (int)(restexture.Height / 2),
-                X = this.RenderX + this.Width / 16*3,
-                Y = this.RenderY + this.Height / 2,
-                OriginType = Origins.Center,
+                Left = 12,
+                Top = 8,
+                Margin=Origins.TopLeft,
+                Parent=this,
             };
             
             LabelText = new Text()
@@ -63,8 +64,8 @@ namespace WarshipGirl.Controls
             };
             Value = 61616;
             LabelText.text = Value.ToString();
-            this.CompList.Add(TypeSprite);
-            this.CompList.Add(LabelText);
+            AddComponent(TypeSprite);
+            AddComponent(LabelText);
             base.LoadContent();
         }
         public override void Draw(GameTime gameTime)

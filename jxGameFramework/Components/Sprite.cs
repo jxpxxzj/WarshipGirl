@@ -31,14 +31,26 @@ namespace jxGameFramework.Components
         
         Custom,
     }
+    public enum PositionRelation
+    {
+        Relative,Absolute
+    }
     /// <summary>
     /// 精灵
     /// </summary>
     public class Sprite : Component
     {
+        public Sprite Parent { get; set; }
         public Texture2D Texture { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+
+        public Origins Margin { get; set; }
+
+        //public int X { get; set; }
+        //public int Y { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public int ColorR { get; set; }
@@ -61,27 +73,81 @@ namespace jxGameFramework.Components
             }
         }
         public List<Animation> AnimList = new List<Animation>();
-        public List<Component> CompList = new List<Component>();
 
-        public Origins OriginType { get; set; }
-        public Vector2 CustomOriginPoint { get; set; }
+        private List<Component> CompList = new List<Component>();
+        public void AddComponent(Component comp)
+        {
+            try
+            {
+                ((Sprite)comp).Parent = this;
+            }
+            catch (Exception)
+            {
 
+            }
+            CompList.Add(comp);
+        }
+
+        //public Origins Origin { get; set; }
+        //public Vector2 CustomOriginPoint { get; set; }
+
+        private int ParentWidth
+        {
+            get
+            {
+                if (Parent != null)
+                    return Parent.Width;
+                else
+                    return 0;
+            }
+        }
+        private int ParentHeight
+        {
+            get
+            {
+                if (Parent != null)
+                    return Parent.Height;
+                else
+                    return 0;
+            }
+        }
+        private int ParentRenderX
+        {
+            get
+            {
+                if (Parent != null)
+                    return Parent.RenderX;
+                else
+                    return 0;
+            }
+        }
+        private int ParentRenderY
+        {
+            get
+            {
+                if (Parent != null)
+                    return Parent.RenderY;
+                else
+                    return 0;
+            }
+        }
         public int RenderX
         {
             get
             {
-                switch (OriginType)
+                switch (Margin)
                 {
-                    case Origins.TopLeft: return X;
-                    case Origins.TopCenter: return X - Width - 2;
-                    case Origins.TopRight: return X - Width;
-                    case Origins.CenterLeft: return X; 
-                    case Origins.Center: return X - Width / 2; 
-                    case Origins.BottomLeft: return X;
-                    case Origins.BottomCenter: return X - Width / 2; 
-                    case Origins.BottomRight: return X - Width;
-                    case Origins.Custom: return X - Width * (int)CustomOriginPoint.X;
-                    default: return X;
+                    case Origins.TopLeft: return ParentRenderX + Left;
+                    case Origins.TopCenter: return ParentRenderX + (ParentWidth - Width) / 2;
+                    case Origins.TopRight: return ParentRenderX + ParentWidth - Right - Width;
+                    case Origins.CenterLeft: return ParentRenderX + Left;
+                    case Origins.Center: return ParentRenderX + (ParentWidth - Width) / 2;
+                    case Origins.CenterRight: return ParentRenderX + ParentWidth - Right - Width;
+                    case Origins.BottomLeft: return ParentRenderX + Left;
+                    case Origins.BottomCenter: return ParentRenderX + (ParentWidth - Width) / 2;
+                    case Origins.BottomRight: return ParentRenderX + ParentWidth - Right - Width;
+                    //case Origins.Custom: return X - Width * (int)CustomOriginPoint.X;
+                    default: return Left;
                 }
             }
         }
@@ -89,26 +155,27 @@ namespace jxGameFramework.Components
         { 
             get
             {
-                switch (OriginType)
+                switch (Margin)
                 {
-                    case Origins.TopLeft: return Y;                        
-                    case Origins.TopCenter: return Y;                       
-                    case Origins.TopRight: return Y;                        
-                    case Origins.CenterLeft: return Y - Height / 2;                       
-                    case Origins.Center: return Y - Height / 2;                        
-                    case Origins.CenterRight: return Y - Height / 2;                        
-                    case Origins.BottomLeft: return Y - Height;                        
-                    case Origins.BottomCenter:return Y - Height;                        
-                    case Origins.BottomRight: return Y - Height;                       
-                    case Origins.Custom: return Y - Height * (int)CustomOriginPoint.Y;
-                    default: return Y;       
+                    case Origins.TopLeft: return ParentRenderY + Top;
+                    case Origins.TopCenter: return ParentRenderY + Top;
+                    case Origins.TopRight: return ParentRenderY + Top;
+                    case Origins.CenterLeft: return ParentRenderY + (ParentHeight - Height) / 2;
+                    case Origins.Center: return ParentRenderY + (ParentHeight - Height) / 2;
+                    case Origins.CenterRight: return ParentRenderY + (ParentHeight - Height) / 2;
+                    case Origins.BottomLeft: return ParentRenderY + ParentHeight - Bottom - Height;
+                    case Origins.BottomCenter: return ParentRenderY + ParentHeight - Bottom - Height;
+                    case Origins.BottomRight: return ParentRenderY + ParentHeight - Bottom - Height;                       
+                    //case Origins.Custom: return Y - Height * (int)CustomOriginPoint.Y;
+                    default: return Left;       
                 }
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatch.Draw(Texture, new Rectangle(RenderX,RenderY , Width, Height),Color);
+            if(Texture != null)
+                SpriteBatch.Draw(Texture, new Rectangle(RenderX,RenderY , Width, Height),Color);
             foreach (Component comp in CompList)
                 comp.Draw(gameTime);
         }
@@ -118,6 +185,15 @@ namespace jxGameFramework.Components
             {
                 comp.GraphicsDevice = this.GraphicsDevice;
                 comp.SpriteBatch = this.SpriteBatch;
+                //try
+                //{
+                //    ((Sprite)comp).Parent = this;
+                //}
+                //catch (Exception)
+                //{
+
+                //}
+                
                 comp.LoadContent();
             }
                 
@@ -128,8 +204,12 @@ namespace jxGameFramework.Components
         }
         public override void Update(GameTime gameTime)
         {
-            foreach (Component comp in CompList)
-                comp.Update(gameTime);
+            for(int j=0;j<CompList.Count;j++)
+            {
+                CompList[j].Update(gameTime);
+            }
+            //foreach (Component comp in CompList)
+            //    comp.Update(gameTime);
             int i=0;
             while(i<AnimList.Count)
             {

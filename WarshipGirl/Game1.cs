@@ -56,12 +56,10 @@ namespace WarshipGirl
             {
                 ParentGame=this,
                 Color = Color.White,
-                OriginType = Origins.Center,
+                //Margin = Origins.Center,
                 SpriteBatch = spriteBatch,
                 GraphicsDevice = this.GraphicsDevice,
                 Texture = Texture2D.FromStream(this.GraphicsDevice, harborbg),
-                X = 512,
-                Y = 384,
                 Width = 1024,
                 Height = 768
             };
@@ -72,12 +70,10 @@ namespace WarshipGirl
             {
                 ParentGame = this,
                 Color = Color.White,
-                OriginType = Origins.Center,
+                //Margin = Origins.Center,
                 SpriteBatch = spriteBatch,
                 GraphicsDevice = this.GraphicsDevice,
                 Texture = Texture2D.FromStream(this.GraphicsDevice, factbg),
-                X = 512,
-                Y = 384,
                 Width = 1024,
                 Height = 768
             };
@@ -113,7 +109,8 @@ namespace WarshipGirl
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            PresentScene.Update(gameTime);
+            if(this.IsActive)
+                PresentScene.Update(gameTime);
             fpscounter.Update(gameTime);
             base.Update(gameTime);
         }

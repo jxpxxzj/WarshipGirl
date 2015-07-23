@@ -34,81 +34,78 @@ namespace WarshipGirl.Scene
         {
             building = new Button()
             {                             
-                X = 10,
-                Y = 10,
+                Left = 10,
+                Top = 10,
                 Text = "建造",
-                OriginType = Origins.TopLeft
+                Margin = Origins.TopLeft
             };
             disassembly = new Button()
             {
-                X = 10,
-                Y = 80,
+                Left = 10,
+                Top = 80,
                 Text = "解体",
-                OriginType = Origins.TopLeft
+                Margin = Origins.TopLeft
             };
             developing = new Button()
             {                               
-                X = 10,
-                Y = 150,
+                Left = 10,
+                Top = 150,
                 Text = "开发",
-                OriginType = Origins.TopLeft
+                Margin = Origins.TopLeft
             };
             disintegrate = new Button()
             {                                
-                X = 10,
-                Y = 220,
+                Left = 10,
+                Top = 220,
                 Text = "废弃",
-                OriginType = Origins.TopLeft
+                Margin = Origins.TopLeft
             };
 
             toharbor = new Button()
             {                                
-                X = 10,
-                Y = 768,
+                Left = 10,
                 Text = "港口",
-                OriginType = Origins.BottomLeft
+                Margin = Origins.BottomLeft
             };
             toharbor.Click += toharbor_Click;
 
+
+
             oilres = new ResourceLabel()
-            {                              
-                X = 500,
-                Y = 0,
-                OriginType = Origins.TopCenter,
+            {
+                Left = 400,
+                Margin = Origins.TopLeft,
                 Type = ResourceType.Oil,
                 isBeginning = true
             };
             bulres = new ResourceLabel()
-            {                               
-                X = 625,
-                Y = 0,
-                OriginType = Origins.TopCenter,
+            {
+                Left = 525,
+                Margin = Origins.TopLeft,
                 Type = ResourceType.Bullet
             };
             irores = new ResourceLabel()
-            {                                
-                X = 750,
-                Y = 0,
-                OriginType = Origins.TopCenter,
+            {
+                Left = 650,
+                Margin = Origins.TopLeft,
                 Type = ResourceType.Iron
             };
             alures = new ResourceLabel()
-            {                                
-                X = 875,
-                Y = 0,
-                OriginType = Origins.TopCenter,
+            {
+                Left = 775,
+                Margin = Origins.TopLeft,
                 Type = ResourceType.Aluminum
             };
-
-            CompList.Add(oilres);
-            CompList.Add(bulres);
-            CompList.Add(irores);
-            CompList.Add(alures);
-            CompList.Add(building);
-            CompList.Add(disassembly);
-            CompList.Add(developing);
-            CompList.Add(disintegrate);
-            CompList.Add(toharbor);
+            
+            AddComponent(oilres);
+            AddComponent(bulres);
+            AddComponent(irores);
+            AddComponent(alures);
+            AddComponent(building);
+            AddComponent(disassembly);
+            AddComponent(developing);
+            AddComponent(disintegrate);
+            AddComponent(toharbor);
 
             this.Load += Factory_Load;
             this.Unload += Factory_Unload;

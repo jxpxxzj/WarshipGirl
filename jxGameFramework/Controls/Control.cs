@@ -94,6 +94,7 @@ namespace jxGameFramework.Controls
         }
         public override void Update(GameTime gameTime)
         {
+            
             if (Keyboard.GetState().GetPressedKeys().Count<Microsoft.Xna.Framework.Input.Keys>() != 0)
                 OnKeyDown(this, EventArgs.Empty);
             else
