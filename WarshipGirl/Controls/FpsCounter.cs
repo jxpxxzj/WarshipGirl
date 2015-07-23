@@ -16,7 +16,7 @@ namespace WarshipGirl.Controls
         TimeSpan elapsedTime = TimeSpan.Zero;   
         public override void LoadContent()
         {
-            this.Font = new Font(this.GraphicsDevice, "msyh.ttc", 15, -20)
+            this.Font = new Font(this.GraphicsDevice, "msyh.ttc", 15)
             {
                 EnableBorder = true,
                 BorderColor = Color.Black,

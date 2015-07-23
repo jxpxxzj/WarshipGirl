@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using WarshipGirl.Data;
+using System.Reflection;
 using jxGameFramework.Controls;
 using jxGameFramework.Components;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using WarshipGirl.Graphics;
 
 namespace WarshipGirl.Controls
 {
@@ -66,11 +70,11 @@ namespace WarshipGirl.Controls
             };
             img = new Sprite()
             {
-                Width=248,
-                Height=64,
-                Margin=Origins.Center,
-                Texture = Sprite.CreateTextureFromFile(this.GraphicsDevice, string.Format(@"F:\shipwar\assets\bin\Pic\ship64_normal_{0}.png", Ship.ID)),
-                Color=Color.White
+                Width = 248,
+                Height = 64,
+                Margin = Origins.Center,
+                Texture = TextureManager.LoadShipImage(GraphicsDevice,Ship.ID,TextureManager.ShipSize.Small),//Sprite.CreateTextureFromFile(this.GraphicsDevice, string.Format(@"F:\shipwar\assets\bin\Pic\ship64_normal_{0}.png", Ship.ID)),
+                Color = Color.White
             };
             img.Width = (int)(img.Width * 0.9);
             img.Height = (int)(img.Height * 0.9);

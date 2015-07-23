@@ -86,7 +86,7 @@ namespace WarshipGirl.Scene
                 text = "Lv.61",
                 Color = Color.White,
                 OriginType = Origins.TopLeft,
-                Font = new Font(this.GraphicsDevice, "msyh.ttc", 25,-8)
+                Font = new Font(this.GraphicsDevice, "msyh.ttc", 25)
             };
 
             poss = new Control()
@@ -208,27 +208,27 @@ namespace WarshipGirl.Scene
             //{
             //    Left = 100,
             //    Top = h,
-            //    SpriteBatch=this.SpriteBatch,
-            //    GraphicsDevice=this.GraphicsDevice
+            //    SpriteBatch = this.SpriteBatch,
+            //    GraphicsDevice = this.GraphicsDevice
             //};
             //s.LoadContent();
             //AddComponent(s);
             //h += 75;
 
-            //var game = (Game1)ParentGame;
-            //var getship = new GetShip(Server.ServerCommand.GetBuildableRandomShip())
-            //{
-            //    ParentGame = this.ParentGame,
-            //    Color = Color.White,
-            //    Margin = Origins.Center,
-            //    SpriteBatch = this.SpriteBatch,
-            //    GraphicsDevice = this.GraphicsDevice,
-            //    Width = 1024,
-            //    Height = 768,
-            //    Parent=this
-            //};
-            //getship.LoadContent();
-            //game.Navigate(getship);
+            var game = (Game1)ParentGame;
+            var getship = new GetShip(Server.ServerCommand.GetBuildableRandomShip())
+            {
+                ParentGame = this.ParentGame,
+                Color = Color.White,
+                Margin = Origins.Center,
+                SpriteBatch = this.SpriteBatch,
+                GraphicsDevice = this.GraphicsDevice,
+                Width = 1024,
+                Height = 768,
+                Parent = this
+            };
+            getship.LoadContent();
+            game.Navigate(getship);
 
             //game.Navigate(game.factory);
         }

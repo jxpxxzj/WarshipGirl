@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using Microsoft.Xna.Framework.Graphics;
 using System.Threading.Tasks;
 using jxGameFramework.Scene;
 using jxGameFramework.Data;
@@ -9,6 +11,7 @@ using jxGameFramework.Components;
 using jxGameFramework.Audio;
 using Microsoft.Xna.Framework;
 using WarshipGirl.Data;
+using WarshipGirl.Graphics;
 
 namespace WarshipGirl.Scene
 {
@@ -48,12 +51,12 @@ namespace WarshipGirl.Scene
                 Color = Color.White,
                 Width = 900,
                 Height = 900,
-                Texture = Sprite.CreateTextureFromFile(this.GraphicsDevice, string.Format(@"F:\shipwar\assets\bin\Pic\ship1024_normal_{0}.png",Ship.ID)),
+                Texture = TextureManager.LoadShipImage(GraphicsDevice,Ship.ID,TextureManager.ShipSize.Large)
             };
 
             shipname = new Text()
             {
-                Font = new Font(this.GraphicsDevice,"msyh.ttc", 25, -8)
+                Font = new Font(this.GraphicsDevice,"msyh.ttc", 25)
                 {
                     EnableBorder=true,
                     BorderColor=Color.Black,
@@ -66,7 +69,7 @@ namespace WarshipGirl.Scene
             };
             shiptype = new Text()
             {
-                Font = new Font(this.GraphicsDevice, "msyh.ttc", 20, -10)
+                Font = new Font(this.GraphicsDevice, "msyh.ttc", 20)
                 {
                     EnableBorder = true,
                     BorderColor = Color.Black,
@@ -79,7 +82,7 @@ namespace WarshipGirl.Scene
             };
             talk = new Text()
             {
-                Font = new Font(this.GraphicsDevice, "msyh.ttc", 20, -10)
+                Font = new Font(this.GraphicsDevice, "msyh.ttc", 20)
                 {
                     EnableBorder = true,
                     BorderColor = Color.Black,

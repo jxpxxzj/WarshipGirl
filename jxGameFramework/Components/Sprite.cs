@@ -172,6 +172,43 @@ namespace jxGameFramework.Components
             }
         }
 
+        /// <summary>
+        /// 从文件创建Texture
+        /// </summary>
+        /// <param name="gd">GraphicsDevice</param>
+        /// <param name="Path">文件路径</param>
+        /// <returns>Texture2D</returns>
+        public static Texture2D CreateTextureFromFile(GraphicsDevice gd, string Path)
+        {
+            var fs = new FileStream(Path, FileMode.Open, FileAccess.Read);
+            var t = Texture2D.FromStream(gd, fs);
+            PreMultiplyAlphas(t);
+            return t;
+        }
+        private static void PreMultiplyAlphas(Texture2D ret)
+        {
+            Byte4[] data = new Byte4[ret.Width * ret.Height];
+            ret.GetData<Byte4>(data);
+            for (int i = 0; i < data.Length; i++)
+            {
+                Vector4 vec = data[i].ToVector4();
+                float alpha = vec.W / 255.0f;
+                int a = (int)(vec.W);
+                int r = (int)(alpha * vec.X);
+                int g = (int)(alpha * vec.Y);
+                int b = (int)(alpha * vec.Z);
+                uint packed = (uint)(
+                    (a << 24) +
+                    (b << 16) +
+                    (g << 8) +
+                    r
+                    );
+
+                data[i].PackedValue = packed;
+            }
+            ret.SetData<Byte4>(data);
+        }
+
         public override void Draw(GameTime gameTime)
         {
             if(Texture != null)
@@ -221,43 +258,6 @@ namespace jxGameFramework.Components
                     i++;
                 }     
             }
-        }
-        /// <summary>
-        /// 从文件创建Texture
-        /// </summary>
-        /// <param name="gd">GraphicsDevice</param>
-        /// <param name="Path">文件路径</param>
-        /// <returns>Texture2D</returns>
-        public static Texture2D CreateTextureFromFile(GraphicsDevice gd,string Path)
-        {
-            var fs = new FileStream(Path, FileMode.Open,FileAccess.Read);
-            var t = Texture2D.FromStream(gd,fs);
-            PreMultiplyAlphas(t);
-            return t;
-        }
-
-        private static void PreMultiplyAlphas(Texture2D ret)
-        {
-            Byte4[] data = new Byte4[ret.Width * ret.Height];
-            ret.GetData<Byte4>(data);
-            for (int i = 0; i < data.Length; i++)
-            {
-                Vector4 vec = data[i].ToVector4();
-                float alpha = vec.W / 255.0f;
-                int a = (int)(vec.W);
-                int r = (int)(alpha * vec.X);
-                int g = (int)(alpha * vec.Y);
-                int b = (int)(alpha * vec.Z);
-                uint packed = (uint)(
-                    (a << 24) +
-                    (b << 16) +
-                    (g << 8) +
-                    r
-                    );
-
-                data[i].PackedValue = packed;
-            }
-            ret.SetData<Byte4>(data);
-        }
+        }       
     }
 }

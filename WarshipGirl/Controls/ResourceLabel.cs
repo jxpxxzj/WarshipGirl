@@ -54,12 +54,12 @@ namespace WarshipGirl.Controls
             
             LabelText = new Text()
             {
-                Font = new Font(this.GraphicsDevice, "msyh.ttc", 20, -15),
+                Font = new Font(this.GraphicsDevice, "msyh.ttc", 20),
                 Color = Color.White,
                 GraphicsDevice = this.GraphicsDevice,
                 SpriteBatch = this.SpriteBatch,
                 X = this.RenderX + this.Width / 3,
-                Y = this.RenderY + this.Height / 2,
+                Y = this.RenderY + this.Height / 2 - 2,
                 OriginType = Origins.CenterLeft,
             };
             Value = 61616;

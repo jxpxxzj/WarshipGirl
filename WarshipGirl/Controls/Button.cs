@@ -24,7 +24,7 @@ namespace WarshipGirl.Controls
             this.Color = Color.White;
             ButtonText = new Text()
             {
-                Font = new Font(this.GraphicsDevice, "msyh.ttc", 25, -12)
+                Font = new Font(this.GraphicsDevice, "msyh.ttc", 25)
                 {
                     BorderColor = Color.Black,
                     EnableBorder = true
@@ -32,9 +32,9 @@ namespace WarshipGirl.Controls
                 Color = Color.White,
                 GraphicsDevice = this.GraphicsDevice,
                 SpriteBatch = this.SpriteBatch,
-                X = this.RenderX + this.Width / 2,
-                Y = this.RenderY + this.Height / 2,
-                OriginType = Origins.Center,
+                X = this.RenderX + this.Width / 2 ,
+                Y = this.RenderY + this.Height / 2 - 3,
+                OriginType = Origins.Center, 
             };
             ButtonText.text = Text;
             base.LoadContent();

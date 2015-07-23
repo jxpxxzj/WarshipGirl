@@ -62,11 +62,10 @@ namespace jxGameFramework.Data
         public Color ShadowColor { get; set; }
 
         private Dictionary<char, Character> buffer = new Dictionary<char, Character>();
-        public Font(GraphicsDevice graphicsdevice, string font, uint size,int globalyoffset)
+        public Font(GraphicsDevice graphicsdevice, string font, uint size)
         {
             font_size = size;
             gd = graphicsdevice;
-            yoffset = globalyoffset;
             IntPtr libptr;
             int ret = FT.FT_Init_FreeType(out libptr);
             if (ret != 0) return;
@@ -80,7 +79,7 @@ namespace jxGameFramework.Data
             ascender = face.ascender >> 6;
             descender = face.descender >> 6;
             fontheight = ((face.height >> 6) + descender + ascender) / 4;
-
+            yoffset = (int)(font_size - ascender);
             baseCharacter = CreateChar('i');
         }
 
