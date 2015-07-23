@@ -45,6 +45,7 @@
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\FpsCounter.cs" />
     <Compile Include="Controls\ResourceLabel.cs" />
+    <Compile Include="Controls\Ship64Img.cs" />
     <Compile Include="Data\BaseEquipment.cs" />
     <Compile Include="Data\BaseShip.cs" />
     <Compile Include="Data\Fleet.cs" />
