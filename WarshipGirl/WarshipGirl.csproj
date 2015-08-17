@@ -43,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controls\Button.cs" />
+    <Compile Include="Controls\MapPanel.cs" />
     <Compile Include="Controls\ResourceLabel.cs" />
     <Compile Include="Controls\Ship64Img.cs" />
     <Compile Include="Data\BaseEquipment.cs" />

@@ -14,7 +14,7 @@ using System.Drawing.Text;
 
 namespace jxGameFramework.Controls
 {
-    class GDIpInterop : IDisposable
+    public class GDIpInterop : IDisposable
     {
         private Bitmap Canvas;
         private GraphicsDevice _gd;

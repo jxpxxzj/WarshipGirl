@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace jxGameFramework.Controls
 {
-    class CheckBox : Control
+    public class CheckBox : Control
     {
         Sprite _checkcircle;
         Text _title;
@@ -54,12 +54,12 @@ namespace jxGameFramework.Controls
 
         public override void LoadContent()
         {
-            GDIpInterop gdip = new GDIpInterop(18, 18, GraphicsDevice);
-            gdip.g.FillEllipse(System.Drawing.Brushes.White, 0, 0, 16, 16);
+            GDIpInterop gdip = new GDIpInterop(20, 20, GraphicsDevice);
+            gdip.g.FillEllipse(System.Drawing.Brushes.White, 2, 2, 16, 16);
             full = gdip.SaveTexture();
             gdip.g.Clear(System.Drawing.Color.Transparent);
             System.Drawing.Pen p = new System.Drawing.Pen(System.Drawing.Color.White, 2);
-            gdip.g.DrawEllipse(p, 0, 0, 16, 16);
+            gdip.g.DrawEllipse(p, 2, 2, 16, 16);
             empty = gdip.SaveTexture();
 
             _fnt = new Font(GraphicsDevice, "msyh.ttc", 15)
@@ -72,7 +72,7 @@ namespace jxGameFramework.Controls
             {
                 Texture = empty,
                 Margin=Origins.CenterLeft,
-                Left = 2,
+                Left = 0,
                 Color=Color.DeepPink,
             };
             _checkcircle.Width = _checkcircle.Texture.Width;
@@ -84,7 +84,7 @@ namespace jxGameFramework.Controls
                 Color = Color.White,
                 OriginType = Origins.CenterLeft,
                 X = 22,
-                Y = 7,
+                Y = 9,
             };
             AddComponent(_title);
             AddComponent(_checkcircle);

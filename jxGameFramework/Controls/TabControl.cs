@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 
 namespace jxGameFramework.Controls
 {
-    class TabBar : Control
+    public class TabBar : Control
     {
         Text _tabtitle;
         Font _fnt;
@@ -81,7 +81,7 @@ namespace jxGameFramework.Controls
             base.LoadContent();
         }
     }
-    class TabControl : Control
+    public class TabControl : Control
     {
         List<TabBar> _tablist = new List<TabBar>();
         List<Control> _pagelist=new List<Control>();

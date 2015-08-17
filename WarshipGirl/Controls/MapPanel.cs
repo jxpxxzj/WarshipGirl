@@ -8,7 +8,7 @@ using jxGameFramework.Components;
 using jxGameFramework.Data;
 using Microsoft.Xna.Framework;
 
-namespace jxGameFramework.Controls
+namespace WarshipGirl.Controls
 {
     class MapPanel : Control
     {

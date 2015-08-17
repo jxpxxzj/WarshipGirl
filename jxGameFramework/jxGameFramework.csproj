@@ -72,7 +72,6 @@
     <Compile Include="Controls\Control.cs" />
     <Compile Include="Controls\FpsCounter.cs" />
     <Compile Include="Controls\GDIpInterop.cs" />
-    <Compile Include="Controls\MapPanel.cs" />
     <Compile Include="Controls\TabControl.cs" />
     <Compile Include="Data\Geomerty.cs" />
     <Compile Include="Data\SQLiteInterop.cs" />
