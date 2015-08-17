@@ -35,6 +35,7 @@ namespace jxGameFramework.Components
                 } 
             }
         }
+        public Sprite Parent { get; set; }
         public int Width { get; protected set; }
         public int Height { get; protected set; }
         public Color Color { get; set; }
@@ -42,6 +43,26 @@ namespace jxGameFramework.Components
         public int Y { get; set; }
         public int RenderX { get; set; }
         public int RenderY { get; set; }
+        private int ParentRenderX
+        {
+            get
+            {
+                if (Parent != null)
+                    return Parent.RenderX;
+                else
+                    return 0;
+            }
+        }
+        private int ParentRenderY
+        {
+            get
+            {
+                if (Parent != null)
+                    return Parent.RenderY;
+                else
+                    return 0;
+            }
+        }
         public Origins OriginType { get; set; }
         public Vector2 CustomOriginPoint { get; set; }
         public Font Font { get; set; }
@@ -49,25 +70,25 @@ namespace jxGameFramework.Components
         {
             switch (OriginType)
             {
-                case Origins.TopLeft: RenderX = X; RenderY = Y;
+                case Origins.TopLeft: RenderX = ParentRenderX + X; RenderY = ParentRenderY + Y;
                     break;
-                case Origins.TopCenter: RenderX = X - Width - 2; RenderY = Y;
+                case Origins.TopCenter: RenderX = ParentRenderX + X - Width / 2; RenderY = ParentRenderY + Y;
                     break;
-                case Origins.TopRight: RenderX = X - Width; RenderY = Y;
+                case Origins.TopRight: RenderX = ParentRenderX + X - Width; RenderY = ParentRenderY + Y;
                     break;
-                case Origins.CenterLeft: RenderX = X; RenderY = Y - Height / 2;
+                case Origins.CenterLeft: RenderX = ParentRenderX + X; RenderY = ParentRenderY + Y - Height / 2;
                     break;
-                case Origins.Center: RenderX = X - Width / 2; RenderY = Y - Height / 2;
+                case Origins.Center: RenderX = ParentRenderX + X - Width / 2; RenderY = ParentRenderY + Y - Height / 2;
                     break;
-                case Origins.CenterRight: RenderX = X - Width; RenderY = Y - Height / 2;
+                case Origins.CenterRight: RenderX = ParentRenderX + X - Width; RenderY = ParentRenderY + Y - Height / 2;
                     break;
-                case Origins.BottomLeft: RenderX = X; RenderY = Y - Height;
+                case Origins.BottomLeft: RenderX = ParentRenderX + X; RenderY = ParentRenderY + Y - Height;
                     break;
-                case Origins.BottomCenter: RenderX = X - Width / 2; RenderY = Y - Height;
+                case Origins.BottomCenter: RenderX = ParentRenderX + X - Width / 2; RenderY = ParentRenderY + Y - Height;
                     break;
-                case Origins.BottomRight: RenderX = X - Width; RenderY = Y - Height;
+                case Origins.BottomRight: RenderX = ParentRenderX + X - Width; RenderY = ParentRenderY + Y - Height;
                     break;
-                case Origins.Custom: RenderX = X - Width * (int)CustomOriginPoint.X; RenderY = Y - Height * (int)CustomOriginPoint.Y;
+                case Origins.Custom: RenderX = ParentRenderX + X - Width * (int)CustomOriginPoint.X; RenderY = ParentRenderY + Y - Height * (int)CustomOriginPoint.Y;
                     break;
                 default:
                     break;

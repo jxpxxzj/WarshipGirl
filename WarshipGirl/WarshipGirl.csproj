@@ -43,7 +43,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controls\Button.cs" />
-    <Compile Include="Controls\FpsCounter.cs" />
     <Compile Include="Controls\ResourceLabel.cs" />
     <Compile Include="Controls\Ship64Img.cs" />
     <Compile Include="Data\BaseEquipment.cs" />
@@ -85,6 +84,10 @@
     <Reference Include="Broken_64">
       <HintPath>..\WarshipGirl_Data\Broken_64.dll</HintPath>
     </Reference>
+    <Reference Include="MonoGame.Framework, Version=3.4.0.456, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="Normal_1024">
       <HintPath>..\WarshipGirl_Data\Normal_1024.dll</HintPath>
     </Reference>
@@ -96,9 +99,6 @@
     </Reference>
     <Reference Include="OpenTK">
       <HintPath>C:\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsGL\OpenTK.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoGame.Framework">
-      <HintPath>C:\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsGL\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

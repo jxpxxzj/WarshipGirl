@@ -39,13 +39,14 @@
     </Reference>
     <Reference Include="MonoGame.Framework, Version=3.4.0.456, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\FreeTypeTest\FreeTypeTest\bin\WindowsGL\Debug\MonoGame.Framework.dll</HintPath>
+      <HintPath>..\WarshipGirl\bin\WindowsGL\Debug\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite">
       <HintPath>..\..\ShipwarCommand\DataFinder\System.Data.SQLite.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -67,7 +68,13 @@
     <Compile Include="Components\Component.cs" />
     <Compile Include="Components\Sprite.cs" />
     <Compile Include="Components\Text.cs" />
+    <Compile Include="Controls\CheckBox.cs" />
     <Compile Include="Controls\Control.cs" />
+    <Compile Include="Controls\FpsCounter.cs" />
+    <Compile Include="Controls\GDIpInterop.cs" />
+    <Compile Include="Controls\MapPanel.cs" />
+    <Compile Include="Controls\TabControl.cs" />
+    <Compile Include="Data\Geomerty.cs" />
     <Compile Include="Data\SQLiteInterop.cs" />
     <Compile Include="Data\Font.cs" />
     <Compile Include="Data\HSLColor.cs" />

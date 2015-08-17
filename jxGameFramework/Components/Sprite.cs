@@ -47,6 +47,23 @@ namespace jxGameFramework.Components
         public int Top { get; set; }
         public int Bottom { get; set; }
 
+        public float Rotation { get; set; }
+        public Vector2 Origin { get; set; }
+
+        Vector2 _scale = new Vector2(1f, 1f);
+        public Vector2 Scale 
+        { 
+            get
+            {
+                return _scale;
+            }
+            set
+            {
+                _scale=value;
+            } 
+        }
+        public SpriteEffects SpriteEffect { get; set; }
+
         public Origins Margin { get; set; }
 
         //public int X { get; set; }
@@ -80,6 +97,14 @@ namespace jxGameFramework.Components
             try
             {
                 ((Sprite)comp).Parent = this;
+            }
+            catch (Exception)
+            {
+
+            }
+            try
+            {
+                ((Text)comp).Parent = this;
             }
             catch (Exception)
             {
@@ -212,7 +237,7 @@ namespace jxGameFramework.Components
         public override void Draw(GameTime gameTime)
         {
             if(Texture != null)
-                SpriteBatch.Draw(Texture, new Rectangle(RenderX,RenderY , Width, Height),Color);
+                SpriteBatch.Draw(Texture, new Rectangle(RenderX,RenderY , (int)(Width*Scale.X), (int)(Height*Scale.Y)),null,Color,Rotation,Origin,SpriteEffect,0);
             foreach (Component comp in CompList)
                 comp.Draw(gameTime);
         }

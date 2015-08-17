@@ -7,6 +7,7 @@ using WarshipGirl.Scene;
 using System.IO;
 using System;
 using WarshipGirl.Controls;
+using jxGameFramework.Controls;
 
 namespace WarshipGirl
 {
@@ -27,7 +28,7 @@ namespace WarshipGirl
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1024;
-            graphics.PreferredBackBufferHeight = 768;
+            graphics.PreferredBackBufferHeight = 600;
             this.IsMouseVisible = true;
 
             //注释这两行以关闭无限fps
@@ -60,8 +61,8 @@ namespace WarshipGirl
                 SpriteBatch = spriteBatch,
                 GraphicsDevice = this.GraphicsDevice,
                 Texture = Texture2D.FromStream(this.GraphicsDevice, harborbg),
-                Width = 1024,
-                Height = 768
+                Width = GraphicsDevice.Viewport.Width,
+                Height = GraphicsDevice.Viewport.Height
             };
             harbor.LoadContent();
 
@@ -74,8 +75,8 @@ namespace WarshipGirl
                 SpriteBatch = spriteBatch,
                 GraphicsDevice = this.GraphicsDevice,
                 Texture = Texture2D.FromStream(this.GraphicsDevice, factbg),
-                Width = 1024,
-                Height = 768
+                Width = GraphicsDevice.Viewport.Width,
+                Height = GraphicsDevice.Viewport.Height
             };
             factory.LoadContent();
 
@@ -84,8 +85,8 @@ namespace WarshipGirl
                 GraphicsDevice = this.GraphicsDevice,
                 SpriteBatch = spriteBatch,
                 Color = Color.White,
-                X = 1024,
-                Y = 768,
+                X = GraphicsDevice.Viewport.Width,
+                Y = GraphicsDevice.Viewport.Height,
                 OriginType = Origins.BottomRight
             };
             fpscounter.LoadContent();

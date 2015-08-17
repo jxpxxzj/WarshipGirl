@@ -97,49 +97,59 @@ namespace jxGameFramework.Data
         private Character CreateChar(char c)
         {
             Character ch = new Character();
-            if (buffer.ContainsKey(c))
+            try
             {
-                return buffer[c];
-            }
-            if (c == '\r' || c == '\n')
-            {
-                Texture2D texture = new Texture2D(gd, baseCharacter.Texture.Width, 1);
-                ch.Texture = texture;
-                ch.Char = c;
-                buffer.Add(c, ch);
-                return ch;
-            }
-                
-            if (c != ' ')
-            {
-                var tt = GetCharBitmap(Convert.ToUInt32(c));
-                var charoffsety = (ascender) - tt.bitmap_top;
-                var charoffsetx = tt.bitmap_left;
-
-                byte[] bmp = new byte[tt.bitmap.rows * tt.bitmap.width];
-                Marshal.Copy(tt.bitmap.buffer, bmp, 0, bmp.Length);
-
-                Color[] colordata = new Color[tt.bitmap.rows * tt.bitmap.width];
-                for (int i = 0; i < colordata.Length; i++)
+                if (buffer.ContainsKey(c))
                 {
-                    colordata[i] = new Color(255, 255, 255, bmp[i]);
+                    return buffer[c];
+                }
+                if (c == '\r' || c == '\n')
+                {
+                    Texture2D texture = new Texture2D(gd, baseCharacter.Texture.Width, 1);
+                    ch.Texture = texture;
+                    ch.Char = c;
+                    buffer.Add(c, ch);
+                    return ch;
                 }
 
-                Texture2D texture = new Texture2D(gd, tt.bitmap.width, tt.bitmap.rows);
-                texture.SetData<Color>(colordata);
-                PreMultiplyAlphas(texture);
-                ch.Texture = texture;
-                ch.OffserY = charoffsety;
-                ch.OffsetX = charoffsetx;
-                ch.Char = c;
-                buffer.Add(c, ch);
+                if (c != ' ' && c != '　')
+                {
+                    var tt = GetCharBitmap(Convert.ToUInt32(c));
+                    var charoffsety = (ascender) - tt.bitmap_top;
+                    var charoffsetx = tt.bitmap_left; //tt.bitmap_left; //
+
+                    byte[] bmp = new byte[tt.bitmap.rows * tt.bitmap.width];
+                    Marshal.Copy(tt.bitmap.buffer, bmp, 0, bmp.Length);
+
+                    Color[] colordata = new Color[tt.bitmap.rows * tt.bitmap.width];
+                    for (int i = 0; i < colordata.Length; i++)
+                    {
+                        colordata[i] = new Color(255, 255, 255, bmp[i]);
+                    }
+
+                    Texture2D texture = new Texture2D(gd, tt.bitmap.width, tt.bitmap.rows);
+                    texture.SetData<Color>(colordata);
+                    PreMultiplyAlphas(texture);
+                    ch.Texture = texture;
+                    ch.OffserY = charoffsety;
+                    ch.OffsetX = charoffsetx;
+                    ch.Char = c;
+                    buffer.Add(c, ch);
+                }
+                else
+                {
+                    Texture2D texture = new Texture2D(gd, baseCharacter.Texture.Width, 1);
+                    ch.Texture = texture;
+                    buffer.Add(c, ch);
+                }
             }
-            else
+            catch (Exception)
             {
                 Texture2D texture = new Texture2D(gd, baseCharacter.Texture.Width, 1);
                 ch.Texture = texture;
                 buffer.Add(c, ch);
             }
+            
             return ch;
         }
         private static void PreMultiplyAlphas(Texture2D ret)

@@ -58,8 +58,8 @@ namespace WarshipGirl.Controls
                 Color = Color.White,
                 GraphicsDevice = this.GraphicsDevice,
                 SpriteBatch = this.SpriteBatch,
-                X = this.RenderX + this.Width / 3,
-                Y = this.RenderY + this.Height / 2 - 2,
+                X = this.Width / 3,
+                Y = this.Height / 2 - 2,
                 OriginType = Origins.CenterLeft,
             };
             Value = 61616;
