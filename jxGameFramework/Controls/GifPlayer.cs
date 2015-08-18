@@ -46,7 +46,7 @@ namespace FontTest
                 LoadImg(_imgpath);
             }
         }
-        //TimeSpan FrameTime { get; set; }
+        TimeSpan FrameTime;
         
         private void LoadImg(string path)
         {
@@ -81,8 +81,7 @@ namespace FontTest
                 FrameImg.Add(new GifFrame(texture,frametime));
                 ms = new MemoryStream();
             }
-            
-
+            FrameTime = frametime;
         }
         private void SetTexture(int frameid)
         {
@@ -96,7 +95,7 @@ namespace FontTest
         }
         public override void Update(GameTime gameTime)
         {
-            int frame = (int)((int)(gameTime.TotalGameTime.TotalMilliseconds / FrameImg[FrameImg.Count-1].FrameTime.TotalMilliseconds) % FrameImg.Count);
+            int frame = (int)((int)(gameTime.TotalGameTime.TotalMilliseconds / FrameTime.TotalMilliseconds) % FrameImg.Count);
             SetTexture(frame);
             base.Update(gameTime);
         }

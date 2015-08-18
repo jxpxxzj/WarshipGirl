@@ -28,6 +28,7 @@ namespace jxGameFramework.Controls
         Color UpdateGreen = new Color(154, 205, 50, 255);
         Color DrawPurple = new Color(138, 43, 226, 255);
         Font bigger;
+        Font smaller;
         int vwidth;
         int vheight;
 
@@ -41,8 +42,14 @@ namespace jxGameFramework.Controls
                 ShadowXOffset = 0,
                 ShadowYOffset = 1
             };
-            this.Font = new Font(this.GraphicsDevice, "msyh.ttc", 15)
+            this.Font = new Font(this.GraphicsDevice, "msyh.ttc", 12)
             {
+                EnableBorder=true,
+                BorderColor=Color.Black,
+            };
+                
+            smaller = new Font(this.GraphicsDevice, "msyh.ttc", 15)
+            { 
                 EnableShadow = true,
                 ShadowColor=Color.Black,
                 ShadowXOffset=0,
@@ -117,8 +124,8 @@ namespace jxGameFramework.Controls
                     bigger.DrawText(SpriteBatch, new Vector2(vwidth - 669, vheight - 100), "Draw", DrawPurple);
                     bigger.DrawText(SpriteBatch, new Vector2(vwidth - 610, vheight - 100), "BetweenFrames", Color.White);
                 }
-                Font.DrawText(SpriteBatch, new Vector2(vwidth - 797, vheight - 100), "20ms", Color.White);
-                Font.DrawText(SpriteBatch, new Vector2(vwidth - 797, vheight - 20), "0ms", Color.White);
+                smaller.DrawText(SpriteBatch, new Vector2(vwidth - 797, vheight - 100), "20ms", Color.White);
+                smaller.DrawText(SpriteBatch, new Vector2(vwidth - 797, vheight - 20), "0ms", Color.White);
             }     
             frameCounter++;
             string fps = "";

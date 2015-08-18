@@ -70,6 +70,7 @@
     <Compile Include="Components\Text.cs" />
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\CheckBox.cs" />
+    <Compile Include="Controls\ComboBox.cs" />
     <Compile Include="Controls\Control.cs" />
     <Compile Include="Controls\FpsCounter.cs" />
     <Compile Include="Controls\GDIpInterop.cs" />

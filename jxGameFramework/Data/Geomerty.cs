@@ -531,5 +531,11 @@ namespace jxGameFramework.Data
         }
 
         #endregion
+
+
+        public static System.Drawing.Color FromMonoColor(this System.Drawing.Color gdicolor, Color color)
+        {
+            return System.Drawing.Color.FromArgb(color.A,color.R,color.G,color.B);
+        }
     }
 }

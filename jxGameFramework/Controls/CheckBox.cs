@@ -20,6 +20,20 @@ namespace jxGameFramework.Controls
         Texture2D full;
         Texture2D empty;
 
+        //Color _circleColor = Color.DeepPink;
+
+        public Color CircleColor
+        {
+            get
+            {
+                return _checkcircle.Color;
+            }
+            set
+            {
+                _checkcircle.Color = value;
+            }
+        }
+
         public string Text
         {
             get
@@ -29,6 +43,7 @@ namespace jxGameFramework.Controls
             set
             {
                 _title.text = value;
+                this.Width = (int)_fnt.MeasureString(_title.text).X + full.Width;
             }
         }
         bool _checked = false;
@@ -100,11 +115,6 @@ namespace jxGameFramework.Controls
         void CheckBox_Click(object sender, EventArgs e)
         {
             this.Checked = !this.Checked;
-        }
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
-        
+        }        
     }
 }

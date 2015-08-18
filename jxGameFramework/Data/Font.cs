@@ -187,14 +187,21 @@ namespace jxGameFramework.Data
         }
         public Vector2 MeasureString(string s)
         {
-            var text = CreateStringTexture(s);
-            int presentx = 0;
-            int presenty = (int)font_size + 2;
-            for (int i = 0; i < text.Length; i++)
+            string[] lines = s.Split('\n');
+            int maxx = 0;
+            int maxy = lines.Length * ((int)font_size + 2);
+            foreach(string ln in lines)
             {
-                presentx += (1 + (int)text[i].Texture.Width + text[i].OffsetX);
+                var text = CreateStringTexture(ln);
+                int presentx = 0;
+                for (int i = 0; i < text.Length; i++)
+                {
+                    presentx += (1 + (int)text[i].Texture.Width + text[i].OffsetX);
+                }
+                if (presentx > maxx)
+                    maxx = presentx;
             }
-            return new Vector2(presentx, presenty);
+            return new Vector2(maxx, maxy);
         }
         private void DrawText(SpriteBatch sb, Vector2 pos, Character[] text, Color color)
         {

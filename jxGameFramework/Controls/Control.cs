@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using jxGameFramework.Components;
+using jxGameFramework.Data;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace jxGameFramework.Controls
 {
@@ -27,6 +29,52 @@ namespace jxGameFramework.Controls
         protected bool isClicked = false;
         protected bool isMouseDown = false;
         protected bool isKeyDown = false;
+        protected bool MouseInRect = false;
+
+        Sprite _strip;
+        Text _content;
+        string _toolstrip;
+        Font _fnt;
+
+        public string ToolStrip
+        {
+            get
+            {
+                return _toolstrip;
+            }
+            set
+            {
+                _toolstrip = value;
+                _fnt = new Font(GraphicsDevice, "msyh.ttc", 12);
+                _content = new Text()
+                {
+                    Font = _fnt,
+                    Color = Color.White,
+                    OriginType = Origins.TopLeft,
+                    X = 3,
+                    Y = 1,
+                    text=_toolstrip,
+                };
+                var gdip = new GDIpInterop(_content.Width + 8, _content.Height + 3, GraphicsDevice);
+                gdip.g.FillRectangle(System.Drawing.Brushes.Black, new System.Drawing.Rectangle(0, 0, _content.Width+7, _content.Height+2));
+                gdip.g.DrawRectangle(System.Drawing.Pens.White, new System.Drawing.Rectangle(0, 0, _content.Width+7, _content.Height+2));
+
+                _strip = new Sprite()
+                {
+                    GraphicsDevice = this.GraphicsDevice,
+                    SpriteBatch = this.SpriteBatch,
+                    Width = _content.Width+8,
+                    Height = _content.Height+3,
+                    Color = Color.White,
+                    Texture=gdip.SaveTexture(),
+                };
+                gdip.Dispose();
+
+                _strip.AddComponent(_content);
+                _strip.LayerDepth = 1f;
+                _strip.LoadContent();
+            }
+        }
 
         protected virtual void OnClick(object sender, EventArgs e)
         {
@@ -82,7 +130,16 @@ namespace jxGameFramework.Controls
             }
 
         }
-
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            if (MouseInRect && _content != null)
+            {
+                _strip.Top = Mouse.GetState().Y + 5;
+                _strip.Left = Mouse.GetState().X + 5;
+                _strip.Draw(gameTime);
+            }
+        }
         public virtual void UpdateEvent(GameTime gameTime)
         {
             var mState = Mouse.GetState();
@@ -109,6 +166,7 @@ namespace jxGameFramework.Controls
             if (tRectangle.Contains(mState.X, mState.Y) && (mColor != Color.Transparent))
             {
                 OnMouseMove(this, new MouseEventArgs(MouseButtons.None, 0, mState.X, mState.Y, mState.ScrollWheelValue));
+                MouseInRect = true;
                 if (mState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
                     OnClick(this, EventArgs.Empty);
@@ -119,6 +177,7 @@ namespace jxGameFramework.Controls
             else
             {
                 OnMouseLeave(this, EventArgs.Empty);
+                MouseInRect = false;
             }
         }
         public override void Update(GameTime gameTime)
