@@ -68,10 +68,12 @@
     <Compile Include="Components\Component.cs" />
     <Compile Include="Components\Sprite.cs" />
     <Compile Include="Components\Text.cs" />
+    <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\CheckBox.cs" />
     <Compile Include="Controls\Control.cs" />
     <Compile Include="Controls\FpsCounter.cs" />
     <Compile Include="Controls\GDIpInterop.cs" />
+    <Compile Include="Controls\GifPlayer.cs" />
     <Compile Include="Controls\TabControl.cs" />
     <Compile Include="Data\Geomerty.cs" />
     <Compile Include="Data\SQLiteInterop.cs" />
