@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Drawing.Imaging;
 using System.Drawing;
 
-namespace FontTest
+namespace jxGameFramework.Controls
 {
     class GifFrame
     {

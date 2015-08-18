@@ -10,7 +10,7 @@ using jxGameFramework.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace FontTest
+namespace jxGameFramework.Controls
 {
     public enum ItemType
     {
