@@ -25,6 +25,8 @@ namespace jxGameFramework.Controls
         List<double> updatequeue = new List<double>();
         Rectangle rect;
         Color TransGray = new Color(100, 100, 100, 200);
+        Color UpdateGreen = new Color(154, 205, 50, 255);
+        Color DrawPurple = new Color(138, 43, 226, 255);
         Font bigger;
         int vwidth;
         int vheight;
@@ -81,26 +83,42 @@ namespace jxGameFramework.Controls
                     if (updatequeue.Count > 800)
                         updatequeue.RemoveAt(800);
                 }
-
+                //SpriteBatch.DrawLine(new Vector2(vwidth - 800, vheight - 83), new Vector2(vwidth, vheight - 83), Color.Red,1f);
                 foreach (double t in timequeue)
                 {
                     int drawheight = (int)(100 * (timequeue[i] / 20));
-                    int betweenheight = (int)(100 * (betweenqueue[i] / 20));
                     int updateheight = (int)(100 * (updatequeue[i] / 20));
+                    int betweenheight = (int)(100 * (betweenqueue[i] / 20));
+                    int presenty = vheight;
 
-                    SpriteBatch.DrawLine(new Vector2(vwidth - i, vheight), new Vector2(vwidth - i, vheight - updateheight), Color.LightGreen, 1f);
-                    SpriteBatch.DrawLine(new Vector2(vwidth - i, vheight - updateheight), new Vector2(vwidth - i, vheight - updateheight - drawheight), Color.MediumPurple, 1f);
-                    SpriteBatch.DrawLine(new Vector2(vwidth - i, vheight - updateheight - drawheight), new Vector2(vwidth - i, vheight - updateheight - drawheight - betweenheight), Color.White, 1f);
+                    int targetlength = updateheight;
+                    if (targetlength > 100)
+                        targetlength = 100;
+                    SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), UpdateGreen, 1f);
+
+                    presenty -= targetlength;
+                    targetlength = drawheight;
+                    if (targetlength > 100 - updateheight)
+                        targetlength = 100 - updateheight;
+
+                    SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), DrawPurple, 1f);
+
+                    presenty -= targetlength;
+                    targetlength = betweenheight;
+                    if (targetlength > 100 - updateheight - drawheight)
+                        targetlength = 100 - updateheight - drawheight;
+
+                    SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), Color.White, 1f);
                     i++;
                 }
                 if (ctrlPressed)
                 {
-                    bigger.DrawText(SpriteBatch, new Vector2(vwidth - 749, vheight - 100), "Update", Color.LightGreen);
-                    bigger.DrawText(SpriteBatch, new Vector2(vwidth - 669, vheight - 100), "Draw", Color.MediumPurple);
+                    bigger.DrawText(SpriteBatch, new Vector2(vwidth - 749, vheight - 100), "Update", UpdateGreen);
+                    bigger.DrawText(SpriteBatch, new Vector2(vwidth - 669, vheight - 100), "Draw", DrawPurple);
                     bigger.DrawText(SpriteBatch, new Vector2(vwidth - 610, vheight - 100), "BetweenFrames", Color.White);
                 }
-                Font.DrawText(SpriteBatch, new Vector2(vwidth - 798, vheight - 100), "20ms", Color.White);
-                Font.DrawText(SpriteBatch, new Vector2(vwidth - 798, vheight - 20), "0ms", Color.White);
+                Font.DrawText(SpriteBatch, new Vector2(vwidth - 797, vheight - 100), "20ms", Color.White);
+                Font.DrawText(SpriteBatch, new Vector2(vwidth - 797, vheight - 20), "0ms", Color.White);
             }     
             frameCounter++;
             string fps = "";

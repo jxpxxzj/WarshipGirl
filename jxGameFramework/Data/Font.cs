@@ -202,6 +202,8 @@ namespace jxGameFramework.Data
             int presenty = (int)pos.Y + yoffset;
             for (int i = 0; i < text.Length; i++)
             {
+                //if (presentx > 1024 || presenty > 600 || presentx < 0 || presenty < 0)
+                //    return;
                 if(text[i].Char == '\n')
                 {
                     presenty += (int)font_size+2;

@@ -13,7 +13,7 @@ namespace jxGameFramework.Controls
 {
     public class CheckBox : Control
     {
-        Sprite _checkcircle;
+        Control _checkcircle;
         Text _title;
         Font _fnt;
 
@@ -57,8 +57,10 @@ namespace jxGameFramework.Controls
             GDIpInterop gdip = new GDIpInterop(20, 20, GraphicsDevice);
             gdip.g.FillEllipse(System.Drawing.Brushes.White, 2, 2, 16, 16);
             full = gdip.SaveTexture();
+
             gdip.g.Clear(System.Drawing.Color.Transparent);
             System.Drawing.Pen p = new System.Drawing.Pen(System.Drawing.Color.White, 2);
+            gdip.g.FillEllipse(new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(10,255,255,255)), 2, 2, 16, 16);
             gdip.g.DrawEllipse(p, 2, 2, 16, 16);
             empty = gdip.SaveTexture();
 
@@ -68,7 +70,7 @@ namespace jxGameFramework.Controls
                 ShadowColor = Color.Black,
                 ShadowYOffset = 1,
             };
-            _checkcircle = new Sprite()
+            _checkcircle = new Control()
             {
                 Texture = empty,
                 Margin=Origins.CenterLeft,
@@ -77,6 +79,7 @@ namespace jxGameFramework.Controls
             };
             _checkcircle.Width = _checkcircle.Texture.Width;
             _checkcircle.Height = _checkcircle.Texture.Height;
+            _checkcircle.Click += CheckBox_Click;
 
             _title = new Text()
             {
@@ -90,13 +93,17 @@ namespace jxGameFramework.Controls
             AddComponent(_checkcircle);
             this.Width = full.Width;
             this.Height = full.Height;
-            this.Click += CheckBox_Click;
+            //this.Click += CheckBox_Click;
             base.LoadContent();
         }
 
         void CheckBox_Click(object sender, EventArgs e)
         {
             this.Checked = !this.Checked;
+        }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
         }
         
     }

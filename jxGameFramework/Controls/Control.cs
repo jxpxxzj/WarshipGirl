@@ -83,18 +83,10 @@ namespace jxGameFramework.Controls
 
         }
 
-        public override void LoadContent()
+        public virtual void UpdateEvent(GameTime gameTime)
         {
-            base.LoadContent();
-        }
+            var mState = Mouse.GetState();
 
-        public override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
-        }
-        public override void Update(GameTime gameTime)
-        {
-            
             if (Keyboard.GetState().GetPressedKeys().Count<Microsoft.Xna.Framework.Input.Keys>() != 0)
                 OnKeyDown(this, EventArgs.Empty);
             else
@@ -102,19 +94,25 @@ namespace jxGameFramework.Controls
                 OnKeyUp(this, EventArgs.Empty);
                 isKeyDown = false;
             }
-            if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
+            if (mState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
             {
                 isClicked = false;
                 OnMouseUp(this, EventArgs.Empty);
             }
+            if (Texture == null)
+                return;
+
             var tRectangle = new Rectangle(RenderX, RenderY, Width, Height);
-            if (tRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+            var nPosX = mState.X - RenderX;
+            var nPosY = mState.Y - RenderY;
+            var mColor = GetPixel(nPosX, nPosY);
+            if (tRectangle.Contains(mState.X, mState.Y) && (mColor != Color.Transparent))
             {
-                OnMouseMove(this, new MouseEventArgs(MouseButtons.None, 0, Mouse.GetState().X, Mouse.GetState().Y, Mouse.GetState().ScrollWheelValue));
-                if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                OnMouseMove(this, new MouseEventArgs(MouseButtons.None, 0, mState.X, mState.Y, mState.ScrollWheelValue));
+                if (mState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
                     OnClick(this, EventArgs.Empty);
-                    OnMouseDown(this, new MouseEventArgs(MouseButtons.Left, 0, Mouse.GetState().X, Mouse.GetState().Y, Mouse.GetState().ScrollWheelValue));
+                    OnMouseDown(this, new MouseEventArgs(MouseButtons.Left, 0, mState.X, mState.Y, mState.ScrollWheelValue));
                     isClicked = true;
                 }
             }
@@ -122,6 +120,10 @@ namespace jxGameFramework.Controls
             {
                 OnMouseLeave(this, EventArgs.Empty);
             }
+        }
+        public override void Update(GameTime gameTime)
+        {
+            UpdateEvent(gameTime);
             base.Update(gameTime);
         }
     }

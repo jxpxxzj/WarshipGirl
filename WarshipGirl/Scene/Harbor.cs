@@ -216,21 +216,21 @@ namespace WarshipGirl.Scene
             //h += 75;
 
             var game = (Game1)ParentGame;
-            var getship = new GetShip(Server.ServerCommand.GetBuildableRandomShip())
-            {
-                ParentGame = this.ParentGame,
-                Color = Color.White,
-                Margin = Origins.Center,
-                SpriteBatch = this.SpriteBatch,
-                GraphicsDevice = this.GraphicsDevice,
-                Width = 1024,
-                Height = 768,
-                Parent = this
-            };
-            getship.LoadContent();
-            game.Navigate(getship);
+            //var getship = new GetShip(Server.ServerCommand.GetBuildableRandomShip())
+            //{
+            //    ParentGame = this.ParentGame,
+            //    Color = Color.White,
+            //    Margin = Origins.Center,
+            //    SpriteBatch = this.SpriteBatch,
+            //    GraphicsDevice = this.GraphicsDevice,
+            //    Width = 1024,
+            //    Height = 768,
+            //    Parent = this
+            //};
+            //getship.LoadContent();
+            //game.Navigate(getship);
 
-            //game.Navigate(game.factory);
+            game.Navigate(game.factory);
         }
     }
     partial class Harbor: BaseScene

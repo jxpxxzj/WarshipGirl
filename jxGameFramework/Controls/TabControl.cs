@@ -148,7 +148,7 @@ namespace jxGameFramework.Controls
         {
             if(_presentPage != null)
                 _presentPage.Draw(gameTime);
-            foreach (Sprite s in _tablist)
+            foreach (TabBar s in _tablist)
                 s.Draw(gameTime);
             if(_presentTab!=null)
                 _presentTab.Draw(gameTime);
@@ -156,9 +156,10 @@ namespace jxGameFramework.Controls
         }
         public override void Update(GameTime gameTime)
         {
-            foreach (Sprite s in _tablist)
+            foreach (TabBar s in _tablist)
                 s.Update(gameTime);
-            base.Update(gameTime);
+            _presentPage.Update(gameTime);
+            //base.Update(gameTime);
         }
     }
 }

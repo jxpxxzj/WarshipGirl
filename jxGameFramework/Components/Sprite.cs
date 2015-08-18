@@ -41,7 +41,35 @@ namespace jxGameFramework.Components
     public class Sprite : Component
     {
         public Sprite Parent { get; set; }
-        public Texture2D Texture { get; set; }
+
+        Texture2D _texture;
+        Color[] _texturepixel;
+        public Texture2D Texture
+        {
+            get
+            {
+                return _texture;
+            }
+            set
+            {
+                _texture = value;
+                _texturepixel = new Color[value.Width * value.Height];
+                value.GetData<Color>(_texturepixel);
+            }
+        }
+        public Color GetPixel(int x,int y)
+        {
+            int id = (y - 1) * Texture.Width + x - 1;
+            if (id >= 0 && id < _texturepixel.Length)
+                return _texturepixel[id];
+            else
+                return Color.Transparent;
+        }
+        public Color GetPixel(Vector2 pos)
+        {
+            return GetPixel((int)pos.X, (int)pos.Y);
+        }
+
         public int Left { get; set; }
         public int Right { get; set; }
         public int Top { get; set; }
