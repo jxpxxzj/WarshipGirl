@@ -109,5 +109,10 @@ namespace jxGameFramework.Controls
 
             base.LoadContent();
         }
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            DrawToolStrip(gameTime);
+        }
     }
 }

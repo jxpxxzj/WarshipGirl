@@ -20,8 +20,6 @@ namespace jxGameFramework.Controls
         Texture2D full;
         Texture2D empty;
 
-        //Color _circleColor = Color.DeepPink;
-
         public Color CircleColor
         {
             get
@@ -108,7 +106,6 @@ namespace jxGameFramework.Controls
             AddComponent(_checkcircle);
             this.Width = full.Width;
             this.Height = full.Height;
-            //this.Click += CheckBox_Click;
             base.LoadContent();
         }
 

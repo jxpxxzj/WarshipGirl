@@ -76,6 +76,7 @@
     <Compile Include="Controls\GDIpInterop.cs" />
     <Compile Include="Controls\GifPlayer.cs" />
     <Compile Include="Controls\TabControl.cs" />
+    <Compile Include="Controls\TrackBar.cs" />
     <Compile Include="Data\Geomerty.cs" />
     <Compile Include="Data\SQLiteInterop.cs" />
     <Compile Include="Data\Font.cs" />

@@ -159,7 +159,6 @@ namespace jxGameFramework.Controls
             foreach (TabBar s in _tablist)
                 s.Update(gameTime);
             _presentPage.Update(gameTime);
-            //base.Update(gameTime);
         }
     }
 }

@@ -90,7 +90,6 @@ namespace jxGameFramework.Controls
                     if (updatequeue.Count > 800)
                         updatequeue.RemoveAt(800);
                 }
-                //SpriteBatch.DrawLine(new Vector2(vwidth - 800, vheight - 83), new Vector2(vwidth, vheight - 83), Color.Red,1f);
                 foreach (double t in timequeue)
                 {
                     int drawheight = (int)(100 * (timequeue[i] / 20));

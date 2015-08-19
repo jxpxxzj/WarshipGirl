@@ -47,6 +47,7 @@ namespace jxGameFramework.Controls
             }
         }
         TimeSpan FrameTime;
+        int _frameid;
         
         private void LoadImg(string path)
         {
@@ -83,24 +84,14 @@ namespace jxGameFramework.Controls
             }
             FrameTime = frametime;
         }
-        private void SetTexture(int frameid)
-        {
-            this.Texture = FrameImg[frameid].Image;
-            this.Height = FrameImg[frameid].Image.Height;
-            this.Width = FrameImg[frameid].Image.Width;
-        }
-        public override void LoadContent()
-        {
-            base.LoadContent();
-        }
         public override void Update(GameTime gameTime)
         {
-            int frame = (int)((int)(gameTime.TotalGameTime.TotalMilliseconds / FrameTime.TotalMilliseconds) % FrameImg.Count);
-            SetTexture(frame);
+            _frameid = (int)((int)(gameTime.TotalGameTime.TotalMilliseconds / FrameTime.TotalMilliseconds) % FrameImg.Count);         
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)
         {
+            SpriteBatch.Draw(FrameImg[_frameid].Image, new Vector2(RenderX, RenderY), Color);
             base.Draw(gameTime);
         }
         

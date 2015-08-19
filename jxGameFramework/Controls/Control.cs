@@ -15,6 +15,16 @@ namespace jxGameFramework.Controls
     /// <summary>
     /// 控件
     /// </summary>
+    
+    public class XnaKeyEventArgs : EventArgs
+    {
+        public KeyboardState State { get; set; }
+        public XnaKeyEventArgs(KeyboardState state)
+        {
+            this.State = state;
+        }
+    }
+    public delegate void XnaKeyEventHandler(object sender,XnaKeyEventArgs e);
     public class Control : Sprite
     {
         public event EventHandler Click;
@@ -22,8 +32,8 @@ namespace jxGameFramework.Controls
         public event EventHandler MouseLeave;
         public event MouseEventHandler MouseDown;
         public event EventHandler MouseUp;
-        public event EventHandler KeyDown;
-        public event EventHandler KeyUp;
+        public event XnaKeyEventHandler KeyDown;
+        public event XnaKeyEventHandler KeyUp;
 
 
         protected bool isClicked = false;
@@ -31,10 +41,12 @@ namespace jxGameFramework.Controls
         protected bool isKeyDown = false;
         protected bool MouseInRect = false;
 
-        Sprite _strip;
+        //Sprite _strip;
         Text _content;
         string _toolstrip;
         Font _fnt;
+
+        bool _toolstripinstancecreated = false;
 
         public string ToolStrip
         {
@@ -45,34 +57,24 @@ namespace jxGameFramework.Controls
             set
             {
                 _toolstrip = value;
-                _fnt = new Font(GraphicsDevice, "msyh.ttc", 12);
-                _content = new Text()
+                
+                if(!_toolstripinstancecreated)
                 {
-                    Font = _fnt,
-                    Color = Color.White,
-                    OriginType = Origins.TopLeft,
-                    X = 3,
-                    Y = 1,
-                    text=_toolstrip,
-                };
-                var gdip = new GDIpInterop(_content.Width + 8, _content.Height + 3, GraphicsDevice);
-                gdip.g.FillRectangle(System.Drawing.Brushes.Black, new System.Drawing.Rectangle(0, 0, _content.Width+7, _content.Height+2));
-                gdip.g.DrawRectangle(System.Drawing.Pens.White, new System.Drawing.Rectangle(0, 0, _content.Width+7, _content.Height+2));
-
-                _strip = new Sprite()
-                {
-                    GraphicsDevice = this.GraphicsDevice,
-                    SpriteBatch = this.SpriteBatch,
-                    Width = _content.Width+8,
-                    Height = _content.Height+3,
-                    Color = Color.White,
-                    Texture=gdip.SaveTexture(),
-                };
-                gdip.Dispose();
-
-                _strip.AddComponent(_content);
-                _strip.LayerDepth = 1f;
-                _strip.LoadContent();
+                    _fnt = new Font(GraphicsDevice, "msyh.ttc", 12);
+                    _content = new Text()
+                    {
+                        Font = _fnt,
+                        Color = Color.White,
+                        OriginType = Origins.TopLeft,
+                        X = 3,
+                        Y = 1,
+                        text = _toolstrip,
+                        SpriteBatch=this.SpriteBatch,
+                        GraphicsDevice=this.GraphicsDevice,
+                    };
+                    _toolstripinstancecreated = true;
+                }
+                _content.text = value;
             }
         }
 
@@ -113,7 +115,7 @@ namespace jxGameFramework.Controls
                 MouseUp(sender, e);
             isMouseDown = false;
         }
-        protected void OnKeyDown(object sender, EventArgs e)
+        protected void OnKeyDown(object sender, XnaKeyEventArgs e)
         {
             if ((KeyDown != null) && (isKeyDown == false))
             {
@@ -121,7 +123,7 @@ namespace jxGameFramework.Controls
                 isKeyDown = true;
             }
         }
-        protected void OnKeyUp(object sender, EventArgs e)
+        protected void OnKeyUp(object sender, XnaKeyEventArgs e)
         {
             if (KeyUp != null)
             {
@@ -130,14 +132,17 @@ namespace jxGameFramework.Controls
             }
 
         }
-        public override void Draw(GameTime gameTime)
+        public virtual void DrawToolStrip(GameTime gameTime)
         {
-            base.Draw(gameTime);
             if (MouseInRect && _content != null)
             {
-                _strip.Top = Mouse.GetState().Y + 5;
-                _strip.Left = Mouse.GetState().X + 5;
-                _strip.Draw(gameTime);
+                var PosX = Mouse.GetState().X + 5;
+                var PosY= Mouse.GetState().Y + 5;
+                SpriteBatch.FillRectangle(new Rectangle(PosX, PosY, _content.Width + 7, _content.Height + 2), Color.Black);
+                SpriteBatch.DrawRectangle(new Rectangle(PosX, PosY, _content.Width + 7, _content.Height + 2), Color.White, 1f);
+                _content.X = PosX + 3;
+                _content.Y = PosY;
+                _content.Draw(gameTime);
             }
         }
         public virtual void UpdateEvent(GameTime gameTime)
@@ -145,10 +150,10 @@ namespace jxGameFramework.Controls
             var mState = Mouse.GetState();
 
             if (Keyboard.GetState().GetPressedKeys().Count<Microsoft.Xna.Framework.Input.Keys>() != 0)
-                OnKeyDown(this, EventArgs.Empty);
+                OnKeyDown(this, new XnaKeyEventArgs(Keyboard.GetState()));
             else
             {
-                OnKeyUp(this, EventArgs.Empty);
+                OnKeyUp(this, new XnaKeyEventArgs(Keyboard.GetState()));
                 isKeyDown = false;
             }
             if (mState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
@@ -165,12 +170,12 @@ namespace jxGameFramework.Controls
             var mColor = GetPixel(nPosX, nPosY);
             if (tRectangle.Contains(mState.X, mState.Y) && (mColor != Color.Transparent))
             {
-                OnMouseMove(this, new MouseEventArgs(MouseButtons.None, 0, mState.X, mState.Y, mState.ScrollWheelValue));
+                OnMouseMove(this, new MouseEventArgs(MouseButtons.None, 0, nPosX, nPosY, mState.ScrollWheelValue));
                 MouseInRect = true;
                 if (mState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
                     OnClick(this, EventArgs.Empty);
-                    OnMouseDown(this, new MouseEventArgs(MouseButtons.Left, 0, mState.X, mState.Y, mState.ScrollWheelValue));
+                    OnMouseDown(this, new MouseEventArgs(MouseButtons.Left, 0, nPosX, nPosY, mState.ScrollWheelValue));
                     isClicked = true;
                 }
             }
