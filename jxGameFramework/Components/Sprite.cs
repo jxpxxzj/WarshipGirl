@@ -96,25 +96,9 @@ namespace jxGameFramework.Components
         public Origins Margin { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        public int ColorR { get; set; }
-        public int ColorG { get; set; }
-        public int ColorB { get; set; }
-        public int ColorA { get; set; }
 
-        public Color Color
-        {
-            get
-            {
-                return new Color(ColorR, ColorG, ColorB, ColorA);
-            }
-            set
-            {
-                ColorR = value.R;
-                ColorB = value.B;
-                ColorG = value.G;
-                ColorA = value.A;
-            }
-        }
+        public Color Color { get; set; }
+
         public List<Animation> AnimList = new List<Animation>();
 
         private List<Component> CompList = new List<Component>();

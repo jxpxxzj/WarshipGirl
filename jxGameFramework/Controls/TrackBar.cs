@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace jxGameFramework.Controls
 {
-    class TrackBar : Control
+    public class TrackBar : Control
     {
         Texture2D _scrollcircle;
 
