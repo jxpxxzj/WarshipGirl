@@ -20,18 +20,18 @@ namespace jxGameFramework.Controls
     {
 
         Font _fnt;
-        Text _title;
+        Label _title;
         Texture2D _tex;
         Texture2D _septex;
         public string Title
         {
             get
             {
-                return _title.text;
+                return _title.Text;
             }
             set
             {
-                _title.text = value;
+                _title.Text = value;
             }
         }
         public int ItemID { get; set; }
@@ -55,9 +55,12 @@ namespace jxGameFramework.Controls
         public override void LoadContent()
         {
             var gdip = new GDIpInterop(_width, _height, GraphicsDevice);
-            gdip.g.FillRectangle(System.Drawing.Brushes.White, new System.Drawing.Rectangle(0, 0, _width, _height));
+            gdip.g.FillRectangle(System.Drawing.Brushes.White, new System.Drawing.Rectangle(-1, -1, _width+1, _height+1));
+            gdip.g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
             this.Texture = gdip.SaveTexture();
+
             gdip.g.Clear(System.Drawing.Color.Transparent);
+            gdip.g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
             var pointa = new System.Drawing.Point[3];
             pointa[0]=new System.Drawing.Point(_width - 25,(int)(_height / 2) -5);
@@ -69,19 +72,18 @@ namespace jxGameFramework.Controls
             this.Width = Texture.Width;
             this.Height = Texture.Height;
             this.Color=Color.Black;
-            _title = new Text()
+            _title = new Label()
             {
                 Font = _fnt,
                 Color = Color.White,
-                OriginType = Origins.CenterLeft,
-                X = 5,
-                Y = this.Height /2 - 2,
+                Margin = Origins.CenterLeft,
+                Left = 5,
             };
             AddComponent(_title);
             if (Type == ItemType.Separator)
             {
                 this.Color = SepColor;
-                _title.X = 20;
+                _title.Left = 20;
                 gdip.g.Clear(System.Drawing.Color.Transparent);
                 pointa = new System.Drawing.Point[3];
                 pointa[0] = new System.Drawing.Point(6, (int)(_height / 2) - 8);
@@ -118,12 +120,41 @@ namespace jxGameFramework.Controls
             if (LockColor)
                 this.Color = FocusColor;
             base.Draw(gameTime);
+            
             if (Type == ItemType.Separator)
                 DrawSeparator(gameTime);
         }
     }
     public class ComboBox : Control
     {
+        public event EventHandler SelectedChanged;
+        protected virtual void OnSelectedChanged(object sender,EventArgs e)
+        {
+            if (SelectedChanged != null)
+                SelectedChanged(sender, e);
+        }
+        public int SelectedIndex
+        { 
+            get
+            {
+                int i = 0;
+                foreach (object o in _objlist)
+                {
+                    if (o == SelectedItem)
+                    {
+                        return i;
+                    }
+                    i++;
+                }
+                return 0;
+            }
+            set
+            {
+                SelectItem(value);
+            }
+            
+        }
+
         List<ComboItem> _comboitem = new List<ComboItem>();
         List<ComboItem> _headinstance = new List<ComboItem>();
 
@@ -191,6 +222,19 @@ namespace jxGameFramework.Controls
             set
             {
                 _iheight = value;
+            }
+        }
+
+        int _edgewidth = 1;
+        public int EdgeWidth
+        {
+            get
+            {
+                return _edgewidth;
+            }
+            set
+            {
+                _edgewidth = value;
             }
         }
 
@@ -262,6 +306,7 @@ namespace jxGameFramework.Controls
             {
                 _headcbi = _headinstance[itm.ItemID];
                 _presentobj = _objlist[itm.ItemID];
+                OnSelectedChanged(this, EventArgs.Empty);
             }
             if (Expanded)
                 _headcbi.LockColor = true;
@@ -270,12 +315,12 @@ namespace jxGameFramework.Controls
                 _headcbi.LockColor = false;
                 _headcbi.Color = Color.Black;
             }
-                
         }
         public override void Draw(GameTime gameTime)
         {
             _headcbi.Draw(gameTime);
             _headcbi.DrawTriangle(gameTime);
+            SpriteBatch.DrawRectangle(new Rectangle(_headcbi.RenderX + EdgeWidth - 1 , _headcbi.RenderY, _headcbi.Width-EdgeWidth, _headcbi.Height-EdgeWidth), FocusColor, (int)EdgeWidth);
 
             if(Expanded)
             {

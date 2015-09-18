@@ -14,7 +14,7 @@ namespace jxGameFramework.Controls
     public class CheckBox : Control
     {
         Control _checkcircle;
-        Text _title;
+        Label _title;
         Font _fnt;
 
         Texture2D full;
@@ -36,12 +36,12 @@ namespace jxGameFramework.Controls
         {
             get
             {
-                return _title.text;
+                return _title.Text;
             }
             set
             {
-                _title.text = value;
-                this.Width = (int)_fnt.MeasureString(_title.text).X + full.Width;
+                _title.Text = value;
+                this.Width = _title.Width + full.Width;
             }
         }
         bool _checked = false;
@@ -94,13 +94,12 @@ namespace jxGameFramework.Controls
             _checkcircle.Height = _checkcircle.Texture.Height;
             _checkcircle.Click += CheckBox_Click;
 
-            _title = new Text()
+            _title = new Label()
             {
                 Font = _fnt,
                 Color = Color.White,
-                OriginType = Origins.CenterLeft,
-                X = 22,
-                Y = 9,
+                Margin = Origins.CenterLeft,
+                Left = 22,
             };
             AddComponent(_title);
             AddComponent(_checkcircle);

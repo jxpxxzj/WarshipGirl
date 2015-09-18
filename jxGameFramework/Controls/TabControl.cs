@@ -12,7 +12,7 @@ namespace jxGameFramework.Controls
 {
     public class TabBar : Control
     {
-        Text _tabtitle;
+        Label _tabtitle;
         Font _fnt;
         Font _fntnoshadow;
         bool _selected;
@@ -48,11 +48,11 @@ namespace jxGameFramework.Controls
         {
             get
             {
-                return _tabtitle.text;
+                return _tabtitle.Text;
             }
             set
             {
-                _tabtitle.text = value;
+                _tabtitle.Text = value;
             }
         }
         public TabBar(Font fnt,Font noshadow)
@@ -67,13 +67,12 @@ namespace jxGameFramework.Controls
             this.Height = Texture.Height;
             this.Color = Color.White;
 
-            _tabtitle = new Text()
+            _tabtitle = new Label()
             {
                 Font = _fnt,
                 Color = Color.Black,
-                X=this.Width /2,
-                Y =3,
-                OriginType = Origins.TopCenter,
+                Top =3,
+                Margin = Origins.TopCenter,
             };
 
             AddComponent(_tabtitle);

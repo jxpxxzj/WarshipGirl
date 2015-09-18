@@ -53,7 +53,7 @@ namespace jxGameFramework.Controls
         protected bool isEnter = false;
         protected bool isLeave = true;
 
-        Text _content;
+        Label _content;
         string _toolstrip;
         Font _fnt;
 
@@ -72,20 +72,19 @@ namespace jxGameFramework.Controls
                 if(!_toolstripinstancecreated)
                 {
                     _fnt = new Font(GraphicsDevice, "msyh.ttc", 12);
-                    _content = new Text()
+                    _content = new Label()
                     {
                         Font = _fnt,
                         Color = Color.White,
-                        OriginType = Origins.TopLeft,
-                        X = 3,
-                        Y = 1,
-                        text = _toolstrip,
+                        Margin = Origins.TopLeft,
+                        Left = 3,
+                        Top = 1,
                         SpriteBatch=this.SpriteBatch,
                         GraphicsDevice=this.GraphicsDevice,
                     };
                     _toolstripinstancecreated = true;
                 }
-                _content.text = value;
+                _content.Text = value;
             }
         }
 
@@ -177,8 +176,8 @@ namespace jxGameFramework.Controls
                 var PosY= Mouse.GetState().Y + 5;
                 SpriteBatch.FillRectangle(new Rectangle(PosX, PosY, _content.Width + 7, _content.Height + 2), Color.Black);
                 SpriteBatch.DrawRectangle(new Rectangle(PosX, PosY, _content.Width + 7, _content.Height + 2), Color.White, 1f);
-                _content.X = PosX + 3;
-                _content.Y = PosY;
+                _content.Left = PosX + 3;
+                _content.Top = PosY;
                 _content.Draw(gameTime);
             }
         }

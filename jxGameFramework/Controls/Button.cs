@@ -14,17 +14,17 @@ namespace jxGameFramework.Controls
     public class Button : Control
     {
         Font _fnt;
-        Text _title;
+        Label _title;
         
         public string Text
         {
             get
             {
-                return _title.text;
+                return _title.Text;
             }
             set
             {
-                _title.text = value;
+                _title.Text = value;
             }
         }
         Color _hover = new Color(34, 151, 185);
@@ -96,13 +96,11 @@ namespace jxGameFramework.Controls
                 ShadowYOffset = 1,
             };
 
-            _title = new Text()
+            _title = new Label()
             {
                 Font = _fnt,
                 Color = Color.White,
-                OriginType = Origins.Center,
-                X=this.Width / 2,
-                Y=this.Height / 2 - 2,
+                Margin = Origins.Center,
             };
 
             AddComponent(_title);

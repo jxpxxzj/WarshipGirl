@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace jxGameFramework.Controls
 {
-    public class FpsCounter : Text
+    public class FpsCounter : Control
     {
         int frameRate = 0;
         int frameCounter = 0;
@@ -29,8 +29,8 @@ namespace jxGameFramework.Controls
         Color DrawPurple = new Color(138, 43, 226, 255);
         Font bigger;
         Font smaller;
-        int vwidth;
-        int vheight;
+        Font normal;
+        Label fpsvalue;
 
         public bool EnableFrameTime { get; set; }
         public override void LoadContent()
@@ -42,7 +42,7 @@ namespace jxGameFramework.Controls
                 ShadowXOffset = 0,
                 ShadowYOffset = 1
             };
-            this.Font = new Font(this.GraphicsDevice, "msyh.ttc", 12)
+            normal = new Font(this.GraphicsDevice, "msyh.ttc", 12)
             {
                 EnableBorder=true,
                 BorderColor=Color.Black,
@@ -55,9 +55,15 @@ namespace jxGameFramework.Controls
                 ShadowXOffset=0,
                 ShadowYOffset=1
             };
-            vwidth = GraphicsDevice.Viewport.Width;
-            vheight = GraphicsDevice.Viewport.Height;
-            rect = new Rectangle(vwidth - 800, vheight - 100, 800, 100);
+            fpsvalue = new Label()
+            {
+                Color = Color.White,
+                Margin = Origins.BottomRight,
+                Bottom = 2,
+                Right = 2,
+                Font = normal
+            };
+            AddComponent(fpsvalue);
             base.LoadContent();
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
@@ -76,6 +82,9 @@ namespace jxGameFramework.Controls
         {
             if(EnableFrameTime)
             {
+                rect = new Rectangle(RenderX, RenderY, 800, 100);
+                int vwidth = this.RenderX + this.Width;
+                int vheight = this.RenderY + this.Height;
                 SpriteBatch.FillRectangle(rect, TransGray);
                 int i = 0;
                 if (!ctrlPressed)
@@ -130,7 +139,7 @@ namespace jxGameFramework.Controls
             string fps = "";
             if (FrameTime != null)
                 fps = string.Format("{0}fps", frameRate);
-            this.text = fps;
+            fpsvalue.Text = fps;
             base.Draw(gameTime);
         }
     }

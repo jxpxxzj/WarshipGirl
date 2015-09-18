@@ -101,25 +101,10 @@ namespace jxGameFramework.Components
 
         public List<Animation> AnimList = new List<Animation>();
 
-        private List<Component> CompList = new List<Component>();
-        public void AddComponent(Component comp)
+        public List<Component> CompList = new List<Component>();
+        public virtual void AddComponent(Sprite comp)
         {
-            try
-            {
-                ((Sprite)comp).Parent = this;
-            }
-            catch (Exception)
-            {
-
-            }
-            try
-            {
-                ((Text)comp).Parent = this;
-            }
-            catch (Exception)
-            {
-
-            }
+            comp.Parent = this;
             CompList.Add(comp);
         }
 
@@ -243,12 +228,12 @@ namespace jxGameFramework.Components
         {
             if(Texture != null)
                 SpriteBatch.Draw(Texture, new Rectangle(RenderX,RenderY , (int)(Width*Scale.X), (int)(Height*Scale.Y)),null,Color,Rotation,Origin,SpriteEffect,LayerDepth);
-            foreach (Component comp in CompList)
+            foreach (Sprite comp in CompList)
                 comp.Draw(gameTime);
         }
         public override void LoadContent()
         {
-            foreach (Component comp in CompList)
+            foreach (Sprite comp in CompList)
             {
                 comp.GraphicsDevice = this.GraphicsDevice;
                 comp.SpriteBatch = this.SpriteBatch;
