@@ -12,6 +12,7 @@ using jxGameFramework.Audio;
 using Microsoft.Xna.Framework;
 using WarshipGirl.Data;
 using WarshipGirl.Graphics;
+using jxGameFramework.Controls;
 
 namespace WarshipGirl.Scene
 {
@@ -19,9 +20,9 @@ namespace WarshipGirl.Scene
     {
         Sprite talking;
         Sprite image;
-        Text shipname;
-        Text shiptype;
-        Text talk;
+        Label shipname;
+        Label shiptype;
+        Label talk;
     }
     partial class GetShip : BaseScene 
     {
@@ -54,7 +55,7 @@ namespace WarshipGirl.Scene
                 Texture = TextureManager.LoadShipImage(GraphicsDevice,Ship.ID,TextureManager.ShipSize.Large)
             };
 
-            shipname = new Text()
+            shipname = new Label()
             {
                 Font = new Font(this.GraphicsDevice,"msyh.ttc", 25)
                 {
@@ -62,12 +63,11 @@ namespace WarshipGirl.Scene
                     BorderColor=Color.Black,
                 },
                 Color=Color.Cyan,
-                text=Ship.Name,
-                X=260,
-                Y=675,
-                OriginType=Origins.Center,
+                Text=Ship.Name,
+                Top=260,
+                Width=675,
             };
-            shiptype = new Text()
+            shiptype = new Label()
             {
                 Font = new Font(this.GraphicsDevice, "msyh.ttc", 20)
                 {
@@ -75,12 +75,11 @@ namespace WarshipGirl.Scene
                     BorderColor = Color.Black,
                 },
                 Color = Color.Cyan,
-                text = BaseShip.ShipTypeToString(Ship.Type),
-                X = 260,
-                Y = 710,
-                OriginType = Origins.Center,
+                Text = BaseShip.ShipTypeToString(Ship.Type),
+                Top = 260,
+                Left = 710,
             };
-            talk = new Text()
+            talk = new Label()
             {
                 Font = new Font(this.GraphicsDevice, "msyh.ttc", 20)
                 {
@@ -88,10 +87,9 @@ namespace WarshipGirl.Scene
                     BorderColor = Color.Black,
                 },
                 Color = Color.White,
-                text = Ship.GettingTalk,
-                X = 375,
-                Y = 702,
-                OriginType = Origins.BottomLeft,
+                Text = Ship.GettingTalk,
+                Top = 375,
+                Left = 702,
             };
 
             AddComponent(image);

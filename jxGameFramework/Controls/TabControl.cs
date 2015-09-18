@@ -89,6 +89,18 @@ namespace jxGameFramework.Controls
         TabBar _presentTab;
         Font fnt;
         Font fntNoShadow;
+        Origins _tabmargin = Origins.TopLeft;
+        public Origins TabMargin
+        {
+            get
+            {
+                return _tabmargin;
+            }
+            set
+            {
+                _tabmargin = value;
+            }
+        }
 
         public override void LoadContent()
         {
@@ -117,16 +129,20 @@ namespace jxGameFramework.Controls
         }
         public void AddTab(Control Panel,string tabTitle)
         {
-            Panel.Parent = this;
-            _pagelist.Add(Panel);
+            if(Panel !=null)
+            {
+                Panel.Parent = this;
+                _pagelist.Add(Panel);
+            }
             var bar = new TabBar(fnt,fntNoShadow)
             {
                 Parent=this,
-                Top = 0,
+                Top=0,
                 Left = _tablist.Count * 120,
+                Right= _tablist.Count * 120,
                 GraphicsDevice = this.GraphicsDevice,
                 SpriteBatch = this.SpriteBatch,
-                Margin = Origins.TopLeft,
+                Margin = TabMargin,
             };
             bar.LoadContent();
             bar.Parent = this;
@@ -157,7 +173,8 @@ namespace jxGameFramework.Controls
         {
             foreach (TabBar s in _tablist)
                 s.Update(gameTime);
-            _presentPage.Update(gameTime);
+            if(_presentPage!=null)
+                _presentPage.Update(gameTime);
         }
     }
 }

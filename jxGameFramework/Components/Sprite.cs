@@ -41,6 +41,21 @@ namespace jxGameFramework.Components
     public class Sprite : Component
     {
         public Sprite Parent { get; set; }
+        public static Sprite Empty(GraphicsDevice gd,SpriteBatch sb)
+        {
+            var s = new Sprite()
+            {
+                Top = 0,
+                Left = 0,
+                Width = 1,
+                Height = 1,
+                GraphicsDevice = gd,
+                SpriteBatch=sb,
+                Color=Color.White,
+                Margin=Origins.TopLeft,
+            };
+            return s;
+        }
 
         Texture2D _texture;
         Color[] _texturepixel;
@@ -74,6 +89,19 @@ namespace jxGameFramework.Components
         public int Right { get; set; }
         public int Top { get; set; }
         public int Bottom { get; set; }
+
+        bool _visible = true;
+        public bool Visible
+        {
+            get
+            {
+                return _visible;
+            }
+            set
+            {
+                _visible = value;
+            }
+        }
 
         public float Rotation { get; set; }
         public Vector2 Origin { get; set; }
@@ -115,7 +143,7 @@ namespace jxGameFramework.Components
                 if (Parent != null)
                     return Parent.Width;
                 else
-                    return 0;
+                    return GraphicsDevice.Viewport.Width;
             }
         }
         private int ParentHeight
@@ -125,7 +153,7 @@ namespace jxGameFramework.Components
                 if (Parent != null)
                     return Parent.Height;
                 else
-                    return 0;
+                    return GraphicsDevice.Viewport.Height;
             }
         }
         private int ParentRenderX
@@ -226,10 +254,13 @@ namespace jxGameFramework.Components
 
         public override void Draw(GameTime gameTime)
         {
-            if(Texture != null)
-                SpriteBatch.Draw(Texture, new Rectangle(RenderX,RenderY , (int)(Width*Scale.X), (int)(Height*Scale.Y)),null,Color,Rotation,Origin,SpriteEffect,LayerDepth);
-            foreach (Sprite comp in CompList)
-                comp.Draw(gameTime);
+            if(Visible)
+            {
+                if (Texture != null)
+                    SpriteBatch.Draw(Texture, new Rectangle(RenderX, RenderY, (int)(Width * Scale.X), (int)(Height * Scale.Y)), null, Color, Rotation, Origin, SpriteEffect, LayerDepth);
+                foreach (Sprite comp in CompList)
+                    comp.Draw(gameTime);
+            }
         }
         public override void LoadContent()
         {
@@ -247,9 +278,12 @@ namespace jxGameFramework.Components
         }
         public override void Update(GameTime gameTime)
         {
-            for(int j=0;j<CompList.Count;j++)
+            if(Visible)
             {
-                CompList[j].Update(gameTime);
+                for (int j = 0; j < CompList.Count; j++)
+                {
+                    CompList[j].Update(gameTime);
+                }
             }
             int i=0;
             while(i<AnimList.Count)

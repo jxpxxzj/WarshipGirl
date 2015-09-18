@@ -9,6 +9,7 @@ using System;
 using System.Diagnostics;
 using WarshipGirl.Controls;
 using jxGameFramework.Controls;
+using jxGameFramework.Data;
 
 namespace WarshipGirl
 {
@@ -21,6 +22,7 @@ namespace WarshipGirl
         internal Harbor harbor;
         //internal GetShip getship;
         internal Factory factory;
+        internal MapSelect select;
 
         FpsCounter fpscounter;
         internal bool isNightMode;
@@ -29,11 +31,16 @@ namespace WarshipGirl
         Stopwatch watch2 = new Stopwatch(); //between
         Stopwatch watch3 = new Stopwatch(); //update
 
+        string _globalmsg = "";
+        TimeSpan _msgTime;
+        Stopwatch _msgwatch = new Stopwatch();
+        Font _msgfont;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1024;
-            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferHeight = 768;
             this.IsMouseVisible = true;
 
             //注释这两行以关闭无限fps
@@ -66,6 +73,14 @@ namespace WarshipGirl
             graphics.ApplyChanges();
             base.Initialize();
         }
+
+        public void ShowMessage(string Content, TimeSpan Time)
+        {
+            _globalmsg = Content;
+            _msgTime = Time;
+            _msgwatch.Restart();
+        }
+
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -75,12 +90,15 @@ namespace WarshipGirl
                 harborbg = new FileStream(@"Content\dark_harbor.png", FileMode.Open, FileAccess.Read);
             else
                 harborbg = new FileStream(@"Content\day_harbor.png", FileMode.Open, FileAccess.Read);
-
+            _msgfont = new Font(GraphicsDevice, "msyh.ttc", 20)
+            {
+                EnableBorder = true,
+                BorderColor = Color.Black
+            };
             harbor = new Harbor()
             {
                 ParentGame=this,
                 Color = Color.White,
-                //Margin = Origins.Center,
                 SpriteBatch = spriteBatch,
                 GraphicsDevice = this.GraphicsDevice,
                 Texture = Texture2D.FromStream(this.GraphicsDevice, harborbg),
@@ -94,7 +112,6 @@ namespace WarshipGirl
             {
                 ParentGame = this,
                 Color = Color.White,
-                //Margin = Origins.Center,
                 SpriteBatch = spriteBatch,
                 GraphicsDevice = this.GraphicsDevice,
                 Texture = Texture2D.FromStream(this.GraphicsDevice, factbg),
@@ -103,20 +120,50 @@ namespace WarshipGirl
             };
             factory.LoadContent();
 
+            select = new MapSelect()
+            {
+                GraphicsDevice = this.GraphicsDevice,
+                SpriteBatch = this.spriteBatch,
+                Width = GraphicsDevice.Viewport.Width,
+                Height = GraphicsDevice.Viewport.Height,
+                ParentGame=this,
+            };
+            select.LoadContent();
+
             fpscounter = new FpsCounter()
             {
                 GraphicsDevice = this.GraphicsDevice,
                 SpriteBatch = spriteBatch,
                 Color = Color.White,
-                X = GraphicsDevice.Viewport.Width,
-                Y = GraphicsDevice.Viewport.Height,
-                OriginType = Origins.BottomRight,
-                EnableFrameTime=true,
+                Margin = Origins.BottomRight,
+                Width = 800,
+                Height = 100,
             };
             fpscounter.LoadContent();
+            fpscounter.KeyDown += counter_KeyDown;
 
             Navigate(harbor);
             base.LoadContent();
+        }
+        void counter_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.State.IsKeyDown(Keys.F11))
+            {
+                fpscounter.EnableFrameTime = !fpscounter.EnableFrameTime;
+                if (fpscounter.EnableFrameTime)
+                    ShowMessage("Frame times are now visible.", new TimeSpan(0, 0, 1));
+                else
+                    ShowMessage("Frame times are now hidden.", new TimeSpan(0, 0, 1));
+            }
+            if (e.State.IsKeyDown(Keys.F10))
+            {
+                fpscounter.Visible = !fpscounter.Visible;
+                if (fpscounter.Visible)
+                    ShowMessage("Fps counter are now visible.", new TimeSpan(0, 0, 1));
+                else
+                    ShowMessage("Fps counter are now hidden.", new TimeSpan(0, 0, 1));
+            }
+
         }
         public void Navigate(BaseScene scene)
         {
@@ -138,7 +185,14 @@ namespace WarshipGirl
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             if(this.IsActive)
+            {
                 PresentScene.Update(gameTime);
+                if (_msgwatch.ElapsedMilliseconds > _msgTime.TotalMilliseconds)
+                {
+                    _globalmsg = "";
+                    _msgwatch.Stop();
+                }
+            }
             fpscounter.Update(gameTime);
             base.Update(gameTime);
             watch3.Stop();
@@ -155,13 +209,16 @@ namespace WarshipGirl
             spriteBatch.Begin();
             PresentScene.Draw(gameTime);
             fpscounter.Draw(gameTime);
+            if (_globalmsg != "")
+            {
+                spriteBatch.FillRectangle(new Rectangle(0, GraphicsDevice.Viewport.Height / 2 - 20, GraphicsDevice.Viewport.Width, 40), new Color(0, 0, 0, 128));
+                Vector2 size = _msgfont.MeasureString(_globalmsg);
+                _msgfont.DrawText(spriteBatch, new Vector2((GraphicsDevice.Viewport.Width - size.X) / 2, (GraphicsDevice.Viewport.Height - size.Y) / 2), _globalmsg, Color.White);
+            }
             spriteBatch.End();
             base.Draw(gameTime);
-
             watch.Stop();
-            fpscounter.FrameTime = watch.Elapsed;
-            
-            
+            fpscounter.FrameTime = watch.Elapsed;         
             watch2.Restart();
         }
     }

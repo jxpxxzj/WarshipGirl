@@ -12,13 +12,13 @@ namespace WarshipGirl.Controls
 {
     class MapPanel : Control
     {
-        Sprite MapSprite;
-        Text SeaTitle;
-        Text CreatorInfo;
-        Text MapTitle;
+        public Sprite MapSprite { get; set; }
+        Label SeaTitle;
+        Label CreatorInfo;
+        Label MapTitle;
         Font TextFont;
         Font TextFontsm;
-        bool _selected;
+        bool _selected=false;
         public bool Selected
         {
             get
@@ -52,33 +52,33 @@ namespace WarshipGirl.Controls
         {
             get
             {
-                return SeaTitle.text;
+                return SeaTitle.Text;
             }
             set
             {
-                SeaTitle.text = value;
+                SeaTitle.Text = value;
             }
         }
         public string CreatorText
         {
             get
             {
-                return CreatorInfo.text;
+                return CreatorInfo.Text;
             }
             set
             {
-                CreatorInfo.text = value;
+                CreatorInfo.Text = value;
             }
         }
         public string MapText
         {
             get
             {
-                return MapTitle.text;
+                return MapTitle.Text;
             }
             set
             {
-                MapTitle.text = value;
+                MapTitle.Text = value;
             }
         }
         string _pp;
@@ -100,31 +100,33 @@ namespace WarshipGirl.Controls
             this.Texture=Sprite.CreateTextureFromFile(GraphicsDevice,@"Content\menu-button-background.png");
             this.Width = Texture.Width;
             this.Height=Texture.Height;
-            this.Color=Color.White;
 
             TextFont = new Font(GraphicsDevice,"msyh.ttc",20);
             TextFontsm = new Font(GraphicsDevice, "msyh.ttc", 15);
 
-            SeaTitle = new Text()
+            SeaTitle = new Label()
             {
                 Font = TextFont,
                 Color = Color.Black,
-                X = 138,
-                Y = 9,
+                Margin=Origins.TopLeft,
+                Left = 138,
+                Top = 9,
             };
-            CreatorInfo = new Text()
+            CreatorInfo = new Label()
             {
                 Font = TextFontsm,
                 Color = Color.Black,
-                X = 138,
-                Y = 32,
+                Margin=Origins.TopLeft,
+                Left = 138,
+                Top = 32,
             };
-            MapTitle = new Text()
+            MapTitle = new Label()
             {
                 Font = TextFontsm,
                 Color = Color.Black,
-                X = 138,
-                Y = 50,
+                Margin=Origins.TopLeft,
+                Left = 138,
+                Top = 50,
             };
             var temptext = Sprite.CreateTextureFromFile(GraphicsDevice, @"Content\Map_1-1.png");
             MapSprite=new Sprite()
@@ -142,6 +144,10 @@ namespace WarshipGirl.Controls
             AddComponent(MapTitle);
             AddComponent(MapSprite);
             base.LoadContent();
+        }
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
         }
     }
 }

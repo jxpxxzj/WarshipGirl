@@ -201,7 +201,7 @@ namespace jxGameFramework.Data
                 if (presentx > maxx)
                     maxx = presentx;
             }
-            return new Vector2(maxx, maxy);
+            return new Vector2(maxx, maxy+1);
         }
         private void DrawText(SpriteBatch sb, Vector2 pos, Character[] text, Color color)
         {

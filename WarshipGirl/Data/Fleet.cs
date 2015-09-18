@@ -8,7 +8,8 @@ namespace WarshipGirl.Data
 {
     class Fleet
     {
-        public List<BaseShip> Ship = new List<BaseShip>();
+        public int ID { get; set; }
+        public List<BaseShip> Ships = new List<BaseShip>();
 
         public string Name { get; set; }
     }

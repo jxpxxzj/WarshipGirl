@@ -13,7 +13,7 @@ using jxGameFramework.Animations;
 using jxGameFramework.Animations.Curve;
 using jxGameFramework.Controls;
 using jxGameFramework.Data;
-
+using WarshipGirl.Graphics;
 using WarshipGirl.Data;
 
 namespace WarshipGirl.Scene
@@ -35,7 +35,7 @@ namespace WarshipGirl.Scene
         Sprite hude;
         Sprite expbar;
 
-        Text level;
+        Label level;
 
     }
     partial class Harbor : BaseScene
@@ -52,24 +52,27 @@ namespace WarshipGirl.Scene
             collection = new Button()
             {
                 Left = 10,
-                Text="图鉴",
+                Bottom=10,
+                Width =120,
+                Height =40,
                 Margin=Origins.BottomLeft
             };
             settings = new Button()
             {
                 Left = 140,
-                Text = "设置",
+                Bottom = 10,
+                Width = 120,
+                Height = 40,
                 Margin = Origins.BottomLeft
             };
             hude = new Sprite()
             {
                 Left =-100,
-                Top = 0,
-                Margin = Origins.TopLeft,
+                Margin = Origins.CenterLeft,
                 Color = Color.White,
                 Width = 800,
                 Height = 800,
-                Texture = Sprite.CreateTextureFromFile(this.GraphicsDevice,@"Content\ship1024_normal_1.png"),
+                Texture = TextureManager.LoadShipImage(GraphicsDevice,1,TextureManager.ShipSize.Large)
             };
             expbar = new Sprite()
             {
@@ -79,31 +82,30 @@ namespace WarshipGirl.Scene
                 Height=75,
                 Texture = Sprite.CreateTextureFromFile(this.GraphicsDevice, @"Content\expBar.png")
             };
-            level = new Text()
+            level = new Label()
             {
-                X = 8,
-                Y = 2,
-                text = "Lv.61",
+                Top = 2,
+                Left = 5,
                 Color = Color.White,
-                OriginType = Origins.TopLeft,
                 Font = new Font(this.GraphicsDevice, "msyh.ttc", 25)
             };
 
             poss = new Control()
             {
-                Left = 668,
-                Top = 92,
-                Margin = Origins.TopLeft,
+                Right = 133,
+                Top = GraphicsDevice.Viewport.Height / 2 - 205,
+                Margin = Origins.TopRight,
                 Color = Color.White,
                 Width = 185,
                 Height = 182,
                 Texture = Sprite.CreateTextureFromFile(this.GraphicsDevice, @"Content\Procession.png")
             };
+            poss.Click += poss_Click;
             dock = new Control()
             {
-                Left = 668,
-                Top = 340,
-                Margin = Origins.TopLeft,
+                Right = 133,
+                Top = GraphicsDevice.Viewport.Height / 2 + 25,
+                Margin = Origins.TopRight,
                 Color = Color.White,
                 Width = 185,
                 Height = 182,
@@ -111,9 +113,8 @@ namespace WarshipGirl.Scene
             };
             fact = new Control()
             {
-                Left = 550,
-                Top = 215,
-                Margin = Origins.TopLeft,
+                Right = 250,
+                Margin = Origins.CenterRight,
                 Color = Color.White,
                 Width = 185,
                 Height = 182,
@@ -122,9 +123,8 @@ namespace WarshipGirl.Scene
             fact.Click += fact_Click;
             trans = new Control()
             {
-                Left = 785,
-                Top = 215,
-                Margin = Origins.TopLeft,
+                Right = 15,
+                Margin = Origins.CenterRight,
                 Color = Color.White,
                 Width = 185,
                 Height = 182,
@@ -133,27 +133,27 @@ namespace WarshipGirl.Scene
 
             oilres = new ResourceLabel()
             {
-                Left = 400,
-                Margin = Origins.TopLeft,
+                Right = 475,
+                Margin = Origins.TopRight,
                 Type = ResourceType.Oil,
                 isBeginning = true
             };
             bulres = new ResourceLabel()
             {
-                Left = 525,
-                Margin = Origins.TopLeft,
+                Right = 350,
+                Margin = Origins.TopRight,
                 Type = ResourceType.Bullet
             };
             irores = new ResourceLabel()
             {
-                Left = 650,
-                Margin = Origins.TopLeft,
+                Right = 225,
+                Margin = Origins.TopRight,
                 Type = ResourceType.Iron
             };
             alures = new ResourceLabel()
             {
-                Left = 775,
-                Margin = Origins.TopLeft,
+                Right = 100,
+                Margin = Origins.TopRight,
                 Type = ResourceType.Aluminum
             };
 
@@ -188,6 +188,16 @@ namespace WarshipGirl.Scene
             this.Load += Harbor_Load;
             this.Unload += Harbor_Unload;
             base.LoadContent();
+
+            collection.Text = "图鉴";
+            settings.Text = "设置";
+            level.Text = "Lv.61";
+        }
+
+        void poss_Click(object sender, MouseEventArgs e)
+        {
+            var game = (Game1)ParentGame;
+            game.Navigate(game.select);
         }
 
         void Harbor_Load(object sender, EventArgs e)

@@ -80,7 +80,7 @@ namespace jxGameFramework.Controls
         }
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            if(EnableFrameTime)
+            if(EnableFrameTime && Visible)
             {
                 rect = new Rectangle(RenderX, RenderY, 800, 100);
                 int vwidth = this.RenderX + this.Width;

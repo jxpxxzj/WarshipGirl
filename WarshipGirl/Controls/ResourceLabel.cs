@@ -18,7 +18,7 @@ namespace WarshipGirl.Controls
         public ResourceType Type { get; set; }
 
         Sprite TypeSprite;
-        Text LabelText;
+        Label LabelText;
         public bool isBeginning { get; set; }
         public override void LoadContent()
         {
@@ -52,18 +52,17 @@ namespace WarshipGirl.Controls
                 Parent=this,
             };
             
-            LabelText = new Text()
+            LabelText = new Label()
             {
                 Font = new Font(this.GraphicsDevice, "msyh.ttc", 20),
                 Color = Color.White,
                 GraphicsDevice = this.GraphicsDevice,
                 SpriteBatch = this.SpriteBatch,
-                X = this.Width / 3,
-                Y = this.Height / 2 - 2,
-                OriginType = Origins.CenterLeft,
+                Left = this.Width / 3,
+                Margin = Origins.CenterLeft,
             };
             Value = 61616;
-            LabelText.text = Value.ToString();
+            LabelText.Text = Value.ToString();
             AddComponent(TypeSprite);
             AddComponent(LabelText);
             base.LoadContent();

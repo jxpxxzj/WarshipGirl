@@ -58,7 +58,21 @@ namespace jxGameFramework.Controls
         Font _fnt;
 
         bool _toolstripinstancecreated = false;
-
+        public static Control Empty(GraphicsDevice gd, SpriteBatch sb)
+        {
+            var s = new Control()
+            {
+                Top = 0,
+                Left = 0,
+                Width = 1,
+                Height = 1,
+                GraphicsDevice = gd,
+                SpriteBatch = sb,
+                Color = Color.White,
+                Margin = Origins.TopLeft,
+            };
+            return s;
+        }
         public string ToolStrip
         {
             get
@@ -147,10 +161,8 @@ namespace jxGameFramework.Controls
         protected void OnKeyUp(object sender, KeyEventArgs e)
         {
             if (KeyUp != null)
-            {
                 KeyUp(sender, e);
-                isKeyDown = false;
-            }
+            isKeyDown = false;
 
         }
         protected void OnMouseEnter(object sender,MouseEventArgs e)
@@ -168,7 +180,7 @@ namespace jxGameFramework.Controls
             }
         }
 
-        public virtual void DrawToolStrip(GameTime gameTime)
+        protected virtual void DrawToolStrip(GameTime gameTime)
         {
             if (MouseInRect && _content != null)
             {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using jxGameFramework.Scene;
 using WarshipGirl.Controls;
+using jxGameFramework.Controls;
 using jxGameFramework.Components;
 using jxGameFramework.Audio;
 using Microsoft.Xna.Framework;
@@ -36,35 +37,41 @@ namespace WarshipGirl.Scene
             {                             
                 Left = 10,
                 Top = 10,
-                Text = "建造",
+                Width = 100,
+                Height = 50,
                 Margin = Origins.TopLeft
             };
             disassembly = new Button()
             {
                 Left = 10,
                 Top = 80,
-                Text = "解体",
+                Width = 100,
+                Height = 50,
                 Margin = Origins.TopLeft
             };
             developing = new Button()
             {                               
                 Left = 10,
                 Top = 150,
-                Text = "开发",
+                Width = 100,
+                Height = 50,
                 Margin = Origins.TopLeft
             };
             disintegrate = new Button()
             {                                
                 Left = 10,
                 Top = 220,
-                Text = "废弃",
+                Width = 100,
+                Height = 50,
                 Margin = Origins.TopLeft
             };
 
             toharbor = new Button()
             {                                
                 Left = 10,
-                Text = "港口",
+                Bottom = 10,
+                Width = 100,
+                Height = 50,
                 Margin = Origins.BottomLeft
             };
             toharbor.Click += toharbor_Click;
@@ -73,27 +80,27 @@ namespace WarshipGirl.Scene
 
             oilres = new ResourceLabel()
             {
-                Left = 400,
-                Margin = Origins.TopLeft,
+                Right = 475,
+                Margin = Origins.TopRight,
                 Type = ResourceType.Oil,
                 isBeginning = true
             };
             bulres = new ResourceLabel()
             {
-                Left = 525,
-                Margin = Origins.TopLeft,
+                Right = 350,
+                Margin = Origins.TopRight,
                 Type = ResourceType.Bullet
             };
             irores = new ResourceLabel()
             {
-                Left = 650,
-                Margin = Origins.TopLeft,
+                Right = 225,
+                Margin = Origins.TopRight,
                 Type = ResourceType.Iron
             };
             alures = new ResourceLabel()
             {
-                Left = 775,
-                Margin = Origins.TopLeft,
+                Right = 100,
+                Margin = Origins.TopRight,
                 Type = ResourceType.Aluminum
             };
             
@@ -110,6 +117,11 @@ namespace WarshipGirl.Scene
             this.Load += Factory_Load;
             this.Unload += Factory_Unload;
             base.LoadContent();
+            building.Text = "建造";
+            disassembly.Text = "解体";
+            developing.Text = "开发";
+            disintegrate.Text = "废弃";
+            toharbor.Text = "港口";
         }
 
         void Factory_Load(object sender, EventArgs e)
