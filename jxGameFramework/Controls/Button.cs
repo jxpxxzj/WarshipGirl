@@ -63,17 +63,17 @@ namespace jxGameFramework.Controls
                 _click = value;
             }
         }
-        protected override void OnMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        protected override void OnMouseMove(object sender, MouseEventArgs e)
         {
             this.Color = _hover ;
             base.OnMouseMove(sender, e);
         }
-        protected override void OnMouseLeave(object sender, EventArgs e)
+        protected override void OnMouseLeave(object sender, MouseEventArgs e)
         {
             this.Color = _base;
             base.OnMouseLeave(sender, e);
         }
-        protected override void OnMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        protected override void OnMouseDown(object sender, MouseEventArgs e)
         {
             this.Color = _click;
             base.OnMouseDown(sender, e);
@@ -106,7 +106,7 @@ namespace jxGameFramework.Controls
             };
 
             AddComponent(_title);
-
+            this.Color = _base;
             base.LoadContent();
         }
         public override void Draw(GameTime gameTime)

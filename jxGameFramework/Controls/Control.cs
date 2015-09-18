@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using jxGameFramework.Components;
 using jxGameFramework.Data;
-using System.Windows.Forms;
+using System.Diagnostics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -16,32 +16,43 @@ namespace jxGameFramework.Controls
     /// 控件
     /// </summary>
     
-    public class XnaKeyEventArgs : EventArgs
+    public class KeyEventArgs : EventArgs
     {
         public KeyboardState State { get; set; }
-        public XnaKeyEventArgs(KeyboardState state)
+        public KeyEventArgs(KeyboardState state)
         {
             this.State = state;
         }
     }
-    public delegate void XnaKeyEventHandler(object sender,XnaKeyEventArgs e);
+    public class MouseEventArgs : EventArgs
+    {
+        public MouseState State { get; set; }
+        public MouseEventArgs (MouseState state)
+        {
+            this.State = state;
+        }
+    }
+    public delegate void KeyEventHandler(object sender,KeyEventArgs e);
+    public delegate void MouseEventHandler(object sender,MouseEventArgs e);
     public class Control : Sprite
     {
-        public event EventHandler Click;
+        public event MouseEventHandler Click;
         public event MouseEventHandler MouseMove;
-        public event EventHandler MouseLeave;
+        public event MouseEventHandler MouseLeave;
         public event MouseEventHandler MouseDown;
-        public event EventHandler MouseUp;
-        public event XnaKeyEventHandler KeyDown;
-        public event XnaKeyEventHandler KeyUp;
+        public event MouseEventHandler MouseEnter;
+        public event MouseEventHandler MouseUp;
+        public event KeyEventHandler KeyDown;
+        public event KeyEventHandler KeyUp;
 
 
         protected bool isClicked = false;
         protected bool isMouseDown = false;
         protected bool isKeyDown = false;
         protected bool MouseInRect = false;
+        protected bool isEnter = false;
+        protected bool isLeave = true;
 
-        //Sprite _strip;
         Text _content;
         string _toolstrip;
         Font _fnt;
@@ -78,9 +89,9 @@ namespace jxGameFramework.Controls
             }
         }
 
-        protected virtual void OnClick(object sender, EventArgs e)
+        protected virtual void OnClick(object sender, MouseEventArgs e)
         {
-            if (isClicked == false)
+            if (!isClicked)
             {
                 if (Click != null)
                     Click(sender, e);
@@ -92,38 +103,49 @@ namespace jxGameFramework.Controls
         {
             if (MouseMove != null)
                 MouseMove(sender, e);
+            MouseInRect = true;
         }
 
-        protected virtual void OnMouseLeave(object sender, EventArgs e)
+        protected virtual void OnMouseLeave(object sender, MouseEventArgs e)
         {
-            if (MouseLeave != null)
-                MouseLeave(sender, e);
+            if(!isLeave)
+            {
+                if (MouseLeave != null)
+                    MouseLeave(sender, e);
+                isLeave = true;
+                isEnter = false;
+                MouseInRect = false;
+            }
         }
 
         protected virtual void OnMouseDown(object sender, MouseEventArgs e)
         {
-            if (MouseDown != null)
-                if (isMouseDown == false)
+            if (!isMouseDown)
+            {
+                if (MouseDown!=null)
                 {
                     MouseDown(sender, e);
-                    isMouseDown = true;
                 }
+                isMouseDown = true;
+            }
         }
-        protected virtual void OnMouseUp(object sender, EventArgs e)
+        protected virtual void OnMouseUp(object sender, MouseEventArgs e)
         {
             if (MouseUp != null)
                 MouseUp(sender, e);
             isMouseDown = false;
         }
-        protected void OnKeyDown(object sender, XnaKeyEventArgs e)
+        protected void OnKeyDown(object sender, KeyEventArgs e)
         {
-            if ((KeyDown != null) && (isKeyDown == false))
+            if(!isKeyDown)
             {
-                KeyDown(sender, e);
+                if ((KeyDown != null))
+                    KeyDown(sender, e);
                 isKeyDown = true;
             }
+
         }
-        protected void OnKeyUp(object sender, XnaKeyEventArgs e)
+        protected void OnKeyUp(object sender, KeyEventArgs e)
         {
             if (KeyUp != null)
             {
@@ -132,6 +154,21 @@ namespace jxGameFramework.Controls
             }
 
         }
+        protected void OnMouseEnter(object sender,MouseEventArgs e)
+        {
+            if (e.State.LeftButton == ButtonState.Released && e.State.RightButton == ButtonState.Released)
+            {
+                if (!isEnter)
+                {
+                    if (MouseEnter != null)
+                        MouseEnter(sender, e);
+                    isEnter = true;
+                    isLeave = false;
+
+                }
+            }
+        }
+
         public virtual void DrawToolStrip(GameTime gameTime)
         {
             if (MouseInRect && _content != null)
@@ -145,44 +182,54 @@ namespace jxGameFramework.Controls
                 _content.Draw(gameTime);
             }
         }
+
         public virtual void UpdateEvent(GameTime gameTime)
         {
-            var mState = Mouse.GetState();
+            var _mState = Mouse.GetState();
+            
+            var tRectangle = new Rectangle(RenderX, RenderY, Width, Height);
+            var nPosX = _mState.X - RenderX;
+            var nPosY = _mState.Y - RenderY;
 
+            var mState = new MouseState(nPosX, nPosY, _mState.ScrollWheelValue, _mState.LeftButton, _mState.MiddleButton, _mState.RightButton, _mState.XButton1, _mState.XButton2);
+            
+            var args = new MouseEventArgs(mState);
+            
             if (Keyboard.GetState().GetPressedKeys().Count<Microsoft.Xna.Framework.Input.Keys>() != 0)
-                OnKeyDown(this, new XnaKeyEventArgs(Keyboard.GetState()));
+                OnKeyDown(this, new KeyEventArgs(Keyboard.GetState()));
             else
             {
-                OnKeyUp(this, new XnaKeyEventArgs(Keyboard.GetState()));
-                isKeyDown = false;
+                OnKeyUp(this, new KeyEventArgs(Keyboard.GetState()));
             }
-            if (mState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
-            {
-                isClicked = false;
-                OnMouseUp(this, EventArgs.Empty);
-            }
+
             if (Texture == null)
                 return;
-
-            var tRectangle = new Rectangle(RenderX, RenderY, Width, Height);
-            var nPosX = mState.X - RenderX;
-            var nPosY = mState.Y - RenderY;
             var mColor = GetPixel(nPosX, nPosY);
-            if (tRectangle.Contains(mState.X, mState.Y) && (mColor != Color.Transparent))
+            if (tRectangle.Contains(_mState.Position) & mColor != Color.Transparent)
             {
-                OnMouseMove(this, new MouseEventArgs(MouseButtons.None, 0, nPosX, nPosY, mState.ScrollWheelValue));
-                MouseInRect = true;
-                if (mState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                OnMouseEnter(this, args);
+                if (isEnter)
                 {
-                    OnClick(this, EventArgs.Empty);
-                    OnMouseDown(this, new MouseEventArgs(MouseButtons.Left, 0, nPosX, nPosY, mState.ScrollWheelValue));
-                    isClicked = true;
+                    OnMouseMove(this, args);
+                    if (mState.LeftButton == ButtonState.Pressed || mState.RightButton == ButtonState.Pressed)
+                    {
+                        OnMouseDown(this, args);
+                    }
+                    if (isMouseDown && (mState.LeftButton == ButtonState.Released && mState.RightButton == ButtonState.Released))
+                    {
+                        OnMouseUp(this, args);
+                        OnClick(this, args);
+                    }
                 }
             }
             else
             {
-                OnMouseLeave(this, EventArgs.Empty);
-                MouseInRect = false;
+                if (isEnter)
+                {
+                    OnMouseUp(this, args);
+                    OnMouseLeave(this, args);           
+                }
+                
             }
         }
         public override void Update(GameTime gameTime)

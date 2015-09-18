@@ -101,13 +101,13 @@ namespace jxGameFramework.Controls
         {
             SpriteBatch.Draw(_septex, new Vector2(this.RenderX, this.RenderY), Color.White); 
         }
-        protected override void OnMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        protected override void OnMouseMove(object sender, MouseEventArgs e)
         {
             if(!LockColor && Type != ItemType.Separator)
                 this.Color = FocusColor;
             base.OnMouseMove(sender, e);
         }
-        protected override void OnMouseLeave(object sender, EventArgs e)
+        protected override void OnMouseLeave(object sender, MouseEventArgs e)
         {
             if (!LockColor && Type != ItemType.Separator)
                 this.Color = Color.Black;
@@ -258,16 +258,19 @@ namespace jxGameFramework.Controls
         {
             var itm = (ComboItem)sender;
             Expanded = !Expanded;
-            if (itm == _headcbi)
-            { 
-                _headcbi.LockColor = Expanded;
-            }   
-            else
+            if (itm != _headcbi)
             {
-                _headcbi.LockColor = false;
                 _headcbi = _headinstance[itm.ItemID];
                 _presentobj = _objlist[itm.ItemID];
             }
+            if (Expanded)
+                _headcbi.LockColor = true;
+            else
+            {
+                _headcbi.LockColor = false;
+                _headcbi.Color = Color.Black;
+            }
+                
         }
         public override void Draw(GameTime gameTime)
         {

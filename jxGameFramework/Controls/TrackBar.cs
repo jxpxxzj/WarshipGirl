@@ -115,7 +115,7 @@ namespace jxGameFramework.Controls
             base.LoadContent();
         }
 
-        void TrackBar_KeyDown(object sender, XnaKeyEventArgs e)
+        void TrackBar_KeyDown(object sender, KeyEventArgs e)
         {
             if (MouseInRect)
             {
@@ -128,16 +128,16 @@ namespace jxGameFramework.Controls
             }      
         }
 
-        void TrackBar_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        void TrackBar_MouseDown(object sender, MouseEventArgs e)
         {
             
         }
 
-        void TrackBar_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        void TrackBar_MouseMove(object sender, MouseEventArgs e)
         {
             if(isMouseDown)
             {
-                this._value = (double) e.X / this.Width;
+                this._value = (double) e.State.X / this.Width;
                 _uservalue = MinValue + (int)((MaxValue - MinValue) * _value);
                 this.ToolStrip = string.Format(ToolStripFormat,_uservalue);
             }
