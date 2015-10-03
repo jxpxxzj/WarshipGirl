@@ -52,9 +52,9 @@ namespace jxGameFramework.Controls
             _height = height;
             Type = type;
         }
-        public override void LoadContent()
+        public override void Initialize()
         {
-            var gdip = new GDIpInterop(_width, _height, GraphicsDevice);
+            var gdip = new GDIpInterop(_width, _height);
             gdip.g.FillRectangle(System.Drawing.Brushes.White, new System.Drawing.Rectangle(-1, -1, _width+1, _height+1));
             gdip.g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
             this.Texture = gdip.SaveTexture();
@@ -79,7 +79,7 @@ namespace jxGameFramework.Controls
                 Margin = Origins.CenterLeft,
                 Left = 5,
             };
-            AddComponent(_title);
+            ChildSprites.Add(_title);
             if (Type == ItemType.Separator)
             {
                 this.Color = SepColor;
@@ -93,15 +93,15 @@ namespace jxGameFramework.Controls
                 _septex = gdip.SaveTexture();
             }
             gdip.g.Dispose();
-            base.LoadContent();
+            base.Initialize();
         }
         public void DrawTriangle(GameTime gameTime)
         {
-            SpriteBatch.Draw(_tex, new Vector2(this.RenderX, this.RenderY), Color.White); 
+            Graphics.Instance.SpriteBatch.Draw(_tex, new Vector2(this.DrawingX, this.DrawingY), Color.White); 
         }
         private void DrawSeparator(GameTime gameTime)
         {
-            SpriteBatch.Draw(_septex, new Vector2(this.RenderX, this.RenderY), Color.White); 
+            Graphics.Instance.SpriteBatch.Draw(_septex, new Vector2(this.DrawingX, this.DrawingY), Color.White); 
         }
         protected override void OnMouseMove(object sender, MouseEventArgs e)
         {
@@ -157,39 +157,15 @@ namespace jxGameFramework.Controls
 
         List<ComboItem> _comboitem = new List<ComboItem>();
         List<ComboItem> _headinstance = new List<ComboItem>();
-
         List<object> _objlist = new List<object>();
-
         ComboItem _presentcbi;
         ComboItem _headcbi;
         object _presentobj;
         Font _fnt;
-        public bool Expanded = false;
 
-        Color _focus = Color.DeepPink;
-        Color _sep = new Color(34, 153, 187);
-        public Color FocusColor
-        {
-            get
-            {
-                return _focus;
-            }
-            set
-            {
-                _focus = value;
-            }
-        }
-        public Color SeparatorColor
-        {
-            get
-            {
-                return _sep;
-            }
-            set
-            {
-                _sep = value;
-            }
-        }
+        public bool Expanded { get; set; } = false;
+        public Color FocusColor { get; set; } = Color.DeepPink;
+        public Color SeparatorColor { get; set; } = new Color(34, 153, 187);
 
         public object SelectedItem
         {
@@ -211,7 +187,6 @@ namespace jxGameFramework.Controls
                 }
             }
         }
-
         int _iheight = 30;
         public int ItemHeight
         {
@@ -222,31 +197,20 @@ namespace jxGameFramework.Controls
             set
             {
                 _iheight = value;
+                this.Height = value;
             }
         }
+        public int EdgeWidth { get; set; } = 1;
 
-        int _edgewidth = 1;
-        public int EdgeWidth
+        public override void Initialize()
         {
-            get
-            {
-                return _edgewidth;
-            }
-            set
-            {
-                _edgewidth = value;
-            }
-        }
-
-        public override void LoadContent()
-        {
-            _fnt = new Font(GraphicsDevice, "msyh.ttc", 15)
+            _fnt = new Font("msyh.ttc", 15)
             {
                 EnableShadow=true,
                 ShadowColor=Color.Black,
                 ShadowYOffset =1,
             };
-            base.LoadContent();
+            base.Initialize();
         }
         public void AddItem(object obj,bool isSeparator = false)
         {
@@ -259,12 +223,10 @@ namespace jxGameFramework.Controls
             {
                 Parent=this,
                 Margin=Origins.TopLeft,
-                GraphicsDevice=this.GraphicsDevice,
-                SpriteBatch=this.SpriteBatch,
                 FocusColor = FocusColor,
                 SepColor = SeparatorColor,
             };
-            cbi.LoadContent();
+            cbi.Initialize();
             cbi.ItemID = _objlist.Count;
             cbi.Title = obj.ToString();
             if (type == ItemType.Item)
@@ -276,12 +238,10 @@ namespace jxGameFramework.Controls
             {
                 Parent = this,
                 Margin = Origins.TopLeft,
-                GraphicsDevice = this.GraphicsDevice,
-                SpriteBatch = this.SpriteBatch,
                 FocusColor = FocusColor,
                 SepColor=SeparatorColor,
             };
-            cbi2.LoadContent();
+            cbi2.Initialize();
             cbi2.ItemID = _objlist.Count;
             cbi2.Title = obj.ToString();
             if(type==ItemType.Item)
@@ -320,7 +280,7 @@ namespace jxGameFramework.Controls
         {
             _headcbi.Draw(gameTime);
             _headcbi.DrawTriangle(gameTime);
-            SpriteBatch.DrawRectangle(new Rectangle(_headcbi.RenderX + EdgeWidth - 1 , _headcbi.RenderY, _headcbi.Width-EdgeWidth, _headcbi.Height-EdgeWidth), FocusColor, (int)EdgeWidth);
+            Graphics.Instance.SpriteBatch.DrawRectangle(new Rectangle(_headcbi.DrawingX + EdgeWidth - 1 , _headcbi.DrawingY, _headcbi.Width-EdgeWidth, _headcbi.Height-EdgeWidth), FocusColor, (int)EdgeWidth);
 
             if(Expanded)
             {
@@ -334,13 +294,18 @@ namespace jxGameFramework.Controls
         }
         public override void Update(GameTime gameTime)
         {
+            this.Height = ItemHeight;
             _headcbi.Update(gameTime);
             if (Expanded)
+            {
+                this.Height = ItemHeight * (_comboitem.Count+1);
                 foreach (ComboItem i in _comboitem)
                 {
-                    i.Top = (i.ItemID + 1) * (ItemHeight -1);
-                    i.Update(gameTime);   
-                } 
+                    i.Top = (i.ItemID + 1) * (ItemHeight - 1);
+                    i.Update(gameTime);
+                }
+            }
+                
         }
     }
 }

@@ -14,95 +14,28 @@ namespace jxGameFramework.Controls
     public class TrackBar : Control
     {
         Texture2D _scrollcircle;
-
-        Color _line = Color.DeepPink;
-        Color _circle = Color.DeepPink;
-        public Color LineColor
-        {
-            get
-            {
-                return _line;
-            }
-            set
-            {
-                _line = value;
-            }
-        }
-        public Color CircleColor
-        {
-            get
-            {
-                return _circle;
-            }
-            set
-            {
-                _circle = value;
-            }
-        }
+        public Color LineColor { get; set; } = Color.DeepPink;
+        public Color CircleColor { get; set; } = Color.DeepPink;
 
         public TrackBar(int width)
         {
             this.Width = width;
         }
 
-        int _min = 0;
-        int _max = 100;
-
-        public int MinValue
-        {
-            get
-            {
-                return _min;
-            }
-            set
-            {
-                _min = value;
-            }
-        }
-
-        public int MaxValue
-        {
-            get
-            {
-                return _max;
-            }
-            set
-            {
-                _max = value + 1;
-            }
-        }
-        int _uservalue;
-        public int Value
-        {
-            get
-            {
-                return _uservalue;
-            }
-            set
-            {
-                _uservalue = value;
-            }
-        }
+        public int MinValue { get; set; } = 0;
+        public int MaxValue { get; set; } = 100;
+     
+        public int Value { get; set; }
         string _format = "{0}";
-        public string ToolStripFormat
-        {
-            get
-            {
-                return _format;
-            }
-            set
-            {
-                _format = value;
-            }
-        }
+        public string ToolStripFormat { get; set; }
         double _value = 0;
-        public override void LoadContent()
+        public override void Initialize()
         {
-            var gdip = new GDIpInterop(this.Width, 16, GraphicsDevice);
+            var gdip = new GDIpInterop(this.Width, 16);
             gdip.g.DrawLine(System.Drawing.Pens.White, new System.Drawing.Point(0, 7), new System.Drawing.Point(this.Width, 7));
             gdip.g.FillRectangle(new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(10, 255, 255, 255)), new System.Drawing.Rectangle(0, 0, this.Width, 15));
             this.Texture = gdip.SaveTexture();
-            this.Color = _line;
+            this.Color = LineColor;
             this.Height = 16;
             gdip.g.Clear(System.Drawing.Color.Transparent);
             gdip.g.FillEllipse(System.Drawing.Brushes.White, new System.Drawing.Rectangle(0, 0, 15, 15));
@@ -111,8 +44,8 @@ namespace jxGameFramework.Controls
             this.MouseMove += TrackBar_MouseMove;
             this.MouseDown += TrackBar_MouseDown;
             this.KeyDown += TrackBar_KeyDown;
-            _uservalue = MinValue;
-            base.LoadContent();
+            Value = MinValue;
+            base.Initialize();
         }
 
         void TrackBar_KeyDown(object sender, KeyEventArgs e)
@@ -124,7 +57,7 @@ namespace jxGameFramework.Controls
                 if (e.State.GetPressedKeys()[0] == Microsoft.Xna.Framework.Input.Keys.Left && Value > MinValue)
                     Value--;
                 _value = (double)(Value - MinValue) / (MaxValue - MinValue); 
-                this.ToolStrip = string.Format(ToolStripFormat, _uservalue);
+                this.ToolStrip = string.Format(ToolStripFormat, Value);
             }      
         }
 
@@ -138,15 +71,15 @@ namespace jxGameFramework.Controls
             if(isMouseDown)
             {
                 this._value = (double) e.State.X / this.Width;
-                _uservalue = MinValue + (int)((MaxValue - MinValue) * _value);
-                this.ToolStrip = string.Format(ToolStripFormat,_uservalue);
+                Value = MinValue + (int)((MaxValue - MinValue) * _value);
+                this.ToolStrip = string.Format(ToolStripFormat,Value);
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            SpriteBatch.Draw(_scrollcircle, new Vector2(RenderX + (int)(this.Width * _value) - 7, RenderY), _circle);
+            Graphics.Instance.SpriteBatch.Draw(_scrollcircle, new Vector2(DrawingX + (int)(this.Width * _value) - 7, DrawingY), CircleColor);
             DrawToolStrip(gameTime);
         }
         

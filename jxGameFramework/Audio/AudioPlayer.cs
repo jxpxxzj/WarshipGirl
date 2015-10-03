@@ -20,17 +20,7 @@ namespace jxGameFramework.Audio
         {
             
         }
-        public AudioStream Stream
-        {
-            get
-            {
-                return _stream;
-            }
-            set
-            {
-                _stream = value;  
-            }
-        }
+        public AudioStream Stream { get; set; }
         public bool Paused { get; protected set; }
         private float _volume
         {
@@ -56,8 +46,6 @@ namespace jxGameFramework.Audio
                 _volume = value;
             }
         }
-        private AudioStream _stream;
-
         public void Play(bool restart)
         {
             Bass.BASS_ChannelPlay(Stream.StreamNumber, restart);

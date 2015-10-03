@@ -44,7 +44,7 @@ namespace WarshipGirl.Scene
         AudioPlayer player;
         public override void LoadContent()
         {
-            if (((Game1)ParentGame).isNightMode)
+            if (((Game1)Parent).isNightMode)
                 bgstream = new AudioStream(@"Content\port-night.mp3",true);
             else
                 bgstream = new AudioStream(@"Content\port-day.mp3",true);
@@ -69,47 +69,45 @@ namespace WarshipGirl.Scene
             {
                 Left =-100,
                 Margin = Origins.CenterLeft,
-                Color = Color.White,
                 Width = 800,
                 Height = 800,
-                Texture = TextureManager.LoadShipImage(GraphicsDevice,1,TextureManager.ShipSize.Large)
+                Texture = TextureManager.LoadShipImage(8009,TextureManager.ShipSize.Large)
             };
             expbar = new Sprite()
             {
                 Margin=Origins.TopLeft,
-                Color=Color.White,
                 Width=222,
                 Height=75,
-                Texture = Sprite.CreateTextureFromFile(this.GraphicsDevice, @"Content\expBar.png")
+                Texture = Sprite.CreateTextureFromFile(@"Content\expBar.png")
             };
             level = new Label()
             {
                 Top = 2,
                 Left = 5,
                 Color = Color.White,
-                Font = new Font(this.GraphicsDevice, "msyh.ttc", 25)
+                Font = new Font("msyh.ttc", 25)
             };
 
             poss = new Control()
             {
                 Right = 133,
-                Top = GraphicsDevice.Viewport.Height / 2 - 205,
-                Margin = Origins.TopRight,
+                Bottom = 120,
+                Margin = Origins.CenterRight,
                 Color = Color.White,
                 Width = 185,
                 Height = 182,
-                Texture = Sprite.CreateTextureFromFile(this.GraphicsDevice, @"Content\Procession.png")
+                Texture = Sprite.CreateTextureFromFile(@"Content\Procession.png")
             };
             poss.Click += poss_Click;
             dock = new Control()
             {
                 Right = 133,
-                Top = GraphicsDevice.Viewport.Height / 2 + 25,
-                Margin = Origins.TopRight,
+                Top = 120,
+                Margin = Origins.CenterRight,
                 Color = Color.White,
                 Width = 185,
                 Height = 182,
-                Texture = Sprite.CreateTextureFromFile(this.GraphicsDevice, @"Content\Dock.png")
+                Texture = Sprite.CreateTextureFromFile(@"Content\Dock.png")
             };
             fact = new Control()
             {
@@ -118,7 +116,7 @@ namespace WarshipGirl.Scene
                 Color = Color.White,
                 Width = 185,
                 Height = 182,
-                Texture = Sprite.CreateTextureFromFile(this.GraphicsDevice, @"Content\Factory.png")
+                Texture = Sprite.CreateTextureFromFile(@"Content\Factory.png")
             };
             fact.Click += fact_Click;
             trans = new Control()
@@ -128,7 +126,7 @@ namespace WarshipGirl.Scene
                 Color = Color.White,
                 Width = 185,
                 Height = 182,
-                Texture = Sprite.CreateTextureFromFile(this.GraphicsDevice, @"Content\Transfomation.png")
+                Texture = Sprite.CreateTextureFromFile(@"Content\Transfomation.png")
             };
 
             oilres = new ResourceLabel()
@@ -156,7 +154,6 @@ namespace WarshipGirl.Scene
                 Margin = Origins.TopRight,
                 Type = ResourceType.Aluminum
             };
-
             
             //flashanim = new Animation()
             //{
@@ -196,8 +193,7 @@ namespace WarshipGirl.Scene
 
         void poss_Click(object sender, MouseEventArgs e)
         {
-            var game = (Game1)ParentGame;
-            game.Navigate(game.select);
+            Game1.Instance.Navigate(Game1.Instance.select);
         }
 
         void Harbor_Load(object sender, EventArgs e)
@@ -211,36 +207,32 @@ namespace WarshipGirl.Scene
             player.Stop();
         }
         int h = 10;
+        bool r = false;
         void fact_Click(object sender, EventArgs e)
         {
             //var ship = Server.ServerCommand.GetBuildableRandomShip();
-            //var s = new Ship64Img(ship)
+            //var s = new Ship64Img(ship,r)
             //{
             //    Left = 100,
             //    Top = h,
-            //    SpriteBatch = this.SpriteBatch,
-            //    GraphicsDevice = this.GraphicsDevice
             //};
             //s.LoadContent();
             //AddComponent(s);
             //h += 75;
+            //r = !r;
 
-            var game = (Game1)ParentGame;
             //var getship = new GetShip(Server.ServerCommand.GetBuildableRandomShip())
             //{
-            //    ParentGame = this.ParentGame,
             //    Color = Color.White,
             //    Margin = Origins.Center,
-            //    SpriteBatch = this.SpriteBatch,
-            //    GraphicsDevice = this.GraphicsDevice,
-            //    Width = 1024,
-            //    Height = 768,
+            //    Width = Width,
+            //    Height = Height,
             //    Parent = this
             //};
             //getship.LoadContent();
-            //game.Navigate(getship);
+            //Game1.Instance.Navigate(getship);
 
-            game.Navigate(game.factory);
+            Game1.Instance.Navigate(Game1.Instance.factory);
         }
     }
     partial class Harbor: BaseScene

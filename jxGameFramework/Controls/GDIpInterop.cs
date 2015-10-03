@@ -18,16 +18,16 @@ namespace jxGameFramework.Controls
     {
         private Bitmap Canvas;
         private GraphicsDevice _gd;
-        public Graphics g { get; protected set; }
-        public GDIpInterop(int width,int height,GraphicsDevice gd)
+        public System.Drawing.Graphics g { get; protected set; }
+        public GDIpInterop(int width,int height)
         {
             Canvas = new Bitmap(width, height);
-            g = Graphics.FromImage(Canvas);
+            g = System.Drawing.Graphics.FromImage(Canvas);
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
             g.CompositingQuality = CompositingQuality.HighQuality;
             g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-            _gd = gd;
+            _gd = Graphics.Instance.GraphicsDevice;
         }
         public Texture2D SaveTexture()
         {

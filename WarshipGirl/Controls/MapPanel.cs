@@ -91,18 +91,18 @@ namespace WarshipGirl.Controls
             set
             {
                 _pp = value;
-                MapSprite.Texture = Sprite.CreateTextureFromFile(GraphicsDevice, value);
+                MapSprite.Texture = Sprite.CreateTextureFromFile(value);
             }
         }
 
         public override void LoadContent()
         {
-            this.Texture=Sprite.CreateTextureFromFile(GraphicsDevice,@"Content\menu-button-background.png");
+            this.Texture=Sprite.CreateTextureFromFile(@"Content\menu-button-background.png");
             this.Width = Texture.Width;
             this.Height=Texture.Height;
 
-            TextFont = new Font(GraphicsDevice,"msyh.ttc",20);
-            TextFontsm = new Font(GraphicsDevice, "msyh.ttc", 15);
+            TextFont = new Font("msyh.ttc",20);
+            TextFontsm = new Font("msyh.ttc", 15);
 
             SeaTitle = new Label()
             {
@@ -128,7 +128,7 @@ namespace WarshipGirl.Controls
                 Left = 138,
                 Top = 50,
             };
-            var temptext = Sprite.CreateTextureFromFile(GraphicsDevice, @"Content\Map_1-1.png");
+            var temptext = Sprite.CreateTextureFromFile(@"Content\Map_1-1.png");
             MapSprite=new Sprite()
             {
                 Texture=temptext,

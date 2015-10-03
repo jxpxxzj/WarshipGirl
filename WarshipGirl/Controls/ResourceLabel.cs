@@ -33,15 +33,13 @@ namespace WarshipGirl.Controls
             }
 
             FileStream restream = new FileStream(string.Format(@"Content\{0}.png", Type.ToString()), FileMode.Open, FileAccess.Read);
-            Texture2D restexture = Texture2D.FromStream(this.GraphicsDevice, restream);
-            this.Texture = Texture2D.FromStream(this.GraphicsDevice, bgstream);
+            Texture2D restexture = Texture2D.FromStream(jxGameFramework.Graphics.Instance.GraphicsDevice, restream);
+            this.Texture = Texture2D.FromStream(jxGameFramework.Graphics.Instance.GraphicsDevice, bgstream);
             this.Width = 134;
             this.Height = 34;
             this.Color = Color.White;
             TypeSprite = new Sprite()
             {
-                GraphicsDevice=this.GraphicsDevice,
-                SpriteBatch=this.SpriteBatch,
                 Texture=restexture,
                 Color=Color.White,
                 Width=(int)(restexture.Width / 2),
@@ -54,10 +52,8 @@ namespace WarshipGirl.Controls
             
             LabelText = new Label()
             {
-                Font = new Font(this.GraphicsDevice, "msyh.ttc", 20),
+                Font = new Font("msyh.ttc", 20),
                 Color = Color.White,
-                GraphicsDevice = this.GraphicsDevice,
-                SpriteBatch = this.SpriteBatch,
                 Left = this.Width / 3,
                 Margin = Origins.CenterLeft,
             };

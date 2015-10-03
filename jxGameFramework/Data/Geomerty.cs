@@ -531,8 +531,25 @@ namespace jxGameFramework.Data
         }
 
         #endregion
+        #region "Texture"
+        public static void DrawArea(this SpriteBatch spriteBatch,Texture2D texture, Vector2 pos, Rectangle source, Vector2 size, Color color,float rotation,Vector2 origin,SpriteEffects effects,float layerDepth)
+        {
+            int tWidth = texture.Width;
+            int tHeight = texture.Height;
+            Vector2 scale = new Vector2(1.0f * size.X / tWidth, 1.0f * size.Y / tHeight);
 
+            Vector2 sourcepos = new Vector2(source.X / scale.X, source.Y / scale.Y);
+            Vector2 sourcesize = new Vector2(source.Width / scale.X, source.Height / scale.Y);
 
+            Rectangle sourcerect = new Rectangle((int)sourcepos.X, (int)sourcepos.Y, (int)sourcesize.X, (int)sourcesize.Y);
+            Rectangle destinationrect = new Rectangle((int)pos.X, (int)pos.Y, source.Width, source.Height);
+            spriteBatch.Draw(texture, destinationrect, sourcerect, color, rotation, origin, effects, layerDepth);
+        }
+        public static void DrawArea(this SpriteBatch spriteBatch,Texture2D texture,Vector2 pos,Rectangle source,Vector2 size,Color color)
+        {
+            DrawArea(spriteBatch, texture, pos, source, size, color, 0, Vector2.Zero, SpriteEffects.None, 0);
+        }
+        #endregion
         public static System.Drawing.Color FromMonoColor(this System.Drawing.Color gdicolor, Color color)
         {
             return System.Drawing.Color.FromArgb(color.A,color.R,color.G,color.B);

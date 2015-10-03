@@ -60,9 +60,9 @@ namespace jxGameFramework.Controls
             _fnt = fnt;
             _fntnoshadow = noshadow;
         }
-        public override void LoadContent()
+        public override void Initialize()
         {
-            this.Texture = Sprite.CreateTextureFromFile(GraphicsDevice, @"Content\selection-tab.png");
+            this.Texture = Sprite.CreateTextureFromFile(@"Content\selection-tab.png");
             this.Width = Texture.Width;
             this.Height = Texture.Height;
             this.Color = Color.White;
@@ -75,9 +75,9 @@ namespace jxGameFramework.Controls
                 Margin = Origins.TopCenter,
             };
 
-            AddComponent(_tabtitle);
+            ChildSprites.Add(_tabtitle);
 
-            base.LoadContent();
+            base.Initialize();
         }
     }
     public class TabControl : Control
@@ -102,16 +102,16 @@ namespace jxGameFramework.Controls
             }
         }
 
-        public override void LoadContent()
+        public override void Initialize()
         {
-            fnt = new Font(GraphicsDevice, "msyh.ttc", 13)
+            fnt = new Font("msyh.ttc", 13)
             {
                 EnableShadow = true,
                 ShadowColor = Color.Black,
                 ShadowYOffset = 1,
             };
-            fntNoShadow = new Font(GraphicsDevice, "msyh.ttc", 13);
-            base.LoadContent();
+            fntNoShadow = new Font("msyh.ttc", 13);
+            base.Initialize();
         }
         private void SwitchTab(object sender,EventArgs e)
         {
@@ -140,11 +140,9 @@ namespace jxGameFramework.Controls
                 Top=0,
                 Left = _tablist.Count * 120,
                 Right= _tablist.Count * 120,
-                GraphicsDevice = this.GraphicsDevice,
-                SpriteBatch = this.SpriteBatch,
                 Margin = TabMargin,
             };
-            bar.LoadContent();
+            bar.Initialize();
             bar.Parent = this;
             bar.TabID = _tablist.Count;
             bar.Title = tabTitle;

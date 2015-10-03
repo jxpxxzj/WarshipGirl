@@ -36,15 +36,15 @@ namespace WarshipGirl.Scene
         public override void LoadContent()
         {
             bgstream = new AudioStream(@"Content\getship.mp3", true);
-            this.Texture = Sprite.CreateTextureFromFile(this.GraphicsDevice, string.Format(@"Content\fullColor{0}@2x.png", Ship.Stars));
+            this.Texture = Sprite.CreateTextureFromFile(string.Format(@"Content\fullColor{0}@2x.png", Ship.Stars));
             talking = new Sprite()
             {
-                Bottom=15,
+                Bottom=30,
                 Margin = Origins.BottomCenter,
                 Width = 793,
                 Height = 105,
                 Color = Color.White,
-                Texture = Sprite.CreateTextureFromFile(this.GraphicsDevice, @"Content\gettingtalk.png")
+                Texture = Sprite.CreateTextureFromFile(@"Content\gettingtalk.png")
             };
             image = new Sprite()
             {
@@ -52,44 +52,46 @@ namespace WarshipGirl.Scene
                 Color = Color.White,
                 Width = 900,
                 Height = 900,
-                Texture = TextureManager.LoadShipImage(GraphicsDevice,Ship.ID,TextureManager.ShipSize.Large)
+                Texture = TextureManager.LoadShipImage(Ship.ID,TextureManager.ShipSize.Large)
             };
 
             shipname = new Label()
             {
-                Font = new Font(this.GraphicsDevice,"msyh.ttc", 25)
+                Font = new Font("msyh.ttc", 25)
                 {
                     EnableBorder=true,
                     BorderColor=Color.Black,
                 },
                 Color=Color.Cyan,
                 Text=Ship.Name,
-                Top=260,
-                Width=675,
+                Bottom=90,
+                Right = 250, 
+                Margin=Origins.BottomCenter,
             };
             shiptype = new Label()
             {
-                Font = new Font(this.GraphicsDevice, "msyh.ttc", 20)
+                Font = new Font("msyh.ttc", 20)
                 {
                     EnableBorder = true,
                     BorderColor = Color.Black,
                 },
                 Color = Color.Cyan,
                 Text = BaseShip.ShipTypeToString(Ship.Type),
-                Top = 260,
-                Left = 710,
+                Bottom = 55,
+                Right = 250,
+                Margin=Origins.BottomCenter,
             };
             talk = new Label()
             {
-                Font = new Font(this.GraphicsDevice, "msyh.ttc", 20)
+                Font = new Font("msyh.ttc", 20)
                 {
                     EnableBorder = true,
                     BorderColor = Color.Black,
                 },
                 Color = Color.White,
                 Text = Ship.GettingTalk,
-                Top = 375,
-                Left = 702,
+                Bottom = 75,
+                Margin=Origins.BottomCenter,
             };
 
             AddComponent(image);
@@ -101,7 +103,11 @@ namespace WarshipGirl.Scene
             this.Load += GetShip_Load;
             this.Unload += GetShip_Unload;
             base.LoadContent();
+            shipname.Origin = new Vector2(shipname.Width / 2, shipname.Height / 2);
+            shiptype.Origin = new Vector2(shiptype.Width / 2, shiptype.Height / 2);
+            talk.Left = talk.Width / 2-160; 
         }
+
 
         void GetShip_Unload(object sender, EventArgs e)
         {
@@ -116,8 +122,11 @@ namespace WarshipGirl.Scene
 
         void GetShip_Click(object sender, EventArgs e)
         {
-            var game = (Game1)ParentGame;
-            game.Navigate(game.harbor);
+            Game1.Instance.Navigate(Game1.Instance.harbor);
+        }
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
         }
 
     }

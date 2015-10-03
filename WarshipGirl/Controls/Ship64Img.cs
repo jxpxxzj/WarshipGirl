@@ -17,14 +17,23 @@ namespace WarshipGirl.Controls
     class Ship64Img : Control
     {
         public BaseShip Ship { get; set; }
+        public bool isReverse { get; set; }
+
         Sprite bg;
         Sprite padding;
         Sprite border;
         Sprite icon;
         Sprite img;
-        public Ship64Img(BaseShip target)
+        SpriteEffects se;
+        
+        public Ship64Img(BaseShip target,bool reverse)
         {
             Ship = target;
+            isReverse = reverse;
+            if (isReverse)
+                se = SpriteEffects.FlipHorizontally;
+            else
+                se = SpriteEffects.None;
         }
         public override void LoadContent()
         {
@@ -37,8 +46,7 @@ namespace WarshipGirl.Controls
                 Left=16,
                 Top=4,
                 Margin=Origins.TopLeft,
-                Texture=Sprite.CreateTextureFromFile(this.GraphicsDevice,string.Format(@"Content\bg_64_{0}.png",Ship.Stars)),
-                Color=Color.White
+                Texture=Sprite.CreateTextureFromFile(string.Format(@"Content\bg_64_{0}.png",Ship.Stars)),
             };
             border = new Sprite()
             {
@@ -46,44 +54,59 @@ namespace WarshipGirl.Controls
                 Height=72,
                 Left=14,
                 Margin=Origins.TopLeft,
-                Texture=Sprite.CreateTextureFromFile(this.GraphicsDevice,@"Content\border_64_gold.png"),
-                Color=Color.White
+                Texture=Sprite.CreateTextureFromFile(@"Content\border_64_gold.png"),
             };
+
             padding = new Sprite()
             {
                 Width=30,
                 Height=70,
                 Top = 1,
                 Margin=Origins.TopLeft,
-                Texture=Sprite.CreateTextureFromFile(this.GraphicsDevice,@"Content\padding_64_gold.png"),
-                Color=Color.White
+                Texture=Sprite.CreateTextureFromFile(@"Content\padding_64_gold.png"),
+                SpriteEffect=se,
             };
-
             icon = new Sprite()
             {
                 Width=50,
                 Height=50,
                 Left=22,
                 Margin = Origins.CenterLeft,
-                Texture=Sprite.CreateTextureFromFile(this.GraphicsDevice,string.Format(@"Content\icon_{0}.png",Ship.Type.ToString())),
-                Color=Color.White
+                Texture=Sprite.CreateTextureFromFile(string.Format(@"Content\icon_{0}.png",Ship.Type.ToString())),
             };
             img = new Sprite()
             {
                 Width = 248,
                 Height = 64,
                 Margin = Origins.Center,
-                Texture = TextureManager.LoadShipImage(GraphicsDevice,Ship.ID,TextureManager.ShipSize.Small),//Sprite.CreateTextureFromFile(this.GraphicsDevice, string.Format(@"F:\shipwar\assets\bin\Pic\ship64_normal_{0}.png", Ship.ID)),
-                Color = Color.White
+                Texture = TextureManager.LoadShipImage(Ship.ID,TextureManager.ShipSize.Small),
             };
-            img.Width = (int)(img.Width * 0.9);
-            img.Height = (int)(img.Height * 0.9);
             AddComponent(bg);
             AddComponent(img);
             AddComponent(border);
             AddComponent(padding);
             AddComponent(icon);
+            if(isReverse)
+            {
+                border.SpriteEffect = se;
+                border.Margin = Origins.TopRight;
+                border.Right = 14;
+
+                padding.SpriteEffect = se;
+                padding.Margin = Origins.TopRight;
+
+                icon.Margin = Origins.CenterRight;
+                icon.Right = 22;
+
+                bg.Margin = Origins.TopRight;
+                bg.Right = 16;
+               
+            }
             base.LoadContent();
+        }
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
         }
     }
 }

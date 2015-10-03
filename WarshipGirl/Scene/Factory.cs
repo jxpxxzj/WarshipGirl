@@ -137,8 +137,7 @@ namespace WarshipGirl.Scene
 
         void toharbor_Click(object sender, EventArgs e)
         {
-            var game = (Game1)ParentGame;
-            game.Navigate(game.harbor);
+            Game1.Instance.Navigate(Game1.Instance.harbor);
         }
     }
     partial class Factory : BaseScene

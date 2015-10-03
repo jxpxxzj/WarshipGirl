@@ -13,8 +13,6 @@ namespace jxGameFramework.Controls
     public class Label : Control
     {
         string _text="Label";
-        Font _font;
-
         public string Text
         {
             get
@@ -23,28 +21,34 @@ namespace jxGameFramework.Controls
             }
             set
             {
-                var v = _font.MeasureString(value);
-                this.Width = (int)v.X;
-                this.Height = (int)v.Y;
+                //if (AutoSize)
+                //{
+                    var v = Font.MeasureString(value);
+                    this.Width = (int)v.X;
+                    this.Height = (int)v.Y;
+                //}
                 _text = value;
+
             }
         }
-        
-        public Font Font
+        public bool AutoSize { get; set; } = true;
+        public Font Font { get; set; } = new Font("msyh.ttc", 14);
+        public uint Size
         {
             get
             {
-                return _font;
+                return Font.Size;
             }
             set
             {
-                _font = value;
+                Font.Size = value;
             }
         }
+
         public override void Draw(GameTime gameTime)
         {
             if(Text!=null)
-                _font.DrawText(SpriteBatch, new Vector2(RenderX, RenderY), Text, Color);
+                Font.DrawText(new Vector2(DrawingX,DrawingY),DestRect,Text, Color);
             base.Draw(gameTime);
         }
     }

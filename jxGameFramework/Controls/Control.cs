@@ -15,7 +15,7 @@ namespace jxGameFramework.Controls
     /// <summary>
     /// 控件
     /// </summary>
-    
+
     public class KeyEventArgs : EventArgs
     {
         public KeyboardState State { get; set; }
@@ -27,13 +27,13 @@ namespace jxGameFramework.Controls
     public class MouseEventArgs : EventArgs
     {
         public MouseState State { get; set; }
-        public MouseEventArgs (MouseState state)
+        public MouseEventArgs(MouseState state)
         {
             this.State = state;
         }
     }
-    public delegate void KeyEventHandler(object sender,KeyEventArgs e);
-    public delegate void MouseEventHandler(object sender,MouseEventArgs e);
+    public delegate void KeyEventHandler(object sender, KeyEventArgs e);
+    public delegate void MouseEventHandler(object sender, MouseEventArgs e);
     public class Control : Sprite
     {
         public event MouseEventHandler Click;
@@ -58,7 +58,7 @@ namespace jxGameFramework.Controls
         Font _fnt;
 
         bool _toolstripinstancecreated = false;
-        public static Control Empty(GraphicsDevice gd, SpriteBatch sb)
+        public new static Control Empty()
         {
             var s = new Control()
             {
@@ -66,8 +66,6 @@ namespace jxGameFramework.Controls
                 Left = 0,
                 Width = 1,
                 Height = 1,
-                GraphicsDevice = gd,
-                SpriteBatch = sb,
                 Color = Color.White,
                 Margin = Origins.TopLeft,
             };
@@ -82,10 +80,10 @@ namespace jxGameFramework.Controls
             set
             {
                 _toolstrip = value;
-                
-                if(!_toolstripinstancecreated)
+
+                if (!_toolstripinstancecreated)
                 {
-                    _fnt = new Font(GraphicsDevice, "msyh.ttc", 12);
+                    _fnt = new Font("msyh.ttc", 12);
                     _content = new Label()
                     {
                         Font = _fnt,
@@ -93,8 +91,6 @@ namespace jxGameFramework.Controls
                         Margin = Origins.TopLeft,
                         Left = 3,
                         Top = 1,
-                        SpriteBatch=this.SpriteBatch,
-                        GraphicsDevice=this.GraphicsDevice,
                     };
                     _toolstripinstancecreated = true;
                 }
@@ -104,80 +100,45 @@ namespace jxGameFramework.Controls
 
         protected virtual void OnClick(object sender, MouseEventArgs e)
         {
-            if (!isClicked)
-            {
-                if (Click != null)
-                    Click(sender, e);
-                isClicked = false;
-            }
+            if (Click != null)
+                Click(sender, e);
         }
 
         protected virtual void OnMouseMove(object sender, MouseEventArgs e)
         {
             if (MouseMove != null)
                 MouseMove(sender, e);
-            MouseInRect = true;
         }
-
         protected virtual void OnMouseLeave(object sender, MouseEventArgs e)
         {
-            if(!isLeave)
-            {
-                if (MouseLeave != null)
-                    MouseLeave(sender, e);
-                isLeave = true;
-                isEnter = false;
-                MouseInRect = false;
-            }
+            if (MouseLeave != null)
+                MouseLeave(sender, e);
         }
 
         protected virtual void OnMouseDown(object sender, MouseEventArgs e)
         {
-            if (!isMouseDown)
-            {
-                if (MouseDown!=null)
-                {
-                    MouseDown(sender, e);
-                }
-                isMouseDown = true;
-            }
+            if (MouseDown != null)
+                MouseDown(sender, e);
         }
         protected virtual void OnMouseUp(object sender, MouseEventArgs e)
         {
             if (MouseUp != null)
                 MouseUp(sender, e);
-            isMouseDown = false;
         }
         protected void OnKeyDown(object sender, KeyEventArgs e)
         {
-            if(!isKeyDown)
-            {
-                if ((KeyDown != null))
-                    KeyDown(sender, e);
-                isKeyDown = true;
-            }
-
+            if (KeyDown != null)
+                KeyDown(sender, e);
         }
         protected void OnKeyUp(object sender, KeyEventArgs e)
         {
             if (KeyUp != null)
                 KeyUp(sender, e);
-            isKeyDown = false;
-
         }
-        protected void OnMouseEnter(object sender,MouseEventArgs e)
+        protected void OnMouseEnter(object sender, MouseEventArgs e)
         {
-            if (e.State.LeftButton == ButtonState.Released && e.State.RightButton == ButtonState.Released)
-            {
-                if (!isEnter)
-                {
-                    if (MouseEnter != null)
-                        MouseEnter(sender, e);
-                    isEnter = true;
-                    isLeave = false;
-
-                }
-            }
+            if (MouseEnter != null)
+                MouseEnter(sender, e);
         }
 
         protected virtual void DrawToolStrip(GameTime gameTime)
@@ -185,9 +146,9 @@ namespace jxGameFramework.Controls
             if (MouseInRect && _content != null)
             {
                 var PosX = Mouse.GetState().X + 5;
-                var PosY= Mouse.GetState().Y + 5;
-                SpriteBatch.FillRectangle(new Rectangle(PosX, PosY, _content.Width + 7, _content.Height + 2), Color.Black);
-                SpriteBatch.DrawRectangle(new Rectangle(PosX, PosY, _content.Width + 7, _content.Height + 2), Color.White, 1f);
+                var PosY = Mouse.GetState().Y + 5;
+                Graphics.Instance.SpriteBatch.FillRectangle(new Rectangle(PosX, PosY, _content.Width + 7, _content.Height + 2), Color.Black);
+                Graphics.Instance.SpriteBatch.DrawRectangle(new Rectangle(PosX, PosY, _content.Width + 7, _content.Height + 2), Color.White, 1f);
                 _content.Left = PosX + 3;
                 _content.Top = PosY;
                 _content.Draw(gameTime);
@@ -197,39 +158,64 @@ namespace jxGameFramework.Controls
         public virtual void UpdateEvent(GameTime gameTime)
         {
             var _mState = Mouse.GetState();
-            
-            var tRectangle = new Rectangle(RenderX, RenderY, Width, Height);
-            var nPosX = _mState.X - RenderX;
-            var nPosY = _mState.Y - RenderY;
+
+            var tRectangle = DestRect;
+            var nPosX = _mState.X - DrawingX;
+            var nPosY = _mState.Y - DrawingY;
 
             var mState = new MouseState(nPosX, nPosY, _mState.ScrollWheelValue, _mState.LeftButton, _mState.MiddleButton, _mState.RightButton, _mState.XButton1, _mState.XButton2);
-            
+
             var args = new MouseEventArgs(mState);
-            
-            if (Keyboard.GetState().GetPressedKeys().Count<Microsoft.Xna.Framework.Input.Keys>() != 0)
-                OnKeyDown(this, new KeyEventArgs(Keyboard.GetState()));
+
+            if (Keyboard.GetState().GetPressedKeys().Count() != 0)
+            {
+                if (!isKeyDown)
+                {
+                    OnKeyDown(this, new KeyEventArgs(Keyboard.GetState()));
+                    isKeyDown = true;
+                }
+            }
             else
             {
                 OnKeyUp(this, new KeyEventArgs(Keyboard.GetState()));
+                isKeyDown = false;
             }
-
             if (Texture == null)
                 return;
             var mColor = GetPixel(nPosX, nPosY);
             if (tRectangle.Contains(_mState.Position) & mColor != Color.Transparent)
             {
-                OnMouseEnter(this, args);
+                if (mState.LeftButton == ButtonState.Released && mState.RightButton == ButtonState.Released)
+                {
+                    if (!isEnter)
+                    {
+                        OnMouseEnter(this, args);
+                        isEnter = true;
+                        isLeave = false;
+
+                    }
+                }
                 if (isEnter)
                 {
                     OnMouseMove(this, args);
+                    MouseInRect = true;
                     if (mState.LeftButton == ButtonState.Pressed || mState.RightButton == ButtonState.Pressed)
                     {
-                        OnMouseDown(this, args);
+                        if (!isMouseDown)
+                        {
+                            OnMouseDown(this, args);
+                            isMouseDown = true;
+                        }
                     }
                     if (isMouseDown && (mState.LeftButton == ButtonState.Released && mState.RightButton == ButtonState.Released))
                     {
                         OnMouseUp(this, args);
-                        OnClick(this, args);
+                        isMouseDown = false;
+                        if (!isClicked)
+                        {
+                            OnClick(this, args);
+                            isClicked = false;
+                        }
                     }
                 }
             }
@@ -238,15 +224,25 @@ namespace jxGameFramework.Controls
                 if (isEnter)
                 {
                     OnMouseUp(this, args);
-                    OnMouseLeave(this, args);           
+                    isMouseDown = false;
+                    if (!isLeave)
+                    {
+                        OnMouseLeave(this, args);
+                        isLeave = true;
+                        isEnter = false;
+                        MouseInRect = false;
+                    }
                 }
-                
             }
         }
         public override void Update(GameTime gameTime)
         {
             UpdateEvent(gameTime);
             base.Update(gameTime);
+        }
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
         }
     }
 }

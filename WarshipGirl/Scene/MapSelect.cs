@@ -25,7 +25,6 @@ namespace WarshipGirl.Scene
         List<MapPanel> maps = new List<MapPanel>();
         ScrollPanel spm;
         Texture2D bg;
-        Texture2D menu_osu;
         Texture2D top;
 
         MapPanel selected;
@@ -44,9 +43,9 @@ namespace WarshipGirl.Scene
 
         public override void LoadContent()
         {
-            fnt = new Font(GraphicsDevice, "msyh.ttc", 25);
-            fntsmall = new Font(GraphicsDevice, "msyh.ttc", 15);
-            fntborder = new Font(GraphicsDevice, "msyh.ttc", 15)
+            fnt = new Font("msyh.ttc", 25);
+            fntsmall = new Font("msyh.ttc", 15);
+            fntborder = new Font("msyh.ttc", 15)
             {
                 EnableBorder = true,
                 BorderColor = Color.Black
@@ -56,7 +55,7 @@ namespace WarshipGirl.Scene
             {
                 Margin = Origins.TopRight,
                 Width = 1000,
-                Height = GraphicsDevice.Viewport.Height - 80,
+                Height = jxGameFramework.Graphics.Instance.GraphicsDevice.Viewport.Height - 80,
                 Top = 80,
                 Right = 0
             };           
@@ -111,8 +110,6 @@ namespace WarshipGirl.Scene
                 Top = 54,
                 Right = 10,
                 Margin = Origins.TopRight,
-                Width = GraphicsDevice.Viewport.Width,
-                Height = GraphicsDevice.Viewport.Height,
                 TabMargin = Origins.TopRight
             };
 
@@ -384,9 +381,8 @@ namespace WarshipGirl.Scene
             //            tb.SwitchTab(0);
             #endregion
             
-            bg = Sprite.CreateTextureFromFile(GraphicsDevice, @"Content\menu-background-xmas-6.png");
-            menu_osu = Sprite.CreateTextureFromFile(GraphicsDevice, @"Content\010c0951.png");
-            top = Sprite.CreateTextureFromFile(GraphicsDevice, @"Content\songselect-top.png");
+            bg = Sprite.CreateTextureFromFile(@"Content\daywar.png");
+            top = Sprite.CreateTextureFromFile(@"Content\songselect-top.png");
 
             AddComponent(spm);
             AddComponent(b);
@@ -400,7 +396,6 @@ namespace WarshipGirl.Scene
             base.LoadContent();
 
             CreateMap();
-            p_Click((object)maps[0], null);
 
             foreach (MapPanel m in maps)
                 spm.AddComponent(m);
@@ -431,19 +426,19 @@ namespace WarshipGirl.Scene
             sortcb.AddItem("添加日期");
             sortcb.SelectedItem = "海域编号";
 
-            tb.AddTab(Control.Empty(GraphicsDevice, SpriteBatch), "不分组");
-            tb.AddTab(Control.Empty(GraphicsDevice, SpriteBatch), "作者");
-            tb.AddTab(Control.Empty(GraphicsDevice, SpriteBatch), "最近玩过的");
-            tb.AddTab(Control.Empty(GraphicsDevice, SpriteBatch), "收藏夹");
+            tb.AddTab(Control.Empty(), "不分组");
+            tb.AddTab(Control.Empty(), "作者");
+            tb.AddTab(Control.Empty(), "最近玩过的");
+            tb.AddTab(Control.Empty(), "收藏夹");
             tb.SwitchTab(0);
             this.Load += MapSelect_Load;
             this.Unload += MapSelect_Unload;
+            //p_Click((object)maps[0], null);
         }
 
         void breturn_Click(object sender, MouseEventArgs e)
         {
-            var game = (Game1)ParentGame;
-            game.Navigate(game.harbor);
+            Game1.Instance.Navigate(Game1.Instance.harbor);
         }
 
         void MapSelect_Unload(object sender, EventArgs e)
@@ -458,23 +453,30 @@ namespace WarshipGirl.Scene
         }
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatch.Draw(bg, new Rectangle(0, 0, bg.Width, bg.Height), Color.White);
-            SpriteBatch.FillRectangle(new Rectangle(0, 0, 370, 2000), new Color(128, 128, 128, 200));
+            jxGameFramework.Graphics.Instance.SpriteBatch.Draw(bg, new Rectangle(0, 0, bg.Width, bg.Height), Color.White);
+            jxGameFramework.Graphics.Instance.SpriteBatch.FillRectangle(new Rectangle(0, 0, 370, 2000), new Color(128, 128, 128, 200));
             spm.Draw(gameTime);
-            SpriteBatch.Draw(top, new Vector2(0, 0), Color.White);
-            fnt.DrawText(SpriteBatch, new Vector2(10, 10), string.Format("{0} - {1}", selected.SeaText, selected.MapText), Color.White);
-            fntsmall.DrawText(SpriteBatch, new Vector2(10, 40), string.Format("作者: {0}", selected.CreatorText), Color.White);
-            fntsmall.DrawText(SpriteBatch, new Vector2(10, 60), string.Format("点数: {0} 路径数: {1} 路线数: {2}",m.Points,m.Routes,m.Ways), Color.White);
-            fntsmall.DrawText(SpriteBatch, new Vector2(10, 80), string.Format("迂回点数: {0} 停泊点数: {1} 资源点数: {2}", m.CanSkipPoint, m.AnchorPoint, m.ResourcesPoint), Color.White);
-            SpriteBatch.Draw(selected.MapSprite.Texture, new Rectangle(12, 180, (int)(selected.MapSprite.Texture.Width * 0.65), (int)(selected.MapSprite.Texture.Height * 0.65)), Color.White);
-            fntborder.DrawText(SpriteBatch, new Vector2(13, 385), "地图描述:", Color.White);
-            fntborder.DrawText(SpriteBatch, new Vector2(13, 405), "这是一款全新突破性质的牙膏", Color.White);
-            b.Draw(gameTime);
+            jxGameFramework.Graphics.Instance.SpriteBatch.Draw(top, new Vector2(0, 0), Color.White);
+            if(selected !=null)
+            {
+                fnt.DrawText(new Vector2(10, 10), string.Format("{0} - {1}", selected.SeaText, selected.MapText), Color.White);
+                fntsmall.DrawText(new Vector2(10, 40), string.Format("作者: {0}", selected.CreatorText), Color.White);
+                fntsmall.DrawText(new Vector2(10, 60), string.Format("点数: {0} 路径数: {1} 路线数: {2}", m.Points, m.Routes, m.Ways), Color.White);
+                fntsmall.DrawText(new Vector2(10, 80), string.Format("迂回点数: {0} 停泊点数: {1} 资源点数: {2}", m.CanSkipPoint, m.AnchorPoint, m.ResourcesPoint), Color.White);
+                jxGameFramework.Graphics.Instance.SpriteBatch.Draw(selected.MapSprite.Texture, new Rectangle(12, 180, (int)(selected.MapSprite.Texture.Width * 0.65), (int)(selected.MapSprite.Texture.Height * 0.65)), Color.White);
+                fntborder.DrawText(new Vector2(13, 385), "地图描述:", Color.White);
+                fntborder.DrawText(new Vector2(13, 405), "这是一款全新突破性质的牙膏", Color.White);
+                combob.Draw(gameTime);
+                b.Draw(gameTime);
+            }
+            else
+            {
+                fnt.DrawText(new Vector2(10, 10), "选择一张地图以查看信息", Color.White);
+            }
             breturn.Draw(gameTime);
             tb.Draw(gameTime);
-            combob.Draw(gameTime);
-            fnt.DrawText(SpriteBatch, new Vector2(GraphicsDevice.Viewport.Width - 280, 10), "排序", Color.LightGreen);
-            fnt.DrawText(SpriteBatch, new Vector2(GraphicsDevice.Viewport.Width - 560, 10), "分组", Color.CornflowerBlue);
+            fnt.DrawText(new Vector2(jxGameFramework.Graphics.Instance.GraphicsDevice.Viewport.Width - 280, 10), "排序", Color.LightGreen);
+            fnt.DrawText(new Vector2(jxGameFramework.Graphics.Instance.GraphicsDevice.Viewport.Width - 560, 10), "分组", Color.CornflowerBlue);
             groupcb.Draw(gameTime);
             sortcb.Draw(gameTime);
         }
@@ -527,8 +529,6 @@ namespace WarshipGirl.Scene
                 Top = id * 85+10,
                 Right = -200,
                 Margin = Origins.TopRight,
-                GraphicsDevice = GraphicsDevice,
-                SpriteBatch = SpriteBatch,
             };
             p.LoadContent();
             p.SeaText = st;

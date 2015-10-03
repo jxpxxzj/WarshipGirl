@@ -20,18 +20,8 @@ namespace jxGameFramework.Controls
         Texture2D full;
         Texture2D empty;
 
-        public Color CircleColor
-        {
-            get
-            {
-                return _checkcircle.Color;
-            }
-            set
-            {
-                _checkcircle.Color = value;
-            }
-        }
-
+        public Color CircleColor { get; set; } = Color.DeepPink;
+  
         public string Text
         {
             get
@@ -65,9 +55,9 @@ namespace jxGameFramework.Controls
             }
         }
 
-        public override void LoadContent()
+        public override void Initialize()
         {
-            GDIpInterop gdip = new GDIpInterop(20, 20, GraphicsDevice);
+            GDIpInterop gdip = new GDIpInterop(20, 20);
             gdip.g.FillEllipse(System.Drawing.Brushes.White, 2, 2, 16, 16);
             full = gdip.SaveTexture();
 
@@ -77,7 +67,7 @@ namespace jxGameFramework.Controls
             gdip.g.DrawEllipse(p, 2, 2, 16, 16);
             empty = gdip.SaveTexture();
 
-            _fnt = new Font(GraphicsDevice, "msyh.ttc", 15)
+            _fnt = new Font("msyh.ttc", 15)
             {
                 EnableShadow = true,
                 ShadowColor = Color.Black,
@@ -88,7 +78,7 @@ namespace jxGameFramework.Controls
                 Texture = empty,
                 Margin=Origins.CenterLeft,
                 Left = 0,
-                Color=Color.DeepPink,
+                Color=CircleColor
             };
             _checkcircle.Width = _checkcircle.Texture.Width;
             _checkcircle.Height = _checkcircle.Texture.Height;
@@ -101,11 +91,11 @@ namespace jxGameFramework.Controls
                 Margin = Origins.CenterLeft,
                 Left = 22,
             };
-            AddComponent(_title);
-            AddComponent(_checkcircle);
+            ChildSprites.Add(_title);
+            ChildSprites.Add(_checkcircle);
             this.Width = full.Width;
             this.Height = full.Height;
-            base.LoadContent();
+            base.Initialize();
         }
 
         void CheckBox_Click(object sender, EventArgs e)

@@ -78,7 +78,7 @@ namespace jxGameFramework.Controls
                 }
                 img.SelectActiveFrame(fd, i);
                 img.Save(ms, ImageFormat.Png);
-                texture = Texture2D.FromStream(GraphicsDevice, ms);
+                texture = Texture2D.FromStream(Graphics.Instance.GraphicsDevice, ms);
                 FrameImg.Add(new GifFrame(texture,frametime));
                 ms = new MemoryStream();
             }
@@ -91,7 +91,7 @@ namespace jxGameFramework.Controls
         }
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatch.Draw(FrameImg[_frameid].Image, new Vector2(RenderX, RenderY), Color);
+            Graphics.Instance.SpriteBatch.Draw(FrameImg[_frameid].Image, new Vector2(DrawingX, DrawingY), Color);
             base.Draw(gameTime);
         }
         

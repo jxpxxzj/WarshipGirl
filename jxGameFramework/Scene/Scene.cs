@@ -11,16 +11,33 @@ namespace jxGameFramework.Scene
     {
         public event EventHandler Load;
         public event EventHandler Unload;
-        public Game ParentGame;
-        public override void LoadContent()
+        public new int Width
+        {
+            get
+            {
+                
+                return Graphics.Instance.GraphicsDevice.Viewport.Width;
+            }
+        }
+        public new int Height
+        {
+            get
+            {
+                
+                return Graphics.Instance.GraphicsDevice.Viewport.Height;
+            }
+        }
+        public override void Initialize()
         {
             //OnLoad(this,EventArgs.Empty);
-            base.LoadContent();
+            base.Width = Graphics.Instance.GraphicsDevice.Viewport.Width;
+            base.Height = Graphics.Instance.GraphicsDevice.Viewport.Height;
+            base.Initialize();
         }
-        public override void UnloadContent()
+        public override void Dispose()
         {
             //OnUnload(this, EventArgs.Empty);
-            base.UnloadContent();
+            base.Dispose();
         }
         public virtual void OnLoad(object sender, EventArgs e)
         {

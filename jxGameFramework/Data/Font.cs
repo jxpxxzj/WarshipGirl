@@ -19,8 +19,6 @@ namespace jxGameFramework.Data
     }
     public class Font
     {
-        private uint font_size;
-
         private FT_FaceRec face;
         private IntPtr faceptr;
         private GraphicsDevice gd;
@@ -60,12 +58,13 @@ namespace jxGameFramework.Data
         public int ShadowXOffset { get; set; }
         public int ShadowYOffset { get; set; }
         public Color ShadowColor { get; set; }
+        public uint Size { get; set; }
 
         private Dictionary<char, Character> buffer = new Dictionary<char, Character>();
-        public Font(GraphicsDevice graphicsdevice, string font, uint size)
+        public Font(string font, uint size)
         {
-            font_size = size;
-            gd = graphicsdevice;
+            Size = size;
+            gd = Graphics.Instance.GraphicsDevice;
             IntPtr libptr;
             int ret = FT.FT_Init_FreeType(out libptr);
             if (ret != 0) return;
@@ -79,7 +78,7 @@ namespace jxGameFramework.Data
             ascender = face.ascender >> 6;
             descender = face.descender >> 6;
             fontheight = ((face.height >> 6) + descender + ascender) / 4;
-            yoffset = (int)(font_size - ascender);
+            yoffset = (int)(Size - ascender);
             baseCharacter = CreateChar('i');
         }
 
@@ -143,7 +142,7 @@ namespace jxGameFramework.Data
                     buffer.Add(c, ch);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Texture2D texture = new Texture2D(gd, baseCharacter.Texture.Width, 1);
                 ch.Texture = texture;
@@ -189,7 +188,7 @@ namespace jxGameFramework.Data
         {
             string[] lines = s.Split('\n');
             int maxx = 0;
-            int maxy = lines.Length * ((int)font_size + 2);
+            int maxy = lines.Length * ((int)Size + 2);
             foreach(string ln in lines)
             {
                 var text = CreateStringTexture(ln);
@@ -209,41 +208,98 @@ namespace jxGameFramework.Data
             int presenty = (int)pos.Y + yoffset;
             for (int i = 0; i < text.Length; i++)
             {
-                //if (presentx > 1024 || presenty > 600 || presentx < 0 || presenty < 0)
-                //    return;
+                bool draw = true;
+                if (presentx > gd.Viewport.Width || presenty > gd.Viewport.Height || presentx < 0 || presenty < yoffset - Size)
+                    draw = false;
                 if(text[i].Char == '\n')
                 {
-                    presenty += (int)font_size+2;
+                    presenty += (int)Size+2;
                     presentx = (int)pos.X;
                     continue;
                 }
                 if (text[i].Char == '\r')
                     continue;
-                if(EnableBorder)
+                if(draw)
                 {
-                    sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX - 1, presenty + text[i].OffserY - 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
-                    sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX - 1, presenty + text[i].OffserY, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
-                    sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX - 1, presenty + text[i].OffserY + 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+                    if (EnableBorder)
+                    {
+                        if (draw)
+                        {
+                        }
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX - 1, presenty + text[i].OffserY - 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX - 1, presenty + text[i].OffserY, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX - 1, presenty + text[i].OffserY + 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
 
-                    sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX, presenty + text[i].OffserY - 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
-                    sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX, presenty + text[i].OffserY + 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX, presenty + text[i].OffserY - 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX, presenty + text[i].OffserY + 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
 
-                    sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX + 1, presenty + text[i].OffserY - 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
-                    sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX + 1, presenty + text[i].OffserY, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
-                    sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX + 1, presenty + text[i].OffserY + 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
-                }
-                if(EnableShadow)
-                {
-                    sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX + ShadowXOffset, presenty + text[i].OffserY + ShadowYOffset, text[i].Texture.Width, text[i].Texture.Height), ShadowColor);
-                }
-                sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX, presenty + text[i].OffserY, text[i].Texture.Width, text[i].Texture.Height), color);
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX + 1, presenty + text[i].OffserY - 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX + 1, presenty + text[i].OffserY, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX + 1, presenty + text[i].OffserY + 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+                    }
+                    if (EnableShadow)
+                    {
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX + ShadowXOffset, presenty + text[i].OffserY + ShadowYOffset, text[i].Texture.Width, text[i].Texture.Height), ShadowColor);
+                    }
+                    sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX, presenty + text[i].OffserY, text[i].Texture.Width, text[i].Texture.Height), color);
+                }       
                 presentx += (1 + (int)text[i].Texture.Width + text[i].OffsetX);
             }
         }
-        public void DrawText(SpriteBatch sb, Vector2 pos, string text, Color color)
+        //TODO: overflow
+        private void DrawText(SpriteBatch sb, Vector2 pos, Rectangle rect,Character[] text,Color color)
+        {
+            int presentx = (int)pos.X;
+            int presenty = (int)pos.Y + yoffset;
+            for (int i = 0; i < text.Length; i++)
+            {
+                bool draw = true;
+                if (presentx > rect.Width +rect.X || presenty > rect.Height + rect.Y - Size  || presentx < rect.X || presenty < yoffset - Size +rect.Y)
+                    draw = false;
+                if (text[i].Char == '\n')
+                {
+                    presenty += (int)Size + 2;
+                    presentx = (int)rect.X;
+                    continue;
+                }
+                if (text[i].Char == '\r')
+                    continue;
+                if (draw)
+                {
+                    if (EnableBorder)
+                    {
+                        if (draw)
+                        {
+                        }
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX - 1, presenty + text[i].OffserY - 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX - 1, presenty + text[i].OffserY, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX - 1, presenty + text[i].OffserY + 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX, presenty + text[i].OffserY - 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX, presenty + text[i].OffserY + 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX + 1, presenty + text[i].OffserY - 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX + 1, presenty + text[i].OffserY, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX + 1, presenty + text[i].OffserY + 1, text[i].Texture.Width, text[i].Texture.Height), BorderColor);
+                    }
+                    if (EnableShadow)
+                    {
+                        sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX + ShadowXOffset, presenty + text[i].OffserY + ShadowYOffset, text[i].Texture.Width, text[i].Texture.Height), ShadowColor);
+                    }
+                    sb.Draw(text[i].Texture, new Rectangle(presentx + text[i].OffsetX, presenty + text[i].OffserY, text[i].Texture.Width, text[i].Texture.Height), color);
+                }
+                presentx += (1 + (int)text[i].Texture.Width + text[i].OffsetX);
+            }
+        }
+        public void DrawText(Vector2 pos, string text, Color color)
         {
             var tt = CreateStringTexture(text);
-            DrawText(sb, pos, tt, color);
+            DrawText(Graphics.Instance.SpriteBatch, pos, tt, color);
+        }
+        public void DrawText(Vector2 pos, Rectangle rect,string text,Color color)
+        {
+            var tt = CreateStringTexture(text);
+            DrawText(Graphics.Instance.SpriteBatch, pos, rect, tt, color);
         }
     }
 }

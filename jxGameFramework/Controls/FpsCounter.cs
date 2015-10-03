@@ -33,22 +33,22 @@ namespace jxGameFramework.Controls
         Label fpsvalue;
 
         public bool EnableFrameTime { get; set; }
-        public override void LoadContent()
+        public override void Initialize()
         {
-            bigger = new Font(this.GraphicsDevice, "msyh.ttc", 20)
+            bigger = new Font("msyh.ttc", 20)
             {
                 EnableShadow = true,
                 ShadowColor = Color.Black,
                 ShadowXOffset = 0,
                 ShadowYOffset = 1
             };
-            normal = new Font(this.GraphicsDevice, "msyh.ttc", 12)
+            normal = new Font("msyh.ttc", 12)
             {
                 EnableBorder=true,
                 BorderColor=Color.Black,
             };
                 
-            smaller = new Font(this.GraphicsDevice, "msyh.ttc", 15)
+            smaller = new Font("msyh.ttc", 15)
             { 
                 EnableShadow = true,
                 ShadowColor=Color.Black,
@@ -63,8 +63,8 @@ namespace jxGameFramework.Controls
                 Right = 2,
                 Font = normal
             };
-            AddComponent(fpsvalue);
-            base.LoadContent();
+            ChildSprites.Add(fpsvalue);
+            base.Initialize();
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
@@ -82,10 +82,10 @@ namespace jxGameFramework.Controls
         {
             if(EnableFrameTime && Visible)
             {
-                rect = new Rectangle(RenderX, RenderY, 800, 100);
-                int vwidth = this.RenderX + this.Width;
-                int vheight = this.RenderY + this.Height;
-                SpriteBatch.FillRectangle(rect, TransGray);
+                rect = new Rectangle(DrawingX, DrawingY, 800, 100);
+                int vwidth = this.DrawingX + this.Width;
+                int vheight = this.DrawingY + this.Height;
+                Graphics.Instance.SpriteBatch.FillRectangle(rect, TransGray);
                 int i = 0;
                 if (!ctrlPressed)
                 {
@@ -109,31 +109,31 @@ namespace jxGameFramework.Controls
                     int targetlength = updateheight;
                     if (targetlength > 100)
                         targetlength = 100;
-                    SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), UpdateGreen, 1f);
+                    Graphics.Instance.SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), UpdateGreen, 1f);
 
                     presenty -= targetlength;
                     targetlength = drawheight;
                     if (targetlength > 100 - updateheight)
                         targetlength = 100 - updateheight;
 
-                    SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), DrawPurple, 1f);
+                    Graphics.Instance.SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), DrawPurple, 1f);
 
                     presenty -= targetlength;
                     targetlength = betweenheight;
                     if (targetlength > 100 - updateheight - drawheight)
                         targetlength = 100 - updateheight - drawheight;
 
-                    SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), Color.White, 1f);
+                    Graphics.Instance.SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), Color.White, 1f);
                     i++;
                 }
                 if (ctrlPressed)
                 {
-                    bigger.DrawText(SpriteBatch, new Vector2(vwidth - 749, vheight - 100), "Update", UpdateGreen);
-                    bigger.DrawText(SpriteBatch, new Vector2(vwidth - 669, vheight - 100), "Draw", DrawPurple);
-                    bigger.DrawText(SpriteBatch, new Vector2(vwidth - 610, vheight - 100), "BetweenFrames", Color.White);
+                    bigger.DrawText(new Vector2(vwidth - 749, vheight - 100), "Update", UpdateGreen);
+                    bigger.DrawText(new Vector2(vwidth - 669, vheight - 100), "Draw", DrawPurple);
+                    bigger.DrawText(new Vector2(vwidth - 610, vheight - 100), "BetweenFrames", Color.White);
                 }
-                smaller.DrawText(SpriteBatch, new Vector2(vwidth - 797, vheight - 100), "20ms", Color.White);
-                smaller.DrawText(SpriteBatch, new Vector2(vwidth - 797, vheight - 20), "0ms", Color.White);
+                smaller.DrawText(new Vector2(vwidth - 797, vheight - 100), "20ms", Color.White);
+                smaller.DrawText(new Vector2(vwidth - 797, vheight - 20), "0ms", Color.White);
             }     
             frameCounter++;
             string fps = "";
