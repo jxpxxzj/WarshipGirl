@@ -62,13 +62,12 @@ namespace WarshipGirl
             };
             harbor = new Harbor()
             {
-                Texture = Texture2D.FromStream(jxGameFramework.Graphics.Instance.GraphicsDevice, harborbg),
+                Texture = Texture2D.FromStream(Graphics.Instance.GraphicsDevice, harborbg),
             };
 
-            var factbg = new FileStream(@"Content\factbg.png", FileMode.Open, FileAccess.Read);
             factory = new Factory()
             {
-                Texture = Texture2D.FromStream(jxGameFramework.Graphics.Instance.GraphicsDevice, factbg),
+                Texture = Sprite.CreateTextureFromFile(@"Content\factbg.png"),
             };
 
             select = new MapSelect();
@@ -115,9 +114,9 @@ namespace WarshipGirl
         {
             if (_globalmsg != "")
             {
-                jxGameFramework.Graphics.Instance.SpriteBatch.FillRectangle(new Rectangle(0, jxGameFramework.Graphics.Instance.GraphicsDevice.Viewport.Height / 2 - 20, jxGameFramework.Graphics.Instance.GraphicsDevice.Viewport.Width, 40), new Color(0, 0, 0, 128));
+                Graphics.Instance.SpriteBatch.FillRectangle(new Rectangle(0, Graphics.Instance.GraphicsDevice.Viewport.Height / 2 - 20, Graphics.Instance.GraphicsDevice.Viewport.Width, 40), new Color(0, 0, 0, 128));
                 Vector2 size = _msgfont.MeasureString(_globalmsg);
-                _msgfont.DrawText(new Vector2((jxGameFramework.Graphics.Instance.GraphicsDevice.Viewport.Width - size.X) / 2, (jxGameFramework.Graphics.Instance.GraphicsDevice.Viewport.Height - size.Y) / 2), _globalmsg, Color.White);
+                _msgfont.DrawText(new Vector2((Graphics.Instance.GraphicsDevice.Viewport.Width - size.X) / 2, (Graphics.Instance.GraphicsDevice.Viewport.Height - size.Y) / 2), _globalmsg, Color.White);
             }
         }
     }
