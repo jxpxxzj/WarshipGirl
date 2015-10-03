@@ -54,7 +54,7 @@ namespace jxGameFramework.Controls
             var brush = new System.Drawing.Drawing2D.LinearGradientBrush(new System.Drawing.Rectangle(0,0,this.Width,this.Height), System.Drawing.Color.White,System.Drawing.Color.LightGray,90f);
             var pen = new System.Drawing.Pen(System.Drawing.Color.Black,1f);
             gdip.g.FillRectangle(brush, new System.Drawing.Rectangle(0, 0, this.Width, this.Height));
-            gdip.g.DrawRectangle(pen, new System.Drawing.Rectangle(0, 0, this.Width-1, this.Height-1));
+            gdip.g.DrawRectangle(pen, new System.Drawing.Rectangle(0, 0, this.Width, this.Height));
             this.Texture = gdip.SaveTexture();
             gdip.Dispose();
 

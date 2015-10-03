@@ -20,7 +20,7 @@ namespace WarshipGirl.Controls
         Sprite TypeSprite;
         Label LabelText;
         public bool isBeginning { get; set; }
-        public override void LoadContent()
+        public override void Initialize()
         {
             FileStream bgstream;
             if (isBeginning)
@@ -59,9 +59,9 @@ namespace WarshipGirl.Controls
             };
             Value = 61616;
             LabelText.Text = Value.ToString();
-            AddComponent(TypeSprite);
-            AddComponent(LabelText);
-            base.LoadContent();
+            ChildSprites.Add(TypeSprite);
+            ChildSprites.Add(LabelText);
+            base.Initialize();
         }
         public override void Draw(GameTime gameTime)
         {

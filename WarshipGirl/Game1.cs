@@ -17,12 +17,11 @@ namespace WarshipGirl
     internal class Game1 : jxGameFramework.Game
     {
         private static Game1 mInstance;
-        BaseScene PresentScene;
 
-        internal Harbor harbor;
+        private Harbor harbor;
         //internal GetShip getship;
-        internal Factory factory;
-        internal MapSelect select;
+        private Factory factory;
+        private MapSelect select;
 
         internal bool isNightMode;
 
@@ -47,7 +46,7 @@ namespace WarshipGirl
             _msgwatch.Restart();
         }
 
-        public override void LoadContent()
+        public override void Initialize()
         {
             this.Window.Title = "战舰少女 Remix";    
             isNightMode = true;
@@ -72,63 +71,48 @@ namespace WarshipGirl
                 Texture = Texture2D.FromStream(jxGameFramework.Graphics.Instance.GraphicsDevice, factbg),
             };
 
-            select = new MapSelect()
-            {
-            };
-            counter.KeyDown += counter_KeyDown;
-            select.LoadContent();
-            AddComponent(harbor);
-            AddComponent(factory);
-            AddComponent(select);
+            select = new MapSelect();
+            FpsCounter.KeyDown += counter_KeyDown;
+            Scenes.Add("Harbor", harbor);
+            Scenes.Add("Factory", factory);
+            Scenes.Add("Select", select);
 
-            base.LoadContent();
-            Navigate(harbor);
+            base.Initialize();
+            Scenes.Navigate("Harbor");
             
         }
         void counter_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.State.IsKeyDown(Keys.F1))
             {
-                counter.EnableFrameTime = !counter.EnableFrameTime;
-                if (counter.EnableFrameTime)
+                FpsCounter.EnableFrameTime = !FpsCounter.EnableFrameTime;
+                if (FpsCounter.EnableFrameTime)
                     ShowMessage("Frame times are now visible.", new TimeSpan(0, 0, 1));
                 else
                     ShowMessage("Frame times are now hidden.", new TimeSpan(0, 0, 1));
             }
             if (e.State.IsKeyDown(Keys.F2))
             {
-                counter.Visible = !counter.Visible;
-                if (counter.Visible)
+                FpsCounter.Visible = !FpsCounter.Visible;
+                if (FpsCounter.Visible)
                     ShowMessage("Fps counter are now visible.", new TimeSpan(0, 0, 1));
                 else
                     ShowMessage("Fps counter are now hidden.", new TimeSpan(0, 0, 1));
             }
 
         }
-        public void Navigate(BaseScene scene)
-        {
-            if(PresentScene!=null)
-            {
-                PresentScene.OnUnload(this, EventArgs.Empty);
-            }
-            PresentScene = scene;
-            PresentScene.OnLoad(this, EventArgs.Empty);
-        }
         public override void Update(GameTime gameTime)
         {
-            PresentScene.Update(gameTime);
             if (_msgwatch.ElapsedMilliseconds > _msgTime.TotalMilliseconds)
             {
                 _globalmsg = "";
                 _msgwatch.Stop();
             }       
-            //base.Update(gameTime);
         }
 
         
         public override void Draw(GameTime gameTime)
         {
-            PresentScene.Draw(gameTime);
             if (_globalmsg != "")
             {
                 jxGameFramework.Graphics.Instance.SpriteBatch.FillRectangle(new Rectangle(0, jxGameFramework.Graphics.Instance.GraphicsDevice.Viewport.Height / 2 - 20, jxGameFramework.Graphics.Instance.GraphicsDevice.Viewport.Width, 40), new Color(0, 0, 0, 128));

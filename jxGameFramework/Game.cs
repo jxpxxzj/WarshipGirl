@@ -86,9 +86,10 @@ namespace jxGameFramework
         Stopwatch watch3 = new Stopwatch();
         protected FpsCounter FpsCounter;
         internal BaseGame baseGame;
-
+        public SceneManager Scenes { get; set; }
         public void Run()
         {
+            Scenes = new SceneManager(this);
             baseGame = new BaseGame(this);
             baseGame.Run();
         }
@@ -126,7 +127,8 @@ namespace jxGameFramework
             watch.Restart();
             Graphics.Instance.GraphicsDevice.Clear(Color.CornflowerBlue);
             Graphics.Instance.SpriteBatch.Begin();
-            this.Draw(gameTime);
+            Scenes.Draw(gameTime);
+            this.Draw(gameTime);  
             FpsCounter.Draw(gameTime);
             Graphics.Instance.SpriteBatch.End();
             watch.Stop();
@@ -141,6 +143,7 @@ namespace jxGameFramework
             watch3.Restart();
             if(this.baseGame.IsActive)
             {
+                Scenes.Update(gameTime);
                 this.Update(gameTime);
             }
             FpsCounter.Update(gameTime);

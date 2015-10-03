@@ -8,7 +8,7 @@ using System.IO;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework;
 
-namespace WarshipGirl.Graphics
+namespace WarshipGirl.Data
 {
     static class TextureManager
     {

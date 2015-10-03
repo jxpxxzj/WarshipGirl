@@ -18,7 +18,7 @@ namespace WarshipGirl.Controls
         Label MapTitle;
         Font TextFont;
         Font TextFontsm;
-        bool _selected=false;
+        bool _selected = false;
         public bool Selected
         {
             get
@@ -29,7 +29,7 @@ namespace WarshipGirl.Controls
             {
                 _selected = value;
                 var transcolor = new Color(0, 0, 0, 20);
-                if(SeaTitle!=null)
+                if (SeaTitle != null)
                 {
                     if (_selected)
                     {
@@ -45,7 +45,7 @@ namespace WarshipGirl.Controls
                         MapTitle.Color = Color.White;
                         this.Color = Color.CornflowerBlue;
                     }
-                } 
+                }
             }
         }
         public string SeaText
@@ -95,59 +95,54 @@ namespace WarshipGirl.Controls
             }
         }
 
-        public override void LoadContent()
+        public override void Initialize()
         {
-            this.Texture=Sprite.CreateTextureFromFile(@"Content\menu-button-background.png");
+            this.Texture = Sprite.CreateTextureFromFile(@"Content\menu-button-background.png");
             this.Width = Texture.Width;
-            this.Height=Texture.Height;
+            this.Height = Texture.Height;
 
-            TextFont = new Font("msyh.ttc",20);
+            TextFont = new Font("msyh.ttc", 20);
             TextFontsm = new Font("msyh.ttc", 15);
 
             SeaTitle = new Label()
             {
                 Font = TextFont,
                 Color = Color.Black,
-                Margin=Origins.TopLeft,
-                Left = 138,
+                Left = 163,
                 Top = 9,
             };
             CreatorInfo = new Label()
             {
                 Font = TextFontsm,
                 Color = Color.Black,
-                Margin=Origins.TopLeft,
-                Left = 138,
+                Left = 163,
                 Top = 32,
             };
             MapTitle = new Label()
             {
                 Font = TextFontsm,
                 Color = Color.Black,
-                Margin=Origins.TopLeft,
-                Left = 138,
+                Left = 163,
                 Top = 50,
             };
             var temptext = Sprite.CreateTextureFromFile(@"Content\Map_1-1.png");
-            MapSprite=new Sprite()
+            float scale = (float)1.0 * 85 / 298;
+            MapSprite = new Sprite()
             {
-                Texture=temptext,
-                Width=(int)(((double)Texture.Height / temptext.Height*0.85) * temptext.Width*0.85),
-                Height=(int)(Texture.Height*0.85),
-                Margin=Origins.CenterLeft,
-                Left = 0,
-                Color=Color.White,
+                Texture = temptext,
+                Width = (int)(530 * scale),
+                Height = (int)(298 * scale) + 1,
+                Margin = Origins.CenterLeft,
+                Left = 8,
+                Color = Color.White,
+                Scale = new Vector2(scale, scale),
             };
 
-            AddComponent(SeaTitle);
-            AddComponent(CreatorInfo);
-            AddComponent(MapTitle);
-            AddComponent(MapSprite);
-            base.LoadContent();
-        }
-        public override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
+            ChildSprites.Add(SeaTitle);
+            ChildSprites.Add(CreatorInfo);
+            ChildSprites.Add(MapTitle);
+            ChildSprites.Add(MapSprite);
+            base.Initialize();
         }
     }
 }

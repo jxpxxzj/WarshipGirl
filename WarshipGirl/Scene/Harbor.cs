@@ -13,7 +13,6 @@ using jxGameFramework.Animations;
 using jxGameFramework.Animations.Curve;
 using jxGameFramework.Controls;
 using jxGameFramework.Data;
-using WarshipGirl.Graphics;
 using WarshipGirl.Data;
 
 namespace WarshipGirl.Scene
@@ -42,7 +41,7 @@ namespace WarshipGirl.Scene
     {
         AudioStream bgstream;
         AudioPlayer player;
-        public override void LoadContent()
+        public override void Initialize()
         {
             if (((Game1)Parent).isNightMode)
                 bgstream = new AudioStream(@"Content\port-night.mp3",true);
@@ -168,23 +167,23 @@ namespace WarshipGirl.Scene
             //    LoopMode = LoopMode.Forever,
             //    EasingFunction = new Power()
             //};
-            AddComponent(hude);
-            AddComponent(collection);
-            AddComponent(settings);
-            AddComponent(poss);
-            AddComponent(dock);
-            AddComponent(fact);
-            AddComponent(trans);
-            AddComponent(expbar);
-            AddComponent(level);
-            AddComponent(oilres);
-            AddComponent(bulres);
-            AddComponent(irores);
-            AddComponent(alures);
+            ChildSprites.Add(hude);
+            ChildSprites.Add(collection);
+            ChildSprites.Add(settings);
+            ChildSprites.Add(poss);
+            ChildSprites.Add(dock);
+            ChildSprites.Add(fact);
+            ChildSprites.Add(trans);
+            ChildSprites.Add(expbar);
+            ChildSprites.Add(level);
+            ChildSprites.Add(oilres);
+            ChildSprites.Add(bulres);
+            ChildSprites.Add(irores);
+            ChildSprites.Add(alures);
 
             this.Load += Harbor_Load;
             this.Unload += Harbor_Unload;
-            base.LoadContent();
+            base.Initialize();
 
             collection.Text = "图鉴";
             settings.Text = "设置";
@@ -193,7 +192,7 @@ namespace WarshipGirl.Scene
 
         void poss_Click(object sender, MouseEventArgs e)
         {
-            Game1.Instance.Navigate(Game1.Instance.select);
+            Game1.Instance.Scenes.Navigate("Select");
         }
 
         void Harbor_Load(object sender, EventArgs e)
@@ -232,7 +231,7 @@ namespace WarshipGirl.Scene
             //getship.LoadContent();
             //Game1.Instance.Navigate(getship);
 
-            Game1.Instance.Navigate(Game1.Instance.factory);
+            Game1.Instance.Scenes.Navigate("Factory");
         }
     }
     partial class Harbor: BaseScene

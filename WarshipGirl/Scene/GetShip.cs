@@ -11,7 +11,6 @@ using jxGameFramework.Components;
 using jxGameFramework.Audio;
 using Microsoft.Xna.Framework;
 using WarshipGirl.Data;
-using WarshipGirl.Graphics;
 using jxGameFramework.Controls;
 
 namespace WarshipGirl.Scene
@@ -33,7 +32,7 @@ namespace WarshipGirl.Scene
         {
             Ship = target;
         }
-        public override void LoadContent()
+        public override void Initialize()
         {
             bgstream = new AudioStream(@"Content\getship.mp3", true);
             this.Texture = Sprite.CreateTextureFromFile(string.Format(@"Content\fullColor{0}@2x.png", Ship.Stars));
@@ -94,15 +93,15 @@ namespace WarshipGirl.Scene
                 Margin=Origins.BottomCenter,
             };
 
-            AddComponent(image);
-            AddComponent(talking);
-            AddComponent(shipname);
-            AddComponent(shiptype);
-            AddComponent(talk);
+            ChildSprites.Add(image);
+            ChildSprites.Add(talking);
+            ChildSprites.Add(shipname);
+            ChildSprites.Add(shiptype);
+            ChildSprites.Add(talk);
             this.Click += GetShip_Click;
             this.Load += GetShip_Load;
             this.Unload += GetShip_Unload;
-            base.LoadContent();
+            base.Initialize();
             shipname.Origin = new Vector2(shipname.Width / 2, shipname.Height / 2);
             shiptype.Origin = new Vector2(shiptype.Width / 2, shiptype.Height / 2);
             talk.Left = talk.Width / 2-160; 
@@ -122,7 +121,7 @@ namespace WarshipGirl.Scene
 
         void GetShip_Click(object sender, EventArgs e)
         {
-            Game1.Instance.Navigate(Game1.Instance.harbor);
+            Game1.Instance.Scenes.Navigate("Harbor");
         }
         public override void Draw(GameTime gameTime)
         {

@@ -10,7 +10,6 @@ using jxGameFramework.Controls;
 using jxGameFramework.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using WarshipGirl.Graphics;
 
 namespace WarshipGirl.Controls
 {
@@ -35,7 +34,7 @@ namespace WarshipGirl.Controls
             else
                 se = SpriteEffects.None;
         }
-        public override void LoadContent()
+        public override void Initialize()
         {
             this.Width = 215;
             this.Height = 72;
@@ -81,11 +80,11 @@ namespace WarshipGirl.Controls
                 Margin = Origins.Center,
                 Texture = TextureManager.LoadShipImage(Ship.ID,TextureManager.ShipSize.Small),
             };
-            AddComponent(bg);
-            AddComponent(img);
-            AddComponent(border);
-            AddComponent(padding);
-            AddComponent(icon);
+            ChildSprites.Add(bg);
+            ChildSprites.Add(img);
+            ChildSprites.Add(border);
+            ChildSprites.Add(padding);
+            ChildSprites.Add(icon);
             if(isReverse)
             {
                 border.SpriteEffect = se;
@@ -102,7 +101,7 @@ namespace WarshipGirl.Controls
                 bg.Right = 16;
                
             }
-            base.LoadContent();
+            base.Initialize();
         }
         public override void Draw(GameTime gameTime)
         {

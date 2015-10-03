@@ -353,7 +353,7 @@ namespace jxGameFramework.Components
         }
         public override void Initialize()
         {
-            dbg = new Font("msyh.ttc", 12);
+            //dbg = new Font("msyh.ttc", 12);
             ChildSprites.Initialize();
         }
         public override void Dispose()

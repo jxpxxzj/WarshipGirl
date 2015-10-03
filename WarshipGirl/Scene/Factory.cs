@@ -31,7 +31,7 @@ namespace WarshipGirl.Scene
     {
         AudioStream bgstream = new AudioStream(@"Content\factory.mp3", true);
         AudioPlayer player;
-        public override void LoadContent()
+        public override void Initialize()
         {
             building = new Button()
             {                             
@@ -104,19 +104,19 @@ namespace WarshipGirl.Scene
                 Type = ResourceType.Aluminum
             };
             
-            AddComponent(oilres);
-            AddComponent(bulres);
-            AddComponent(irores);
-            AddComponent(alures);
-            AddComponent(building);
-            AddComponent(disassembly);
-            AddComponent(developing);
-            AddComponent(disintegrate);
-            AddComponent(toharbor);
+            ChildSprites.Add(oilres);
+            ChildSprites.Add(bulres);
+            ChildSprites.Add(irores);
+            ChildSprites.Add(alures);
+            ChildSprites.Add(building);
+            ChildSprites.Add(disassembly);
+            ChildSprites.Add(developing);
+            ChildSprites.Add(disintegrate);
+            ChildSprites.Add(toharbor);
 
             this.Load += Factory_Load;
             this.Unload += Factory_Unload;
-            base.LoadContent();
+            base.Initialize();
             building.Text = "建造";
             disassembly.Text = "解体";
             developing.Text = "开发";
@@ -137,7 +137,7 @@ namespace WarshipGirl.Scene
 
         void toharbor_Click(object sender, EventArgs e)
         {
-            Game1.Instance.Navigate(Game1.Instance.harbor);
+            Game1.Instance.Scenes.Navigate("Harbor");
         }
     }
     partial class Factory : BaseScene

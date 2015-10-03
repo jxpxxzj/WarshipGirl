@@ -61,7 +61,7 @@
     <Compile Include="Data\Ship\DD.cs" />
     <Compile Include="Data\War.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="Graphics\TextureManager.cs" />
+    <Compile Include="Data\TextureManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene\Factory.cs" />
