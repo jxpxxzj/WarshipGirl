@@ -11,7 +11,7 @@ namespace jxGameFramework.Components
     /// <summary>
     /// 游戏组件
     /// </summary>
-    public abstract class Component : IComponent,IUpdateable 
+    public abstract class Component : IGameComponent,IUpdateable 
     {
         public abstract bool Enabled { get; set; }
         public abstract int UpdateOrder { get; set; }

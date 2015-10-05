@@ -9,8 +9,10 @@ namespace jxGameFramework.Scene
 {
     public class BaseScene : Control
     {
+        internal bool _hasInitalized = false;
         public event EventHandler Load;
-        public event EventHandler Unload;
+        public event EventHandler Show;
+        public event EventHandler Leave;
         public new int Width
         {
             get
@@ -29,10 +31,14 @@ namespace jxGameFramework.Scene
         }
         public override void Initialize()
         {
+            if (_hasInitalized)
+                return;
             //OnLoad(this,EventArgs.Empty);
             base.Width = Graphics.Instance.GraphicsDevice.Viewport.Width;
             base.Height = Graphics.Instance.GraphicsDevice.Viewport.Height;
             base.Initialize();
+            _hasInitalized = true;
+            OnLoad(this, EventArgs.Empty);
         }
         public override void Dispose()
         {
@@ -44,11 +50,15 @@ namespace jxGameFramework.Scene
             if (Load != null)
                 Load(sender, e);
         }
-
-        public virtual void OnUnload(object sender, EventArgs e)
+        public virtual void OnShow(object sender,EventArgs e)
         {
-            if (Unload != null)
-                Unload(sender, e);
+            if (Show != null)
+                Show(sender, e);
+        }
+        public virtual void OnLeave(object sender,EventArgs e)
+        {
+            if (Leave != null)
+                Leave(sender, e);
         }
     }
 }

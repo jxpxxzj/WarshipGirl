@@ -139,19 +139,19 @@ namespace WarshipGirl.Scene
             {
                 Right = 350,
                 Margin = Origins.TopRight,
-                Type = ResourceType.Bullet
+                Type = ResourceType.Steel
             };
             irores = new ResourceLabel()
             {
                 Right = 225,
                 Margin = Origins.TopRight,
-                Type = ResourceType.Iron
+                Type = ResourceType.Ammo
             };
             alures = new ResourceLabel()
             {
                 Right = 100,
                 Margin = Origins.TopRight,
-                Type = ResourceType.Aluminum
+                Type = ResourceType.Aluminium
             };
             
             //flashanim = new Animation()
@@ -181,8 +181,8 @@ namespace WarshipGirl.Scene
             ChildSprites.Add(irores);
             ChildSprites.Add(alures);
 
-            this.Load += Harbor_Load;
-            this.Unload += Harbor_Unload;
+            this.Show += Harbor_Show;
+            this.Leave += Harbor_Leave;
             base.Initialize();
 
             collection.Text = "图鉴";
@@ -190,21 +190,22 @@ namespace WarshipGirl.Scene
             level.Text = "Lv.61";
         }
 
-        void poss_Click(object sender, MouseEventArgs e)
+        private void Harbor_Leave(object sender, EventArgs e)
         {
-            Game1.Instance.Scenes.Navigate("Select");
+            player.Stop();
         }
 
-        void Harbor_Load(object sender, EventArgs e)
+        private void Harbor_Show(object sender, EventArgs e)
         {
             player = new AudioPlayer(bgstream);
             player.Play(true);
         }
 
-        void Harbor_Unload(object sender, EventArgs e)
+        void poss_Click(object sender, MouseEventArgs e)
         {
-            player.Stop();
+            Game1.Instance.Scenes.Navigate("Select");
         }
+
         int h = 10;
         bool r = false;
         void fact_Click(object sender, EventArgs e)

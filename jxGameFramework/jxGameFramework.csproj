@@ -66,7 +66,6 @@
     <Compile Include="Animations\Curve\Sine.cs" />
     <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Components\Component.cs" />
-    <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\Sprite.cs" />
     <Compile Include="Components\SpritesCollection.cs" />
     <Compile Include="Controls\Button.cs" />

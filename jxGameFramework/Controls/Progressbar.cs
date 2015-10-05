@@ -57,12 +57,8 @@ namespace jxGameFramework.Controls
 
         ProgressBarTypes _type = ProgressBarTypes.HorizontalLine;
         Texture2D _cirquebg;
-        public Color FillColor { get; set; } = Color.DeepPink;
-
-        public Color EdgeColor { get; set; } = Color.DeepPink;
-
-        //Color _fill = Color.DeepPink;
-        //Color _edge = Color.DeepPink;
+        public Color FillColor { get; set; } = DefaultFocusColor;
+        public Color EdgeColor { get; set; } = DefaultFocusColor;
 
         public int EdgeWidth { get; set; } 
 

@@ -58,7 +58,7 @@ namespace jxGameFramework.Controls
             this.Texture = gdip.SaveTexture();
             gdip.Dispose();
 
-            _fnt = new Font("msyh.ttc", 18)
+            _fnt = new Font(DefaultFontFileName, 18)
             {
                 EnableShadow = true,
                 ShadowColor = Color.Black,

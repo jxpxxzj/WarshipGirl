@@ -13,6 +13,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using WarshipGirl.Controls;
+using WarshipGirl.Data;
+using System.IO;
 
 namespace WarshipGirl.Scene
 {
@@ -23,6 +25,7 @@ namespace WarshipGirl.Scene
         Font fntborder;
 
         List<MapPanel> maps = new List<MapPanel>();
+
         ScrollPanel spm;
         Texture2D bg;
         Texture2D menu_osu;
@@ -163,15 +166,24 @@ namespace WarshipGirl.Scene
             sortcb.AddItem("添加日期");
             sortcb.SelectedItem = "海域编号";
 
-            tb.AddTab(Control.Empty(), "不分组");
-            tb.AddTab(Control.Empty(), "作者");
-            tb.AddTab(Control.Empty(), "最近玩过的");
-            tb.AddTab(Control.Empty(), "收藏夹");
+            tb.AddTab(Control.Empty, "不分组");
+            tb.AddTab(Control.Empty, "作者");
+            tb.AddTab(Control.Empty, "最近玩过的");
+            tb.AddTab(Control.Empty, "收藏夹");
             tb.SwitchTab(0);
-            this.Load += MapSelect_Load;
-            this.Unload += MapSelect_Unload;
+            this.Show += MapSelect_Show;
+            this.Leave += MapSelect_Leave;
+        }
 
-            MapSelect_Load(this, EventArgs.Empty);
+        private void MapSelect_Leave(object sender, EventArgs e)
+        {
+            player.Stop();
+        }
+
+        private void MapSelect_Show(object sender, EventArgs e)
+        {
+            player = new AudioPlayer(bgstream);
+            player.Play(true);
         }
 
         private void Breturn_Click(object sender, MouseEventArgs e)
@@ -179,29 +191,19 @@ namespace WarshipGirl.Scene
             Game1.Instance.Scenes.Navigate("Harbor");
         }
 
-        void MapSelect_Unload(object sender, EventArgs e)
-        {
-            player.Stop();
-        }
-
-        void MapSelect_Load(object sender, EventArgs e)
-        {
-            player = new AudioPlayer(bgstream);
-            player.Play(true);
-        }
         public override void Draw(GameTime gameTime)
         {
             Graphics.Instance.SpriteBatch.Draw(bg, new Rectangle(0, 0, bg.Width, bg.Height), Color.White);
             Graphics.Instance.SpriteBatch.FillRectangle(new Rectangle(0, 0, 370, 650), new Color(128, 128, 128, 200));
             spm.Draw(gameTime);
             Graphics.Instance.SpriteBatch.Draw(top, new Vector2(0, 0), Color.White);
-            fnt.DrawText(new Vector2(10, 10), string.Format("{0} - {1}", selected.SeaText, selected.MapText), Color.White);
-            fntsmall.DrawText(new Vector2(10, 40), string.Format("作者: {0}", selected.CreatorText), Color.White);
-            //fntsmall.DrawText(new Vector2(10, 60), string.Format("点数: {0} 路径数: {1} 路线数: {2}", m.Points, m.Routes, m.Ways), Color.White);
-            //fntsmall.DrawText(new Vector2(10, 80), string.Format("迂回点数: {0} 停泊点数: {1} 资源点数: {2}", m.CanSkipPoint, m.AnchorPoint, m.ResourcesPoint), Color.White);
+            fnt.DrawText(new Vector2(10, 10), string.Format("{0} - {1}",selected.Map.MapName,selected.Map.Title), Color.White);
+            fntsmall.DrawText(new Vector2(10, 40), string.Format("作者: {0}", selected.Map.Creator), Color.White);
+            fntsmall.DrawText(new Vector2(10, 60), string.Format("点数: {0} 路径数: {1} 路线数: {2}", selected.Map.Points, selected.Map.Routes, selected.Map.Ways), Color.White);
+            fntsmall.DrawText(new Vector2(10, 80), string.Format("迂回点数: {0} 停泊点数: {1} 资源点数: {2}", selected.Map.CanSkipPoint, selected.Map.AnchorPoint, selected.Map.ResourcesPoint), Color.White);
             Graphics.Instance.SpriteBatch.Draw(selected.MapSprite.Texture, new Rectangle(12, 180, (int)(selected.MapSprite.Texture.Width * 0.65), (int)(selected.MapSprite.Texture.Height * 0.65)), Color.White);
             fntborder.DrawText(new Vector2(13, 385), "地图描述:", Color.White);
-            fntborder.DrawText(new Vector2(13, 405), "这是一款全新突破性质的牙膏", Color.White);
+            fntborder.DrawText(new Vector2(13, 405), selected.Map.Description, Color.White);
             b.Draw(gameTime);
             breturn.Draw(gameTime);
             tb.Draw(gameTime);
@@ -217,56 +219,32 @@ namespace WarshipGirl.Scene
     {
         void CreateMap()
         {
-            string mapstr = @"1-1 母港附近海域
-1-2 东北防线海域
-1-3 仁州附近海域
-1-4 深海仁州基地
-2-1 扶桑西部海域
-2-2 扶桑西南海域
-2-3 扶桑南部海域
-2-4 深海扶桑基地
-3-1 母港南部海域
-3-2 东南群岛(I)
-3-3 东南群岛(II)
-3-4 星洲海峡
-4-1 克拉代夫东部海域
-4-2 克拉代夫西部海域
-4-3 泪之扉附近海域
-4-4 泪之扉防线
-5-1 塞浦路斯附近海域
-5-2 克里特附近海域
-5-3 马耳他附近海域
-5-4 直布罗陀东部海域
-5-5 直布罗陀要塞
-6-1 洛里昂南部海域
-6-2 英吉利海峡";
-            string[] levelstr = mapstr.Split('\n');
-            for (int i = 0; i < levelstr.Length; i++)
+            FileInfo[] files = new DirectoryInfo("Maps").GetFiles();
+            var res = from name in files
+                      where name.Extension == ".xml"
+                      select name;
+            var res2 = from name in files
+                       where name.Extension == ".png"
+                       select name;
+            var flist = res.ToList();
+            var ilist = res2.ToList();
+            for (int i = 0; i < flist.Count; i++)
             {
-                levelstr[i] = levelstr[i].Substring(0, levelstr[i].Length - 1);
-                maps.Add(CreateMapPanel(levelstr[i], i));
+               maps.Add(CreateMapPanel(new Map(flist[i].FullName,ilist[i].FullName), i));
             }
 
         }
-        MapPanel CreateMapPanel(string lstr, int id)
+        MapPanel CreateMapPanel(Map m,int id)
         {
-            string[] t = lstr.Split(' ');
-            string st = t[0];
-            string lt = t[1];
-
-            var p = new MapPanel()
+            var p = new MapPanel(m)
             {
                 Top = id * 85 + 10,
                 Right = -150,
                 Margin = Origins.TopRight,
             };
             p.Initialize();
-            p.SeaText = st;
-            p.CreatorText = "61616";
-            p.MapText = lt;
             p.Selected = false;
             p.Click += p_Click;
-            p.PreviewPath = string.Format(@"Maps/Map_{0}.png", st);
             return p;
         }
 

@@ -32,10 +32,6 @@ namespace jxGameFramework.Components
 
         Custom,
     }
-    public enum PositionRelation
-    {
-        Relative, Absolute
-    }
     /// <summary>
     /// 精灵
     /// </summary>
@@ -54,7 +50,6 @@ namespace jxGameFramework.Components
         public override bool Enabled { get; set; } = true;
         public float Rotation { get; set; }
         public Vector2 Origin { get; set; }
-        public Vector2 Scale { get; set; } = new Vector2(1f, 1f);
         public SpriteEffects SpriteEffect { get; set; }
         public float LayerDepth { get; set; }
         public Origins Margin { get; set; } = Origins.TopLeft;
@@ -139,26 +134,6 @@ namespace jxGameFramework.Components
                 return ParentDrawingY + Y;
             }
         }
-        //private int DestWidth
-        //{
-        //    get
-        //    {
-        //        if (DrawingX < ParentDrawingX)
-        //            return Width - (ParentDrawingX - DrawingX);
-        //        else
-        //            return Width;
-        //    }
-        //}
-        //private int DestHeight
-        //{
-        //    get
-        //    {
-        //        if (DrawingY < ParentDrawingY)
-        //            return Height - (ParentDrawingY - DrawingY);
-        //        else
-        //            return Height;
-        //    }
-        //}
         private int DestX
         {
             get
@@ -246,7 +221,6 @@ namespace jxGameFramework.Components
                 int y = 0;
                 int width = Width;
                 int height = Height;
-                //return Rectangle.Intersect(TextureRect, ParentRect);
                 if (DrawingX < ParentDrawingX)
                 {
                     x = ParentDrawingX - DrawingX;
@@ -270,24 +244,26 @@ namespace jxGameFramework.Components
                 return new Rectangle(x, y, width, height);
             }
         }
-        public static Sprite Empty()
+        public static Sprite Empty
         {
-            var s = new Sprite()
+            get
             {
-                Top = 0,
-                Left = 0,
-                Width = 1,
-                Height = 1,
-                Color = Color.White,
-                Margin = Origins.TopLeft,
-            };
-            return s;
+                var s = new Sprite()
+                {
+                    Top = 0,
+                    Left = 0,
+                    Width = 1,
+                    Height = 1,
+                    Color = Color.White,
+                    Margin = Origins.TopLeft,
+                };
+                return s;
+            }
         }
 
         /// <summary>
         /// 从文件创建Texture
         /// </summary>
-        /// <param name="gd">GraphicsDevice</param>
         /// <param name="Path">文件路径</param>
         /// <returns>Texture2D</returns>
         public static Texture2D CreateTextureFromFile(string Path)
@@ -332,7 +308,6 @@ namespace jxGameFramework.Components
         {
             return GetPixel((int)pos.X, (int)pos.Y);
         }
-        Font dbg;
         public override void Draw(GameTime gameTime)
         {
             if (Visible)

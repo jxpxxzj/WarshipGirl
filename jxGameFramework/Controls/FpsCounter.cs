@@ -15,9 +15,9 @@ namespace jxGameFramework.Controls
         int frameRate = 0;
         int frameCounter = 0;
         bool ctrlPressed = false;
-        public TimeSpan FrameTime;
-        public TimeSpan BetweenTime;
-        public TimeSpan UpdateTime;
+        public TimeSpan FrameTime { get; internal set; }
+        public TimeSpan BetweenTime { get; internal set; }
+        public TimeSpan UpdateTime { get; internal set; }
         TimeSpan elapsedTime = TimeSpan.Zero;
 
         List<double> timequeue = new List<double>();
@@ -35,20 +35,20 @@ namespace jxGameFramework.Controls
         public bool EnableFrameTime { get; set; }
         public override void Initialize()
         {
-            bigger = new Font("msyh.ttc", 20)
+            bigger = new Font(DefaultFontFileName, 20)
             {
                 EnableShadow = true,
                 ShadowColor = Color.Black,
                 ShadowXOffset = 0,
                 ShadowYOffset = 1
             };
-            normal = new Font("msyh.ttc", 12)
+            normal = new Font(DefaultFontFileName, 12)
             {
                 EnableBorder=true,
                 BorderColor=Color.Black,
             };
                 
-            smaller = new Font("msyh.ttc", 15)
+            smaller = new Font(DefaultFontFileName, 15)
             { 
                 EnableShadow = true,
                 ShadowColor=Color.Black,
@@ -66,7 +66,7 @@ namespace jxGameFramework.Controls
             ChildSprites.Add(fpsvalue);
             base.Initialize();
         }
-        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             elapsedTime += gameTime.ElapsedGameTime;
             ctrlPressed = Keyboard.GetState().IsKeyDown(Keys.LeftControl);
@@ -78,7 +78,7 @@ namespace jxGameFramework.Controls
             }
             base.Update(gameTime);
         }
-        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
             if(EnableFrameTime && Visible)
             {

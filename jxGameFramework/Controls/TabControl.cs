@@ -39,7 +39,7 @@ namespace jxGameFramework.Controls
                     {
                         _tabtitle.Color = Color.White;
                         _tabtitle.Font = _fnt;
-                        this.Color = Color.Red;
+                        this.Color = DefaultFocusColor;
                     }
                 }
             }
@@ -62,7 +62,17 @@ namespace jxGameFramework.Controls
         }
         public override void Initialize()
         {
-            this.Texture = Sprite.CreateTextureFromFile(@"Content\selection-tab.png");
+            var gdip = new GDIpInterop(141, 24);
+            var pointc = new System.Drawing.Point[4];
+            pointc[0] = new System.Drawing.Point(10, 0);
+            pointc[1] = new System.Drawing.Point(131, 0);
+            pointc[2] = new System.Drawing.Point(141, 24);
+            pointc[3] = new System.Drawing.Point(0, 24);
+            var brush = new System.Drawing.Drawing2D.LinearGradientBrush(new System.Drawing.PointF(0, 0), new System.Drawing.PointF(0, 24), System.Drawing.Color.FromArgb(255,255,255,236), System.Drawing.Color.FromArgb(255, 98, 98, 98));
+            var pen = new System.Drawing.Pen(System.Drawing.Color.FromArgb(255, 117, 117, 117), 2f);
+            gdip.g.DrawPolygon(pen, pointc);
+            gdip.g.FillPolygon(brush, pointc);
+            this.Texture = gdip.SaveTexture();
             this.Width = Texture.Width;
             this.Height = Texture.Height;
             this.Color = Color.White;
@@ -89,28 +99,18 @@ namespace jxGameFramework.Controls
         TabBar _presentTab;
         Font fnt;
         Font fntNoShadow;
-        Origins _tabmargin = Origins.TopLeft;
-        public Origins TabMargin
-        {
-            get
-            {
-                return _tabmargin;
-            }
-            set
-            {
-                _tabmargin = value;
-            }
-        }
+
+        public Origins TabMargin { get; set; } = Origins.TopLeft;
 
         public override void Initialize()
         {
-            fnt = new Font("msyh.ttc", 13)
+            fnt = new Font(DefaultFontFileName, 13)
             {
                 EnableShadow = true,
                 ShadowColor = Color.Black,
                 ShadowYOffset = 1,
             };
-            fntNoShadow = new Font("msyh.ttc", 13);
+            fntNoShadow = new Font(DefaultFontFileName, 13);
             base.Initialize();
         }
         private void SwitchTab(object sender,EventArgs e)
@@ -125,7 +125,7 @@ namespace jxGameFramework.Controls
         }
         public void SwitchTab(int TabID)
         {
-            SwitchTab((object)_tablist[TabID], EventArgs.Empty);
+            SwitchTab(_tablist[TabID], EventArgs.Empty);
         }
         public void AddTab(Control Panel,string tabTitle)
         {

@@ -36,6 +36,10 @@ namespace jxGameFramework.Controls
     public delegate void MouseEventHandler(object sender, MouseEventArgs e);
     public class Control : Sprite
     {
+        //public static Font DefaultFont { get; set; }
+        public static string DefaultFontFileName { get; set; } = "msyh.ttc";
+        public static Color DefaultFocusColor { get; set; } = Color.DeepPink;
+
         public event MouseEventHandler Click;
         public event MouseEventHandler MouseMove;
         public event MouseEventHandler MouseLeave;
@@ -58,18 +62,21 @@ namespace jxGameFramework.Controls
         Font _fnt;
 
         bool _toolstripinstancecreated = false;
-        public new static Control Empty()
+        public new static Control Empty
         {
-            var s = new Control()
+            get
             {
-                Top = 0,
-                Left = 0,
-                Width = 1,
-                Height = 1,
-                Color = Color.White,
-                Margin = Origins.TopLeft,
-            };
-            return s;
+                var s = new Control()
+                {
+                    Top = 0,
+                    Left = 0,
+                    Width = 1,
+                    Height = 1,
+                    Color = Color.White,
+                    Margin = Origins.TopLeft,
+                };
+                return s;
+            }
         }
         public string ToolStrip
         {
@@ -83,7 +90,7 @@ namespace jxGameFramework.Controls
 
                 if (!_toolstripinstancecreated)
                 {
-                    _fnt = new Font("msyh.ttc", 12);
+                    _fnt = new Font(DefaultFontFileName,12);
                     _content = new Label()
                     {
                         Font = _fnt,

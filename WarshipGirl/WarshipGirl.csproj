@@ -45,21 +45,6 @@
     <Compile Include="Controls\MapPanel.cs" />
     <Compile Include="Controls\ResourceLabel.cs" />
     <Compile Include="Controls\Ship64Img.cs" />
-    <Compile Include="Data\BaseEquipment.cs" />
-    <Compile Include="Data\BaseShip.cs" />
-    <Compile Include="Data\Fleet.cs" />
-    <Compile Include="Data\IAttack.cs" />
-    <Compile Include="Data\IEquipment.cs" />
-    <Compile Include="Data\Map.cs" />
-    <Compile Include="Data\Resource.cs" />
-    <Compile Include="Data\Ship\BB.cs" />
-    <Compile Include="Data\Ship\BC.cs" />
-    <Compile Include="Data\Ship\CA.cs" />
-    <Compile Include="Data\Ship\CL.cs" />
-    <Compile Include="Data\Ship\CV.cs" />
-    <Compile Include="Data\Ship\CVL.cs" />
-    <Compile Include="Data\Ship\DD.cs" />
-    <Compile Include="Data\War.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Data\TextureManager.cs" />
     <Compile Include="Program.cs" />
@@ -123,6 +108,10 @@
     <ProjectReference Include="..\jxGameFramework\jxGameFramework.csproj">
       <Project>{22ed6b08-20e2-4411-9979-f83b5ad303ec}</Project>
       <Name>jxGameFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarshipGirl.Data\WarshipGirl.Data.csproj">
+      <Project>{634fd3da-4104-4673-9016-ba89ae3b20a1}</Project>
+      <Name>WarshipGirl.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->

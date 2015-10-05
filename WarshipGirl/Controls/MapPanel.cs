@@ -7,18 +7,25 @@ using jxGameFramework.Controls;
 using jxGameFramework.Components;
 using jxGameFramework.Data;
 using Microsoft.Xna.Framework;
+using WarshipGirl.Data;
 
 namespace WarshipGirl.Controls
 {
     class MapPanel : Control
     {
         public Sprite MapSprite { get; set; }
+
+        public Map Map { get; private set; }
         Label SeaTitle;
         Label CreatorInfo;
         Label MapTitle;
         Font TextFont;
         Font TextFontsm;
         bool _selected = false;
+        public MapPanel(Map m)
+        {
+            this.Map = m;
+        }
         public bool Selected
         {
             get
@@ -48,61 +55,14 @@ namespace WarshipGirl.Controls
                 }
             }
         }
-        public string SeaText
-        {
-            get
-            {
-                return SeaTitle.Text;
-            }
-            set
-            {
-                SeaTitle.Text = value;
-            }
-        }
-        public string CreatorText
-        {
-            get
-            {
-                return CreatorInfo.Text;
-            }
-            set
-            {
-                CreatorInfo.Text = value;
-            }
-        }
-        public string MapText
-        {
-            get
-            {
-                return MapTitle.Text;
-            }
-            set
-            {
-                MapTitle.Text = value;
-            }
-        }
-        string _pp;
-        public string PreviewPath
-        {
-            get
-            {
-                return _pp;
-            }
-            set
-            {
-                _pp = value;
-                MapSprite.Texture = Sprite.CreateTextureFromFile(value);
-            }
-        }
-
         public override void Initialize()
         {
             this.Texture = Sprite.CreateTextureFromFile(@"Content\menu-button-background.png");
             this.Width = Texture.Width;
             this.Height = Texture.Height;
 
-            TextFont = new Font("msyh.ttc", 20);
-            TextFontsm = new Font("msyh.ttc", 15);
+            TextFont = new Font(DefaultFontFileName, 20);
+            TextFontsm = new Font(DefaultFontFileName, 15);
 
             SeaTitle = new Label()
             {
@@ -125,17 +85,15 @@ namespace WarshipGirl.Controls
                 Left = 163,
                 Top = 50,
             };
-            var temptext = Sprite.CreateTextureFromFile(@"Content\Map_1-1.png");
             float scale = (float)1.0 * 85 / 298;
             MapSprite = new Sprite()
             {
-                Texture = temptext,
+                Texture=Sprite.CreateTextureFromFile(Map.PreviewImagePath),
                 Width = (int)(530 * scale),
                 Height = (int)(298 * scale) + 1,
                 Margin = Origins.CenterLeft,
                 Left = 8,
                 Color = Color.White,
-                Scale = new Vector2(scale, scale),
             };
 
             ChildSprites.Add(SeaTitle);
@@ -143,6 +101,10 @@ namespace WarshipGirl.Controls
             ChildSprites.Add(MapTitle);
             ChildSprites.Add(MapSprite);
             base.Initialize();
+            SeaTitle.Text = Map.MapName;
+            CreatorInfo.Text = Map.Creator;
+            MapTitle.Text = Map.Title;
+
         }
     }
 }

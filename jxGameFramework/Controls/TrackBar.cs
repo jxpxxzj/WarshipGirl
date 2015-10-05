@@ -14,8 +14,8 @@ namespace jxGameFramework.Controls
     public class TrackBar : Control
     {
         Texture2D _scrollcircle;
-        public Color LineColor { get; set; } = Color.DeepPink;
-        public Color CircleColor { get; set; } = Color.DeepPink;
+        public Color LineColor { get; set; } = DefaultFocusColor;
+        public Color CircleColor { get; set; } = DefaultFocusColor;
 
         public TrackBar(int width)
         {
@@ -26,8 +26,7 @@ namespace jxGameFramework.Controls
         public int MaxValue { get; set; } = 100;
      
         public int Value { get; set; }
-        string _format = "{0}";
-        public string ToolStripFormat { get; set; }
+        public string ToolStripFormat { get; set; } = "{0}";
         double _value = 0;
         public override void Initialize()
         {
@@ -58,12 +57,13 @@ namespace jxGameFramework.Controls
                     Value--;
                 _value = (double)(Value - MinValue) / (MaxValue - MinValue); 
                 this.ToolStrip = string.Format(ToolStripFormat, Value);
-            }      
+            }
+            OnKeyDown(sender, e);
         }
 
         void TrackBar_MouseDown(object sender, MouseEventArgs e)
         {
-            
+            OnMouseDown(sender, e);
         }
 
         void TrackBar_MouseMove(object sender, MouseEventArgs e)
@@ -74,6 +74,7 @@ namespace jxGameFramework.Controls
                 Value = MinValue + (int)((MaxValue - MinValue) * _value);
                 this.ToolStrip = string.Format(ToolStripFormat,Value);
             }
+            OnMouseMove(sender, e);
         }
 
         public override void Draw(GameTime gameTime)

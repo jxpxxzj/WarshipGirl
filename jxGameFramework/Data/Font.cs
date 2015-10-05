@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Tao.FreeType;
+using System.IO;
 
 namespace jxGameFramework.Data
 {
@@ -17,6 +18,7 @@ namespace jxGameFramework.Data
         public int OffserY { get; set; }
         public char Char { get; set; }
     }
+
     public class Font
     {
         private FT_FaceRec face;
@@ -58,19 +60,25 @@ namespace jxGameFramework.Data
         public int ShadowXOffset { get; set; }
         public int ShadowYOffset { get; set; }
         public Color ShadowColor { get; set; }
-        public uint Size { get; set; }
+        public uint Size { get; private set; }
 
         private Dictionary<char, Character> buffer = new Dictionary<char, Character>();
         public Font(string font, uint size)
         {
+            if (!File.Exists(font))
+                throw new FileNotFoundException("Failed to load font file:" + font);
             Size = size;
+            if (Graphics.Instance.GraphicsDevice == null)
+                throw new NullReferenceException("Graphics Device is null.");
             gd = Graphics.Instance.GraphicsDevice;
             IntPtr libptr;
             int ret = FT.FT_Init_FreeType(out libptr);
-            if (ret != 0) return;
+            if (ret != 0)
+                throw new Exception("Failed to load FreeType library.");
 
             int retb = FT.FT_New_Face(libptr, font, 0, out faceptr);
-            if (retb != 0) return;
+            if (retb != 0)
+                throw new Exception("Failed to create font face.");
 
             face = (FT_FaceRec)Marshal.PtrToStructure(faceptr, typeof(FT_FaceRec));
             FT.FT_Set_Char_Size(faceptr, (int)size << 6, (int)size << 6, 96, 96);
@@ -115,7 +123,7 @@ namespace jxGameFramework.Data
                 {
                     var tt = GetCharBitmap(Convert.ToUInt32(c));
                     var charoffsety = (ascender) - tt.bitmap_top;
-                    var charoffsetx = tt.bitmap_left; //tt.bitmap_left; //
+                    var charoffsetx = tt.bitmap_left;
 
                     byte[] bmp = new byte[tt.bitmap.rows * tt.bitmap.width];
                     Marshal.Copy(tt.bitmap.buffer, bmp, 0, bmp.Length);
@@ -142,13 +150,13 @@ namespace jxGameFramework.Data
                     buffer.Add(c, ch);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Texture2D texture = new Texture2D(gd, baseCharacter.Texture.Width, 1);
                 ch.Texture = texture;
                 buffer.Add(c, ch);
             }
-            
+
             return ch;
         }
         private static void PreMultiplyAlphas(Texture2D ret)

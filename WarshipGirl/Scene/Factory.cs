@@ -89,19 +89,19 @@ namespace WarshipGirl.Scene
             {
                 Right = 350,
                 Margin = Origins.TopRight,
-                Type = ResourceType.Bullet
+                Type = ResourceType.Steel
             };
             irores = new ResourceLabel()
             {
                 Right = 225,
                 Margin = Origins.TopRight,
-                Type = ResourceType.Iron
+                Type = ResourceType.Ammo
             };
             alures = new ResourceLabel()
             {
                 Right = 100,
                 Margin = Origins.TopRight,
-                Type = ResourceType.Aluminum
+                Type = ResourceType.Aluminium
             };
             
             ChildSprites.Add(oilres);
@@ -114,8 +114,8 @@ namespace WarshipGirl.Scene
             ChildSprites.Add(disintegrate);
             ChildSprites.Add(toharbor);
 
-            this.Load += Factory_Load;
-            this.Unload += Factory_Unload;
+            this.Show += Factory_Show;
+            this.Leave += Factory_Leave;
             base.Initialize();
             building.Text = "建造";
             disassembly.Text = "解体";
@@ -124,15 +124,15 @@ namespace WarshipGirl.Scene
             toharbor.Text = "港口";
         }
 
-        void Factory_Load(object sender, EventArgs e)
+        private void Factory_Leave(object sender, EventArgs e)
+        {
+            player.Stop();
+        }
+
+        private void Factory_Show(object sender, EventArgs e)
         {
             player = new AudioPlayer(bgstream);
             player.Play(true);
-        }
-
-        void Factory_Unload(object sender, EventArgs e)
-        {
-            player.Stop();
         }
 
         void toharbor_Click(object sender, EventArgs e)

@@ -164,7 +164,7 @@ namespace jxGameFramework.Controls
         Font _fnt;
 
         public bool Expanded { get; set; } = false;
-        public Color FocusColor { get; set; } = Color.DeepPink;
+        public Color FocusColor { get; set; } = DefaultFocusColor;
         public Color SeparatorColor { get; set; } = new Color(34, 153, 187);
 
         public object SelectedItem
@@ -258,7 +258,7 @@ namespace jxGameFramework.Controls
             _headcbi = _headinstance[id];
             _presentobj = _objlist[id];
         }
-        void cbi_Click(object sender, EventArgs e)
+        void cbi_Click(object sender, MouseEventArgs e)
         {
             var itm = (ComboItem)sender;
             Expanded = !Expanded;
@@ -275,6 +275,7 @@ namespace jxGameFramework.Controls
                 _headcbi.LockColor = false;
                 _headcbi.Color = Color.Black;
             }
+            OnClick(sender, e);
         }
         public override void Draw(GameTime gameTime)
         {

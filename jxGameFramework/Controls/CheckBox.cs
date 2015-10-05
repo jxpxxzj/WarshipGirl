@@ -20,7 +20,7 @@ namespace jxGameFramework.Controls
         Texture2D full;
         Texture2D empty;
 
-        public Color CircleColor { get; set; } = Color.DeepPink;
+        public Color CircleColor { get; set; } = DefaultFocusColor;
   
         public string Text
         {
@@ -98,9 +98,10 @@ namespace jxGameFramework.Controls
             base.Initialize();
         }
 
-        void CheckBox_Click(object sender, EventArgs e)
+        void CheckBox_Click(object sender, MouseEventArgs e)
         {
             this.Checked = !this.Checked;
+            OnClick(sender, e);
         }        
     }
 }

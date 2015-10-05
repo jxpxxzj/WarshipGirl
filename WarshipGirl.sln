@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarshipGirl", "WarshipGirl\WarshipGirl.csproj", "{C61F175C-8363-4D16-A742-58294E83E1F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jxGameFramework", "jxGameFramework\jxGameFramework.csproj", "{22ED6B08-20E2-4411-9979-F83B5AD303EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarshipGirl.Data", "WarshipGirl.Data\WarshipGirl.Data.csproj", "{634FD3DA-4104-4673-9016-BA89AE3B20A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +39,18 @@ Global
 		{22ED6B08-20E2-4411-9979-F83B5AD303EC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{22ED6B08-20E2-4411-9979-F83B5AD303EC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{22ED6B08-20E2-4411-9979-F83B5AD303EC}.Release|x86.ActiveCfg = Release|Any CPU
+		{634FD3DA-4104-4673-9016-BA89AE3B20A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{634FD3DA-4104-4673-9016-BA89AE3B20A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{634FD3DA-4104-4673-9016-BA89AE3B20A1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{634FD3DA-4104-4673-9016-BA89AE3B20A1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{634FD3DA-4104-4673-9016-BA89AE3B20A1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{634FD3DA-4104-4673-9016-BA89AE3B20A1}.Debug|x86.Build.0 = Debug|Any CPU
+		{634FD3DA-4104-4673-9016-BA89AE3B20A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{634FD3DA-4104-4673-9016-BA89AE3B20A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{634FD3DA-4104-4673-9016-BA89AE3B20A1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{634FD3DA-4104-4673-9016-BA89AE3B20A1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{634FD3DA-4104-4673-9016-BA89AE3B20A1}.Release|x86.ActiveCfg = Release|Any CPU
+		{634FD3DA-4104-4673-9016-BA89AE3B20A1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

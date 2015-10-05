@@ -37,10 +37,10 @@ namespace jxGameFramework.Scene
         {
             if (PresentScene != null)
             {
-                PresentScene.OnUnload(this, EventArgs.Empty);
+                PresentScene.OnLeave(this, EventArgs.Empty);
             }
             PresentScene = _scenedict[key];
-            PresentScene.OnLoad(this, EventArgs.Empty);
+            PresentScene.OnShow(this, EventArgs.Empty);
         }
         public override void Draw(GameTime gameTime)
         {

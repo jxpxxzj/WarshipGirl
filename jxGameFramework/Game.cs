@@ -13,9 +13,15 @@ using System.Diagnostics;
 
 namespace jxGameFramework
 {
+    public enum FrameLimit
+    {
+        Unlimited,
+        VSync,
+        Custom,
+    }
     internal class BaseGame : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
+        internal GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Game g;
         public BaseGame(Game game)
@@ -26,9 +32,9 @@ namespace jxGameFramework
             graphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
             this.IsMouseVisible=true;
+            graphics.PreferMultiSampling = true;
             graphics.SynchronizeWithVerticalRetrace = false;
             this.IsFixedTimeStep = false;
-            this.TargetElapsedTime = new System.TimeSpan(0, 0, 0, 0, 1000 / 30);
             this.Activated += BaseGame_Activated;
             this.Deactivated += BaseGame_Deactivated;
             this.Exiting += BaseGame_Exiting;
@@ -40,15 +46,11 @@ namespace jxGameFramework
 
         void BaseGame_Deactivated(object sender, EventArgs e)
         {
-            graphics.SynchronizeWithVerticalRetrace = true;
-            this.IsFixedTimeStep = true;
             g.OnDeactivated();
         }
 
         void BaseGame_Activated(object sender, EventArgs e)
         {
-            graphics.SynchronizeWithVerticalRetrace = false;
-            this.IsFixedTimeStep = false;
             g.OnActivated();
         }
         protected override void Initialize()
@@ -84,20 +86,129 @@ namespace jxGameFramework
         Stopwatch watch = new Stopwatch();
         Stopwatch watch2 = new Stopwatch();
         Stopwatch watch3 = new Stopwatch();
-        protected FpsCounter FpsCounter;
+        protected FpsCounter FpsCounter { get; private set; }
         internal BaseGame baseGame;
+        int _framelimitcount = 120;
+        FrameLimit _fl = FrameLimit.Custom;
+
+        public int FrameLimitCount
+        {
+            get
+            {
+                return _framelimitcount;
+            }
+            set
+            {
+                _framelimitcount = value;
+                if(FrameLimter == FrameLimit.Custom)
+                    SetFrameLimit(value);
+            }
+        }
+        
+        public FrameLimit FrameLimter
+        {
+            get
+            {
+                return _fl;
+            }
+            set
+            {
+                _fl = value;
+                switch (_fl)
+                {
+                    case FrameLimit.Unlimited:
+                        SetFrameLimit(-1);
+                        break;
+                    case FrameLimit.VSync:
+                        SetFrameLimit(-2);
+                        break;
+                    case FrameLimit.Custom:
+                        SetFrameLimit(FrameLimitCount);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        public bool isFullScreen
+        {
+            get
+            {
+                return baseGame.graphics.IsFullScreen;
+            }
+            set
+            {
+                baseGame.graphics.IsFullScreen = value;
+            }
+        }
+        public Vector2 Resolution
+        {
+            get
+            {
+                return new Vector2(baseGame.graphics.PreferredBackBufferWidth, baseGame.graphics.PreferredBackBufferHeight);
+            }
+            set
+            {
+                baseGame.graphics.PreferredBackBufferWidth = (int)value.X;
+                baseGame.graphics.PreferredBackBufferHeight = (int)value.Y;
+            }
+        }
+        public bool isMouseVisible
+        {
+            get
+            {
+                return baseGame.IsMouseVisible;
+            }
+            set
+            {
+                baseGame.IsMouseVisible = value;
+            }
+        }
+        public void ToggleFullScreen()
+        {
+            baseGame.graphics.ToggleFullScreen();
+        }
+
         public SceneManager Scenes { get; set; }
+
         public void Run()
         {
             Scenes = new SceneManager(this);
             baseGame = new BaseGame(this);
+            SetFrameLimit(-1);
             baseGame.Run();
+        }
+        private void SetFrameLimit(int fps,bool remember = true)
+        {
+            if(remember)
+                _framelimitcount = fps;
+            if (fps==-1)
+            {
+                baseGame.graphics.SynchronizeWithVerticalRetrace = false;
+                baseGame.IsFixedTimeStep = false;
+            }
+            else
+            {
+                if(fps==-2)
+                {
+                    baseGame.graphics.SynchronizeWithVerticalRetrace = true;
+                    baseGame.IsFixedTimeStep = true;
+                    baseGame.TargetElapsedTime = new System.TimeSpan(0, 0, 0, 0, 1000 / 60);
+                }
+                else
+                {
+                    baseGame.graphics.SynchronizeWithVerticalRetrace = false;
+                    baseGame.IsFixedTimeStep = true;
+                    baseGame.TargetElapsedTime = new System.TimeSpan(0, 0, 0, 0, 1000 / fps);
+                }
+            }
+            baseGame.graphics.ApplyChanges();
         }
         public void Exit()
         {
             baseGame.Exit();
         }
-        public Microsoft.Xna.Framework.GameWindow Window
+        public GameWindow Window
         {
             get
             {
@@ -108,7 +219,6 @@ namespace jxGameFramework
         {
             FpsCounter = new FpsCounter()
             {
-                Color = Color.White,
                 Margin = Origins.BottomRight,
                 Width = 800,
                 Height = 100,
@@ -156,10 +266,12 @@ namespace jxGameFramework
         }
         internal virtual void OnActivated()
         {
+            SetFrameLimit(FrameLimitCount);
             Activated();
         }
         internal virtual void OnDeactivated()
         {
+            SetFrameLimit(30,false);
             Deactivated();
         }
         internal virtual void OnExisting()

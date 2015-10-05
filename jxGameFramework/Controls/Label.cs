@@ -21,27 +21,23 @@ namespace jxGameFramework.Controls
             }
             set
             {
-                //if (AutoSize)
-                //{
+                if (AutoSize)
+                {
                     var v = Font.MeasureString(value);
                     this.Width = (int)v.X;
                     this.Height = (int)v.Y;
-                //}
+                }
                 _text = value;
 
             }
         }
         public bool AutoSize { get; set; } = true;
-        public Font Font { get; set; } = new Font("msyh.ttc", 14);
+        public Font Font { get; set; } = new Font(DefaultFontFileName,14);
         public uint Size
         {
             get
             {
                 return Font.Size;
-            }
-            set
-            {
-                Font.Size = value;
             }
         }
 
