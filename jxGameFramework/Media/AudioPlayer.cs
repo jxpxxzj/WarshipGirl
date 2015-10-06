@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Un4seen.Bass;
 
-namespace jxGameFramework.Audio
+namespace jxGameFramework.Media
 {
     /// <summary>
     /// 音频播放器

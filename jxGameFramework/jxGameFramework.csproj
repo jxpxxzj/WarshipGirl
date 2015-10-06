@@ -64,7 +64,7 @@
     <Compile Include="Animations\Curve\Elastic.cs" />
     <Compile Include="Animations\Curve\Power.cs" />
     <Compile Include="Animations\Curve\Sine.cs" />
-    <Compile Include="Audio\AudioPlayer.cs" />
+    <Compile Include="Media\AudioPlayer.cs" />
     <Compile Include="Components\Component.cs" />
     <Compile Include="Components\Sprite.cs" />
     <Compile Include="Components\SpritesCollection.cs" />
@@ -86,6 +86,9 @@
     <Compile Include="Data\HSLColor.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Graphics.cs" />
+    <Compile Include="Media\FFmpeg.cs" />
+    <Compile Include="Media\VideoDecoder.cs" />
+    <Compile Include="Media\VideoPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene\BaseScene.cs" />
     <Compile Include="Scene\SceneManager.cs" />

@@ -192,28 +192,28 @@ namespace jxGameFramework.Components
                 }
             }
         }
-        public Rectangle DestRect
+        internal Rectangle DestRect
         {
             get
             {
                 return new Rectangle(DestX,DestY, SourceRect.Width,SourceRect.Height);
             }
         }
-        public Rectangle TextureRect
+        internal Rectangle TextureRect
         {
             get
             {
                 return new Rectangle(DrawingX, DrawingY, Width, Height);
             }
         }
-        public Rectangle ParentRect
+        internal Rectangle ParentRect
         {
             get
             {
                 return new Rectangle(ParentDrawingX, ParentDrawingY, ParentWidth, ParentHeight);
             }
         }
-        public Rectangle SourceRect
+        internal Rectangle SourceRect
         {
             get
             {
