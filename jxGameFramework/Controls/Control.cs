@@ -34,9 +34,9 @@ namespace jxGameFramework.Controls
     }
     public delegate void KeyEventHandler(object sender, KeyEventArgs e);
     public delegate void MouseEventHandler(object sender, MouseEventArgs e);
+    //TODO: focus
     public class Control : Sprite
     {
-        //public static Font DefaultFont { get; set; }
         public static string DefaultFontFileName { get; set; } = "msyh.ttc";
         public static Color DefaultFocusColor { get; set; } = Color.DeepPink;
 
@@ -154,8 +154,8 @@ namespace jxGameFramework.Controls
             {
                 var PosX = Mouse.GetState().X + 5;
                 var PosY = Mouse.GetState().Y + 5;
-                Graphics.Instance.SpriteBatch.FillRectangle(new Rectangle(PosX, PosY, _content.Width + 7, _content.Height + 2), Color.Black);
-                Graphics.Instance.SpriteBatch.DrawRectangle(new Rectangle(PosX, PosY, _content.Width + 7, _content.Height + 2), Color.White, 1f);
+                SpriteBatch.FillRectangle(new Rectangle(PosX, PosY, _content.Width + 7, _content.Height + 2), Color.Black);
+                SpriteBatch.DrawRectangle(new Rectangle(PosX, PosY, _content.Width + 7, _content.Height + 2), Color.White, 1f);
                 _content.Left = PosX + 3;
                 _content.Top = PosY;
                 _content.Draw(gameTime);
@@ -244,7 +244,8 @@ namespace jxGameFramework.Controls
         }
         public override void Update(GameTime gameTime)
         {
-            UpdateEvent(gameTime);
+            if (Game.isActive)
+                UpdateEvent(gameTime);
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)

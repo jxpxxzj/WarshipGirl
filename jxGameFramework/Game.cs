@@ -80,13 +80,13 @@ namespace jxGameFramework
             base.UnloadContent();
         }
     }
-
+    //TODO: dialog, messagebox
     public class Game : Control
     {
         Stopwatch watch = new Stopwatch();
         Stopwatch watch2 = new Stopwatch();
         Stopwatch watch3 = new Stopwatch();
-        protected FpsCounter FpsCounter { get; private set; }
+        protected FpsCounter FpsCounter { get; set; }
         internal BaseGame baseGame;
         int _framelimitcount = 120;
         FrameLimit _fl = FrameLimit.Custom;
@@ -141,16 +141,11 @@ namespace jxGameFramework
                 baseGame.graphics.IsFullScreen = value;
             }
         }
-        public Vector2 Resolution
+        public bool isActive
         {
             get
             {
-                return new Vector2(baseGame.graphics.PreferredBackBufferWidth, baseGame.graphics.PreferredBackBufferHeight);
-            }
-            set
-            {
-                baseGame.graphics.PreferredBackBufferWidth = (int)value.X;
-                baseGame.graphics.PreferredBackBufferHeight = (int)value.Y;
+                return baseGame.IsActive;
             }
         }
         public bool isMouseVisible
@@ -164,17 +159,33 @@ namespace jxGameFramework
                 baseGame.IsMouseVisible = value;
             }
         }
+        public Vector2 Resolution
+        {
+            get
+            {
+                return new Vector2(baseGame.graphics.PreferredBackBufferWidth, baseGame.graphics.PreferredBackBufferHeight);
+            }
+            set
+            {
+                baseGame.graphics.PreferredBackBufferWidth = (int)value.X;
+                baseGame.graphics.PreferredBackBufferHeight = (int)value.Y;
+            }
+        }
         public void ToggleFullScreen()
         {
             baseGame.graphics.ToggleFullScreen();
         }
-
+        public Game()
+        {
+            Graphics.Instance.Game = this;
+        }
         public SceneManager Scenes { get; set; }
 
         public void Run()
         {
             Scenes = new SceneManager(this);
             baseGame = new BaseGame(this);
+            
             SetFrameLimit(-1);
             baseGame.Run();
         }
@@ -227,20 +238,20 @@ namespace jxGameFramework
 #if DEBUG
             FpsCounter.EnableFrameTime = true;
 #endif
-            this.Width = Graphics.Instance.GraphicsDevice.Viewport.Width;
-            this.Height = Graphics.Instance.GraphicsDevice.Viewport.Height;
+            this.Width = GraphicsDevice.Viewport.Width;
+            this.Height = GraphicsDevice.Viewport.Height;
             this.Initialize();
         }
 
         internal virtual void OnDraw(GameTime gameTime)
         {
             watch.Restart();
-            Graphics.Instance.GraphicsDevice.Clear(Color.CornflowerBlue);
-            Graphics.Instance.SpriteBatch.Begin();
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            SpriteBatch.Begin();
             Scenes.Draw(gameTime);
             this.Draw(gameTime);  
             FpsCounter.Draw(gameTime);
-            Graphics.Instance.SpriteBatch.End();
+            SpriteBatch.End();
             watch.Stop();
             FpsCounter.FrameTime = watch.Elapsed;
             watch2.Restart();
@@ -251,11 +262,8 @@ namespace jxGameFramework
             watch2.Stop();
             FpsCounter.BetweenTime = watch2.Elapsed;
             watch3.Restart();
-            if(this.baseGame.IsActive)
-            {
-                Scenes.Update(gameTime);
-                this.Update(gameTime);
-            }
+            Scenes.Update(gameTime);
+            this.Update(gameTime);
             FpsCounter.Update(gameTime);
             watch3.Stop();
             FpsCounter.UpdateTime = watch3.Elapsed;

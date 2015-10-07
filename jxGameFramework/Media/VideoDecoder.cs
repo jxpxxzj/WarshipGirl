@@ -109,10 +109,11 @@ namespace jxGameFramework.Media
                 return (double)(1000L * this.stream.start_time) * this.FrameDelay;
             }
         }
+        private string _fname;
         /// <summary>
         /// Initialize
         /// </summary>
-        /// <param name="bufferSize">about 200?</param>
+        /// <param name="bufferSize">need a suitable buffer size?</param>
         public VideoDecoder(int bufferSize)
         {
             this.BufferSize = bufferSize;
@@ -199,6 +200,7 @@ namespace jxGameFramework.Media
             }
             this.videoOpened = true;
             string text = fullfilename;
+            _fname = fullfilename;
             int num = FFmpeg.av_open_input_file(out this.pFormatCtx, text, IntPtr.Zero, bytes.Length, IntPtr.Zero);
             if (num != 0)
             {
@@ -305,14 +307,12 @@ namespace jxGameFramework.Media
                 }
             }
         }
-
         public bool OpenStream(Stream inStream)
         {
             byte[] bytes = new byte[inStream.Length];
             inStream.Read(bytes, 0, (int)inStream.Length);
             return this.Open(bytes);
         }
-
         public byte[] GetFrame(int time)
         {
             while (this.readCursor < this.writeCursor - 1 && this.FrameBufferTimes[(this.readCursor + 1) % this.BufferSize] <= (double)time)

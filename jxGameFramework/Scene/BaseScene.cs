@@ -18,15 +18,14 @@ namespace jxGameFramework.Scene
             get
             {
                 
-                return Graphics.Instance.GraphicsDevice.Viewport.Width;
+                return GraphicsDevice.Viewport.Width;
             }
         }
         public new int Height
         {
             get
             {
-                
-                return Graphics.Instance.GraphicsDevice.Viewport.Height;
+                return GraphicsDevice.Viewport.Height;
             }
         }
         public override void Initialize()
@@ -34,8 +33,8 @@ namespace jxGameFramework.Scene
             if (_hasInitalized)
                 return;
             //OnLoad(this,EventArgs.Empty);
-            base.Width = Graphics.Instance.GraphicsDevice.Viewport.Width;
-            base.Height = Graphics.Instance.GraphicsDevice.Viewport.Height;
+            base.Width = GraphicsDevice.Viewport.Width;
+            base.Height = GraphicsDevice.Viewport.Height;
             base.Initialize();
             _hasInitalized = true;
             OnLoad(this, EventArgs.Empty);

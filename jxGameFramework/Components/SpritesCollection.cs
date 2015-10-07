@@ -9,21 +9,39 @@ using System.Collections;
 
 namespace jxGameFramework.Components
 {
-    public class SpriteCollection : DrawableComponent,IEnumerable<Sprite>
+    public class SpriteCollection : DrawableComponent,IEnumerable<Sprite>,IList<Sprite>, ICollection<Sprite>
     {
         Sprite _base;
         List<Sprite> baselist = new List<Sprite>();
 
-        public override event EventHandler<EventArgs> DrawOrderChanged;
-        public override event EventHandler<EventArgs> VisibleChanged;
-        public override event EventHandler<EventArgs> EnabledChanged;
-        public override event EventHandler<EventArgs> UpdateOrderChanged;
+        public int Count
+        {
+            get
+            {
+                return ((IList<Sprite>)baselist).Count;
+            }
+        }
 
-        //TODO: event
-        public override int DrawOrder { get; set; }
-        public override bool Visible { get; set; } = true;
-        public override bool Enabled { get; set; } = true;
-        public override int UpdateOrder { get; set; }
+        public bool IsReadOnly
+        {
+            get
+            {
+                return ((IList<Sprite>)baselist).IsReadOnly;
+            }
+        }
+
+        public Sprite this[int index]
+        {
+            get
+            {
+                return ((IList<Sprite>)baselist)[index];
+            }
+
+            set
+            {
+                ((IList<Sprite>)baselist)[index] = value;
+            }
+        }
 
         public SpriteCollection(Sprite basesprite)
         {
@@ -83,6 +101,36 @@ namespace jxGameFramework.Components
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable<Sprite>)baselist).GetEnumerator();
+        }
+
+        public int IndexOf(Sprite item)
+        {
+            return ((IList<Sprite>)baselist).IndexOf(item);
+        }
+
+        public void Insert(int index, Sprite item)
+        {
+            ((IList<Sprite>)baselist).Insert(index, item);
+        }
+
+        public void RemoveAt(int index)
+        {
+            ((IList<Sprite>)baselist).RemoveAt(index);
+        }
+
+        public bool Contains(Sprite item)
+        {
+            return ((IList<Sprite>)baselist).Contains(item);
+        }
+
+        public void CopyTo(Sprite[] array, int arrayIndex)
+        {
+            ((IList<Sprite>)baselist).CopyTo(array, arrayIndex);
+        }
+
+        public bool Remove(Sprite item)
+        {
+            return ((IList<Sprite>)baselist).Remove(item);
         }
     }
 }

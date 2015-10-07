@@ -8,10 +8,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace jxGameFramework
 {
-    public class Graphics
+    internal class Graphics
     {
-        public SpriteBatch SpriteBatch{get;set;}
-        public GraphicsDevice GraphicsDevice{get;set;}
+        public SpriteBatch SpriteBatch { get; internal set; }
+        public GraphicsDevice GraphicsDevice { get; internal set; }
+        public Game Game { get; internal set; }
         private static Graphics mInstanse;
         public static Graphics Instance
         {

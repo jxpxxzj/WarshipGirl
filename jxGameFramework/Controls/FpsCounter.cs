@@ -85,7 +85,7 @@ namespace jxGameFramework.Controls
                 rect = new Rectangle(DrawingX, DrawingY, 800, 100);
                 int vwidth = this.DrawingX + this.Width;
                 int vheight = this.DrawingY + this.Height;
-                Graphics.Instance.SpriteBatch.FillRectangle(rect, TransGray);
+                SpriteBatch.FillRectangle(rect, TransGray);
                 int i = 0;
                 if (!ctrlPressed)
                 {
@@ -109,21 +109,21 @@ namespace jxGameFramework.Controls
                     int targetlength = updateheight;
                     if (targetlength > 100)
                         targetlength = 100;
-                    Graphics.Instance.SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), UpdateGreen, 1f);
+                    SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), UpdateGreen, 1f);
 
                     presenty -= targetlength;
                     targetlength = drawheight;
                     if (targetlength > 100 - updateheight)
                         targetlength = 100 - updateheight;
 
-                    Graphics.Instance.SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), DrawPurple, 1f);
+                    SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), DrawPurple, 1f);
 
                     presenty -= targetlength;
                     targetlength = betweenheight;
                     if (targetlength > 100 - updateheight - drawheight)
                         targetlength = 100 - updateheight - drawheight;
 
-                    Graphics.Instance.SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), Color.White, 1f);
+                    SpriteBatch.DrawLine(new Vector2(vwidth - i, presenty), new Vector2(vwidth - i, presenty - targetlength), Color.White, 1f);
                     i++;
                 }
                 if (ctrlPressed)

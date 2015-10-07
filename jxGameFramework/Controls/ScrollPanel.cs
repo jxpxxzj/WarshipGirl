@@ -14,6 +14,8 @@ using Microsoft.Xna.Framework.Input;
 namespace jxGameFramework.Controls
 {
     //TODO: buggy
+    //TODO: drag / horizontal scrollpanel
+    //TODO: scroll bar event
     public class ScrollPanel : Control
     {
         int _maxheight=0;
@@ -41,8 +43,8 @@ namespace jxGameFramework.Controls
             if (_maxheight > this.Height)
             {
                 float value = DrawingY + _pos * (this.Height - 32);
-                Graphics.Instance.SpriteBatch.FillRectangle(new Rectangle(DrawingX + Width - 5, DrawingY, 5, Height), new Color(128, 128, 128, 200));
-                Graphics.Instance.SpriteBatch.Draw(_scroll, new Vector2(DrawingX + this.Width - 5, value), Color.White);
+                SpriteBatch.FillRectangle(new Rectangle(DrawingX + Width - 5, DrawingY, 5, Height), new Color(128, 128, 128, 200));
+                SpriteBatch.Draw(_scroll, new Vector2(DrawingX + this.Width - 5, value), Color.White);
             }
 #if DEBUG
             //Graphics.Instance.SpriteBatch.DrawRectangle(new Rectangle(this.DrawingX, this.DrawingY, this.Width, this.Height), Color.Black);

@@ -12,10 +12,10 @@ using System.Diagnostics;
 namespace jxGameFramework.Media
 {
     //TODO: buggy
+    //TODO: remake with libVLC
     public class VideoPlayerBase : Control
     {
-        public readonly int BufferSize = 200;
-        //Texture2D _surface;
+        public readonly int BufferSize = 60;
         protected Control Surface { get; set; }
         Stopwatch timer = new Stopwatch();
         public virtual double Position
@@ -37,12 +37,16 @@ namespace jxGameFramework.Media
                 return Decoder.Length;
             }
         }
+        public string FileName { get; set; }
+        private bool _autosize = true;
         public VideoDecoder Decoder { get; protected set; }
-        public VideoPlayerBase (string file,bool autosize=true)
+        public VideoPlayerBase (string file,bool asize=true)
         {
+            FileName = file;
+            _autosize = asize;
             Decoder = new VideoDecoder(BufferSize);
-            Decoder.Open(file);
-            if (autosize)
+            Decoder.Open(FileName);
+            if (_autosize)
             {
                 Width = Decoder.width;
                 Height = Decoder.height;
@@ -56,8 +60,7 @@ namespace jxGameFramework.Media
                 Width = this.Width,
                 Height = this.Height,
             };
-            Surface.Texture = new Texture2D(Graphics.Instance.GraphicsDevice, Decoder.width, Decoder.height, false, SurfaceFormat.Bgr32);
-
+            Surface.Texture = new Texture2D(GraphicsDevice, Decoder.width, Decoder.height, false, SurfaceFormat.Bgr32);
             ChildSprites.Add(Surface);
             base.Initialize();
         }
@@ -72,12 +75,9 @@ namespace jxGameFramework.Media
             if (data != null)
                 Surface.Texture.SetData(data);
         }
-        public override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
-        }
         public virtual void Play(bool restart = true)
         {
+            //TODO: buggy
             if (restart)
                 timer.Restart();
             else

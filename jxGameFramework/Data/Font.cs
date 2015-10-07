@@ -304,6 +304,8 @@ namespace jxGameFramework.Data
             var tt = CreateStringTexture(text);
             DrawText(Graphics.Instance.SpriteBatch, pos, tt, color);
         }
+        //TODO: draw in region
+        //TODO: text overflow with .
         public void DrawText(Vector2 pos, Rectangle rect,string text,Color color)
         {
             var tt = CreateStringTexture(text);

@@ -80,7 +80,7 @@ namespace jxGameFramework.Controls
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            Graphics.Instance.SpriteBatch.Draw(_scrollcircle, new Vector2(DrawingX + (int)(this.Width * _value) - 7, DrawingY), CircleColor);
+            SpriteBatch.Draw(_scrollcircle, new Vector2(DrawingX + (int)(this.Width * _value) - 7, DrawingY), CircleColor);
             DrawToolStrip(gameTime);
         }
         

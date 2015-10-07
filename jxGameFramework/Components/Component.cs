@@ -11,27 +11,112 @@ namespace jxGameFramework.Components
     /// <summary>
     /// 游戏组件
     /// </summary>
-    public abstract class Component : IGameComponent,IUpdateable 
+    public class Component : IGameComponent,IUpdateable 
     {
-        public abstract bool Enabled { get; set; }
-        public abstract int UpdateOrder { get; set; }
+        private bool _enabled = true;
+        public bool Enabled
+        {
+            get
+            {
+                return _enabled;
+            }
+            set
+            {
+                _enabled = value;
+                OnEnabledChanged(this, EventArgs.Empty);
+            }
+        }
+        //TODO: implemention.
+        public int UpdateOrder
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+        public Game Game
+        {
+            get
+            {
+                return Graphics.Instance.Game;
+            }
+        }
 
-        public abstract event EventHandler<EventArgs> EnabledChanged;
-        public abstract event EventHandler<EventArgs> UpdateOrderChanged;
+        public event EventHandler<EventArgs> EnabledChanged;
+        public event EventHandler<EventArgs> UpdateOrderChanged;
 
-        public abstract void Dispose();
-        public abstract void Initialize();
-        public abstract void Update(GameTime gameTime);
+        public virtual void Dispose() { }
+        public virtual void Initialize() { }
+        public virtual void Update(GameTime gameTime) { }
+        protected virtual void OnEnabledChanged(object sender,EventArgs e)
+        {
+            if (EnabledChanged != null)
+                EnabledChanged(sender, e);
+        }
+        protected virtual void OnUpdateOrderChanged(object sender,EventArgs e)
+        {
+            if (UpdateOrderChanged != null)
+                UpdateOrderChanged(sender, e);
+        }
     }
-    public abstract class DrawableComponent : Component,IDrawable
+    public class DrawableComponent : Component,IDrawable
     {
-        public abstract int DrawOrder { get; set; }
-        public abstract bool Visible { get; set; }
+        private bool _visible = true;
 
-        public abstract event EventHandler<EventArgs> DrawOrderChanged;
-        public abstract event EventHandler<EventArgs> VisibleChanged;
+        //TODO: implemention.
+        public int DrawOrder
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+        public bool Visible
+        {
+            get
+            {
+                return _visible;   
+            }
+            set
+            {
+                _visible = value;
+                OnvisibleChanged(this, EventArgs.Empty);
 
-        public abstract void Draw(GameTime gameTime);
+            }
+        }
+
+        public event EventHandler<EventArgs> DrawOrderChanged;
+        public event EventHandler<EventArgs> VisibleChanged;
+
+        public virtual void Draw(GameTime gameTime) { }
+        public SpriteBatch SpriteBatch
+        {
+            get
+            {
+                return Graphics.Instance.SpriteBatch;
+            }
+        }
+        public GraphicsDevice GraphicsDevice
+        {
+            get
+            {
+                return Graphics.Instance.GraphicsDevice;
+            }
+        }
+
+        protected virtual void OnvisibleChanged(object sender, EventArgs e)
+        {
+            if (VisibleChanged != null)
+                VisibleChanged(sender, e);
+        }
     }
 
 }

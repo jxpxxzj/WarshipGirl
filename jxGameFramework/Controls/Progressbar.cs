@@ -73,19 +73,19 @@ namespace jxGameFramework.Controls
                 case ProgressBarTypes.HorizontalLine:
                      rect = new Rectangle(this.DrawingX, this.DrawingY, this.Width, this.Height);
                      progrect = new Rectangle(this.DrawingX, this.DrawingY, (int)(this.Width * fvalue), this.Height);
-                     Graphics.Instance.SpriteBatch.FillRectangle(progrect, FillColor);
-                     Graphics.Instance.SpriteBatch.DrawRectangle(rect, EdgeColor, EdgeWidth);
+                     SpriteBatch.FillRectangle(progrect, FillColor);
+                     SpriteBatch.DrawRectangle(rect, EdgeColor, EdgeWidth);
                      break;
                 case ProgressBarTypes.VerticalLine:
                     rect = new Rectangle(this.DrawingX, this.DrawingY, this.Width, this.Height);
                     progrect = new Rectangle(this.DrawingX, this.DrawingY, this.Width, (int)(this.Height * fvalue));
-                    Graphics.Instance.SpriteBatch.FillRectangle(progrect, FillColor);
-                    Graphics.Instance.SpriteBatch.DrawRectangle(rect, EdgeColor, EdgeWidth);
+                    SpriteBatch.FillRectangle(progrect, FillColor);
+                    SpriteBatch.DrawRectangle(rect, EdgeColor, EdgeWidth);
                     break;
                 case ProgressBarTypes.Circle:
                     var radius = Math.Min(Width, Height) / 2;
-                    Graphics.Instance.SpriteBatch.DrawArc(new Vector2(DrawingX + radius, DrawingY + radius), radius - EdgeWidth, 512, MathHelper.Pi + MathHelper.PiOver2, (float)(MathHelper.Pi * fvalue * 2), FillColor, radius - EdgeWidth);
-                    Graphics.Instance.SpriteBatch.Draw(_cirquebg, new Rectangle(DrawingX, DrawingY, radius * 2, radius * 2), Color.White);
+                    SpriteBatch.DrawArc(new Vector2(DrawingX + radius, DrawingY + radius), radius - EdgeWidth, 512, MathHelper.Pi + MathHelper.PiOver2, (float)(MathHelper.Pi * fvalue * 2), FillColor, radius - EdgeWidth);
+                    SpriteBatch.Draw(_cirquebg, new Rectangle(DrawingX, DrawingY, radius * 2, radius * 2), Color.White);
                     break;
                 default:
                     break;

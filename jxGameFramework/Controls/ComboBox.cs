@@ -97,11 +97,11 @@ namespace jxGameFramework.Controls
         }
         public void DrawTriangle(GameTime gameTime)
         {
-            Graphics.Instance.SpriteBatch.Draw(_tex, new Vector2(this.DrawingX, this.DrawingY), Color.White); 
+            SpriteBatch.Draw(_tex, new Vector2(this.DrawingX, this.DrawingY), Color.White); 
         }
         private void DrawSeparator(GameTime gameTime)
         {
-            Graphics.Instance.SpriteBatch.Draw(_septex, new Vector2(this.DrawingX, this.DrawingY), Color.White); 
+            SpriteBatch.Draw(_septex, new Vector2(this.DrawingX, this.DrawingY), Color.White); 
         }
         protected override void OnMouseMove(object sender, MouseEventArgs e)
         {
@@ -281,7 +281,7 @@ namespace jxGameFramework.Controls
         {
             _headcbi.Draw(gameTime);
             _headcbi.DrawTriangle(gameTime);
-            Graphics.Instance.SpriteBatch.DrawRectangle(new Rectangle(_headcbi.DrawingX + EdgeWidth - 1 , _headcbi.DrawingY, _headcbi.Width-EdgeWidth, _headcbi.Height-EdgeWidth), FocusColor, (int)EdgeWidth);
+            SpriteBatch.DrawRectangle(new Rectangle(_headcbi.DrawingX + EdgeWidth - 1 , _headcbi.DrawingY, _headcbi.Width-EdgeWidth, _headcbi.Height-EdgeWidth), FocusColor, (int)EdgeWidth);
 
             if(Expanded)
             {
