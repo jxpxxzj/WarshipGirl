@@ -33,8 +33,8 @@ namespace WarshipGirl.Controls
             }
 
             FileStream restream = new FileStream(string.Format(@"Content\{0}.png", Type.ToString()), FileMode.Open, FileAccess.Read);
-            Texture2D restexture = Texture2D.FromStream(jxGameFramework.Graphics.Instance.GraphicsDevice, restream);
-            this.Texture = Texture2D.FromStream(jxGameFramework.Graphics.Instance.GraphicsDevice, bgstream);
+            Texture2D restexture = Texture2D.FromStream(GraphicsDevice, restream);
+            this.Texture = Texture2D.FromStream(GraphicsDevice, bgstream);
             this.Width = 134;
             this.Height = 34;
             this.Color = Color.White;

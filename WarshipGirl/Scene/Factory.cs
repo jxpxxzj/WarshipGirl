@@ -7,7 +7,7 @@ using jxGameFramework.Scene;
 using WarshipGirl.Controls;
 using jxGameFramework.Controls;
 using jxGameFramework.Components;
-using jxGameFramework.Audio;
+using jxGameFramework.Media;
 using Microsoft.Xna.Framework;
 using WarshipGirl.Data;
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using jxGameFramework.Scene;
 using jxGameFramework.Data;
 using jxGameFramework.Components;
-using jxGameFramework.Audio;
+using jxGameFramework.Media;
 using Microsoft.Xna.Framework;
 using WarshipGirl.Data;
 using jxGameFramework.Controls;

@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework;
+using jxGameFramework.Components;
 
 namespace WarshipGirl.Data
 {
@@ -16,6 +17,7 @@ namespace WarshipGirl.Data
         {
             Small,Medium,Large
         }
+        public static GraphicsDevice GraphicsDevice;
         public static Texture2D LoadShipImage(int ShipID,ShipSize size,bool isBroken = false)
         {
             switch (size)
@@ -68,33 +70,8 @@ namespace WarshipGirl.Data
         {
             var s = new MemoryStream();
             bitmap.Save(s, System.Drawing.Imaging.ImageFormat.Png);
-            var t = Texture2D.FromStream(jxGameFramework.Graphics.Instance.GraphicsDevice,s);
-            PreMultiplyAlphas(t);
+            var t = Sprite.CreateTextureFromStream(s);
             return t;
         }
-        private static void PreMultiplyAlphas(Texture2D ret)
-        {
-            Byte4[] data = new Byte4[ret.Width * ret.Height];
-            ret.GetData<Byte4>(data);
-            for (int i = 0; i < data.Length; i++)
-            {
-                Vector4 vec = data[i].ToVector4();
-                float alpha = vec.W / 255.0f;
-                int a = (int)(vec.W);
-                int r = (int)(alpha * vec.X);
-                int g = (int)(alpha * vec.Y);
-                int b = (int)(alpha * vec.Z);
-                uint packed = (uint)(
-                    (a << 24) +
-                    (b << 16) +
-                    (g << 8) +
-                    r
-                    );
-
-                data[i].PackedValue = packed;
-            }
-            ret.SetData<Byte4>(data);
-        }
-           
     }
 }

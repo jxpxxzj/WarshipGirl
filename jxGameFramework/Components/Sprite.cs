@@ -262,7 +262,11 @@ namespace jxGameFramework.Components
         public static Texture2D CreateTextureFromFile(string Path)
         {
             var fs = new FileStream(Path, FileMode.Open, FileAccess.Read);
-            var t = Texture2D.FromStream(Graphics.Instance.GraphicsDevice, fs);
+            return CreateTextureFromStream(fs);
+        }
+        public static Texture2D CreateTextureFromStream(Stream stream)
+        {
+            var t = Texture2D.FromStream(Graphics.Instance.GraphicsDevice, stream);
             PreMultiplyAlphas(t);
             return t;
         }

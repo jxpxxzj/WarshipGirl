@@ -7,7 +7,6 @@ using jxGameFramework.Scene;
 using jxGameFramework.Data;
 using jxGameFramework.Components;
 using jxGameFramework.Controls;
-using jxGameFramework.Audio;
 using jxGameFramework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,6 +14,7 @@ using Microsoft.Xna.Framework.Input;
 using WarshipGirl.Controls;
 using WarshipGirl.Data;
 using System.IO;
+using jxGameFramework.Media;
 
 namespace WarshipGirl.Scene
 {
@@ -58,7 +58,7 @@ namespace WarshipGirl.Scene
             {
                 Margin = Origins.TopRight,
                 Width = 1000,
-                Height = Graphics.Instance.GraphicsDevice.Viewport.Height - 80,
+                Height = GraphicsDevice.Viewport.Height - 80,
                 Top = 80,
                 Right = 0
             };
@@ -113,8 +113,8 @@ namespace WarshipGirl.Scene
                 Top = 54,
                 Right = 10,
                 Margin = Origins.TopRight,
-                Width = Graphics.Instance.GraphicsDevice.Viewport.Width,
-                Height = Graphics.Instance.GraphicsDevice.Viewport.Height,
+                Width = GraphicsDevice.Viewport.Width,
+                Height = GraphicsDevice.Viewport.Height,
                 TabMargin = Origins.TopRight
             };
 
@@ -193,23 +193,23 @@ namespace WarshipGirl.Scene
 
         public override void Draw(GameTime gameTime)
         {
-            Graphics.Instance.SpriteBatch.Draw(bg, new Rectangle(0, 0, bg.Width, bg.Height), Color.White);
-            Graphics.Instance.SpriteBatch.FillRectangle(new Rectangle(0, 0, 370, 650), new Color(128, 128, 128, 200));
+            SpriteBatch.Draw(bg, new Rectangle(0, 0, bg.Width, bg.Height), Color.White);
+            SpriteBatch.FillRectangle(new Rectangle(0, 0, 370, 650), new Color(128, 128, 128, 200));
             spm.Draw(gameTime);
-            Graphics.Instance.SpriteBatch.Draw(top, new Vector2(0, 0), Color.White);
+            SpriteBatch.Draw(top, new Vector2(0, 0), Color.White);
             fnt.DrawText(new Vector2(10, 10), string.Format("{0} - {1}",selected.Map.MapName,selected.Map.Title), Color.White);
             fntsmall.DrawText(new Vector2(10, 40), string.Format("作者: {0}", selected.Map.Creator), Color.White);
             fntsmall.DrawText(new Vector2(10, 60), string.Format("点数: {0} 路径数: {1} 路线数: {2}", selected.Map.Points, selected.Map.Routes, selected.Map.Ways), Color.White);
             fntsmall.DrawText(new Vector2(10, 80), string.Format("迂回点数: {0} 停泊点数: {1} 资源点数: {2}", selected.Map.CanSkipPoint, selected.Map.AnchorPoint, selected.Map.ResourcesPoint), Color.White);
-            Graphics.Instance.SpriteBatch.Draw(selected.MapSprite.Texture, new Rectangle(12, 180, (int)(selected.MapSprite.Texture.Width * 0.65), (int)(selected.MapSprite.Texture.Height * 0.65)), Color.White);
+            SpriteBatch.Draw(selected.MapSprite.Texture, new Rectangle(12, 180, (int)(selected.MapSprite.Texture.Width * 0.65), (int)(selected.MapSprite.Texture.Height * 0.65)), Color.White);
             fntborder.DrawText(new Vector2(13, 385), "地图描述:", Color.White);
             fntborder.DrawText(new Vector2(13, 405), selected.Map.Description, Color.White);
             b.Draw(gameTime);
             breturn.Draw(gameTime);
             tb.Draw(gameTime);
             combob.Draw(gameTime);
-            fnt.DrawText(new Vector2(Graphics.Instance.GraphicsDevice.Viewport.Width - 280, 10), "排序", Color.LightGreen);
-            fnt.DrawText(new Vector2(Graphics.Instance.GraphicsDevice.Viewport.Width - 560, 10), "分组", Color.CornflowerBlue);
+            fnt.DrawText(new Vector2(GraphicsDevice.Viewport.Width - 280, 10), "排序", Color.LightGreen);
+            fnt.DrawText(new Vector2(GraphicsDevice.Viewport.Width - 560, 10), "分组", Color.CornflowerBlue);
             groupcb.Draw(gameTime);
             sortcb.Draw(gameTime);
         }

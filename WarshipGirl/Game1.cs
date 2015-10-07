@@ -62,7 +62,7 @@ namespace WarshipGirl
             };
             harbor = new Harbor()
             {
-                Texture = Texture2D.FromStream(Graphics.Instance.GraphicsDevice, harborbg),
+                Texture = Texture2D.FromStream(GraphicsDevice, harborbg),
             };
 
             factory = new Factory()
@@ -114,9 +114,9 @@ namespace WarshipGirl
         {
             if (_globalmsg != "")
             {
-                Graphics.Instance.SpriteBatch.FillRectangle(new Rectangle(0, Graphics.Instance.GraphicsDevice.Viewport.Height / 2 - 20, Graphics.Instance.GraphicsDevice.Viewport.Width, 40), new Color(0, 0, 0, 128));
+                SpriteBatch.FillRectangle(new Rectangle(0, GraphicsDevice.Viewport.Height / 2 - 20, GraphicsDevice.Viewport.Width, 40), new Color(0, 0, 0, 128));
                 Vector2 size = _msgfont.MeasureString(_globalmsg);
-                _msgfont.DrawText(new Vector2((Graphics.Instance.GraphicsDevice.Viewport.Width - size.X) / 2, (Graphics.Instance.GraphicsDevice.Viewport.Height - size.Y) / 2), _globalmsg, Color.White);
+                _msgfont.DrawText(new Vector2((GraphicsDevice.Viewport.Width - size.X) / 2, (GraphicsDevice.Viewport.Height - size.Y) / 2), _globalmsg, Color.White);
             }
         }
     }

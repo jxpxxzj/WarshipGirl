@@ -11,13 +11,13 @@ using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using jxGameFramework.Components;
 
 namespace jxGameFramework.Controls
 {
     public class GDIpInterop : IDisposable
     {
         private Bitmap Canvas;
-        private GraphicsDevice _gd;
         public System.Drawing.Graphics g { get; protected set; }
         public GDIpInterop(int width,int height)
         {
@@ -27,13 +27,12 @@ namespace jxGameFramework.Controls
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
             g.CompositingQuality = CompositingQuality.HighQuality;
             g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-            _gd = Graphics.Instance.GraphicsDevice;
         }
         public Texture2D SaveTexture()
         {
             var s = new MemoryStream();
             Canvas.Save(s, ImageFormat.Png);
-            var text = Texture2D.FromStream(_gd, s);
+            var text = Sprite.CreateTextureFromStream(s);
             return text;
         }
         public void Dispose()
