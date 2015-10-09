@@ -69,9 +69,8 @@ namespace WarshipGirl
             {
                 Texture = Sprite.CreateTextureFromFile(@"Content\factbg.png"),
             };
-
+            this.KeyDown += Game1_KeyDown;
             select = new MapSelect();
-            FpsCounter.KeyDown += counter_KeyDown;
             Scenes.Add("Harbor", harbor);
             Scenes.Add("Factory", factory);
             Scenes.Add("Select", select);
@@ -80,7 +79,8 @@ namespace WarshipGirl
             Scenes.Navigate("Harbor");
             
         }
-        void counter_KeyDown(object sender, KeyEventArgs e)
+
+        private void Game1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.State.IsKeyDown(Keys.F1))
             {
@@ -98,10 +98,11 @@ namespace WarshipGirl
                 else
                     ShowMessage("Fps counter are now hidden.", new TimeSpan(0, 0, 1));
             }
-
         }
+
         public override void Update(GameTime gameTime)
         {
+            
             if (_msgwatch.ElapsedMilliseconds > _msgTime.TotalMilliseconds)
             {
                 _globalmsg = "";

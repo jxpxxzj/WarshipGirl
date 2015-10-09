@@ -264,6 +264,7 @@ namespace jxGameFramework
             watch3.Restart();
             Scenes.Update(gameTime);
             this.Update(gameTime);
+            this.UpdateEvent(gameTime);
             FpsCounter.Update(gameTime);
             watch3.Stop();
             FpsCounter.UpdateTime = watch3.Elapsed;

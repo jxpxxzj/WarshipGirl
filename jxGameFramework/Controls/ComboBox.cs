@@ -79,7 +79,7 @@ namespace jxGameFramework.Controls
                 Margin = Origins.CenterLeft,
                 Left = 5,
             };
-            ChildSprites.Add(_title);
+            Controls.Add(_title);
             if (Type == ItemType.Separator)
             {
                 this.Color = SepColor;
@@ -161,8 +161,13 @@ namespace jxGameFramework.Controls
         ComboItem _presentcbi;
         ComboItem _headcbi;
         object _presentobj;
-        Font _fnt;
-
+        Font _fnt = new Font(DefaultFontFileName, 15)
+        {
+            EnableShadow = true,
+            ShadowColor = Color.Black,
+            ShadowYOffset = 1,
+        };
+    
         public bool Expanded { get; set; } = false;
         public Color FocusColor { get; set; } = DefaultFocusColor;
         public Color SeparatorColor { get; set; } = new Color(34, 153, 187);
@@ -204,12 +209,6 @@ namespace jxGameFramework.Controls
 
         public override void Initialize()
         {
-            _fnt = new Font("msyh.ttc", 15)
-            {
-                EnableShadow=true,
-                ShadowColor=Color.Black,
-                ShadowYOffset =1,
-            };
             base.Initialize();
         }
         public void AddItem(object obj,bool isSeparator = false)
@@ -253,6 +252,30 @@ namespace jxGameFramework.Controls
             _headinstance.Add(cbi2);
             _objlist.Add(obj);
         }
+        internal override Control GetEventControl()
+        {
+            if (CheckMouse())
+            {
+                if (Expanded)
+                {
+                    Control result = null;
+                    if (CheckMouse())
+                        result = this;
+                    foreach (Control c in _comboitem)
+                        if (c.CheckMouse())
+                            result = c;
+                    if (_headcbi.CheckMouse())
+                        result = _headcbi;
+                    if (result != null)
+                        return result;
+                    return result;
+                }
+                else
+                    return _headcbi;
+            } 
+            return null;
+        }
+
         public void SelectItem(int id)
         {
             _headcbi = _headinstance[id];

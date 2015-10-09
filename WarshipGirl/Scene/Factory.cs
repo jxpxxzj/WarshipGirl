@@ -104,15 +104,15 @@ namespace WarshipGirl.Scene
                 Type = ResourceType.Aluminium
             };
             
-            ChildSprites.Add(oilres);
-            ChildSprites.Add(bulres);
-            ChildSprites.Add(irores);
-            ChildSprites.Add(alures);
-            ChildSprites.Add(building);
-            ChildSprites.Add(disassembly);
-            ChildSprites.Add(developing);
-            ChildSprites.Add(disintegrate);
-            ChildSprites.Add(toharbor);
+            Controls.Add(oilres);
+            Controls.Add(bulres);
+            Controls.Add(irores);
+            Controls.Add(alures);
+            Controls.Add(building);
+            Controls.Add(disassembly);
+            Controls.Add(developing);
+            Controls.Add(disintegrate);
+            Controls.Add(toharbor);
 
             this.Show += Factory_Show;
             this.Leave += Factory_Leave;

@@ -37,8 +37,14 @@ namespace jxGameFramework.Controls
     //TODO: focus
     public class Control : Sprite
     {
+        public Control()
+        {
+            this.Controls = new ControlCollection(this);
+        }
         public static string DefaultFontFileName { get; set; } = "msyh.ttc";
         public static Color DefaultFocusColor { get; set; } = Color.DeepPink;
+
+        public ControlCollection Controls { get; protected set; }
 
         public event MouseEventHandler Click;
         public event MouseEventHandler MouseMove;
@@ -53,16 +59,30 @@ namespace jxGameFramework.Controls
         protected bool isClicked = false;
         protected bool isMouseDown = false;
         protected bool isKeyDown = false;
-        protected bool MouseInRect = false;
+        internal bool MouseInRect = false;
         protected bool isEnter = false;
         protected bool isLeave = true;
+        internal bool _EnableEvent = false;
+        internal bool EnableEvent
+        {
+            get
+            {
+                return _EnableEvent;
+            }
+            set
+            {
+                _EnableEvent = value;
+                if (!value)
+                    RemoveEventStates();
+            }
+        }
 
         Label _content;
         string _toolstrip;
         Font _fnt;
 
         bool _toolstripinstancecreated = false;
-        public new static Control Empty
+        public static Control Empty
         {
             get
             {
@@ -90,7 +110,7 @@ namespace jxGameFramework.Controls
 
                 if (!_toolstripinstancecreated)
                 {
-                    _fnt = new Font(DefaultFontFileName,12);
+                    _fnt = new Font(DefaultFontFileName, 12);
                     _content = new Label()
                     {
                         Font = _fnt,
@@ -104,7 +124,6 @@ namespace jxGameFramework.Controls
                 _content.Text = value;
             }
         }
-
         protected virtual void OnClick(object sender, MouseEventArgs e)
         {
             if (Click != null)
@@ -162,13 +181,13 @@ namespace jxGameFramework.Controls
             }
         }
 
-        public virtual void UpdateEvent(GameTime gameTime)
+        protected virtual void UpdateEvent(GameTime gameTime)
         {
             var _mState = Mouse.GetState();
 
             var tRectangle = DestRect;
-            var nPosX = _mState.X - DrawingX;
-            var nPosY = _mState.Y - DrawingY;
+            var nPosX = _mState.Position.X - DrawingX;
+            var nPosY = _mState.Position.Y - DrawingY;
 
             var mState = new MouseState(nPosX, nPosY, _mState.ScrollWheelValue, _mState.LeftButton, _mState.MiddleButton, _mState.RightButton, _mState.XButton1, _mState.XButton2);
 
@@ -242,15 +261,79 @@ namespace jxGameFramework.Controls
                 }
             }
         }
+        protected internal virtual void RemoveEventStates()
+        {
+            var _mState = Mouse.GetState();
+
+            var tRectangle = DestRect;
+            var nPosX = _mState.Position.X - DrawingX;
+            var nPosY = _mState.Position.Y - DrawingY;
+
+            var mState = new MouseState(nPosX, nPosY, _mState.ScrollWheelValue, _mState.LeftButton, _mState.MiddleButton, _mState.RightButton, _mState.XButton1, _mState.XButton2);
+
+            var me = new MouseEventArgs(mState);
+
+            if (!isMouseDown)
+                OnMouseUp(this, me);
+            isMouseDown = false;
+            if (isEnter)
+                OnMouseLeave(this, me);
+            isEnter = false;
+        }
+        protected internal virtual bool CheckMouse()
+        {
+            var _mState = Mouse.GetState();
+
+            var tRectangle = DestRect;
+            var nPosX = _mState.Position.X - DrawingX;
+            var nPosY = _mState.Position.Y - DrawingY;
+
+            var mState = new MouseState(nPosX, nPosY, _mState.ScrollWheelValue, _mState.LeftButton, _mState.MiddleButton, _mState.RightButton, _mState.XButton1, _mState.XButton2);
+
+            var args = new MouseEventArgs(mState);
+
+            //if (Texture == null)
+            //    return false;
+            var result = false;
+            if (tRectangle.Contains(_mState.Position))
+                result = true;
+            return result;
+        }
+        public override void Initialize()
+        {
+            base.Initialize();
+            Controls.Initialize();
+
+        }
+        public override void Dispose()
+        {
+            base.Dispose();
+            Controls.Dispose();
+        }
         public override void Update(GameTime gameTime)
         {
-            if (Game.isActive)
-                UpdateEvent(gameTime);
             base.Update(gameTime);
+            Controls.Update(gameTime);
+            if (Game.isActive && EnableEvent)
+                UpdateEvent(gameTime);
+        }
+        internal virtual Control GetEventControl()
+        {
+            Control result = null;
+            if (CheckMouse())
+                result = this;
+            foreach (Control c in Controls)
+                if (c.CheckMouse())
+                    result = c;
+            if (result != null)
+                return result;
+            return result;
         }
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
+            Controls.Draw(gameTime);
+
         }
     }
 }

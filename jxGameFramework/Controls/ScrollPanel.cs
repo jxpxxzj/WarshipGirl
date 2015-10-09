@@ -16,6 +16,7 @@ namespace jxGameFramework.Controls
     //TODO: buggy
     //TODO: drag / horizontal scrollpanel
     //TODO: scroll bar event
+    //TODO: overlap & overflow buggy
     public class ScrollPanel : Control
     {
         int _maxheight=0;
@@ -32,7 +33,7 @@ namespace jxGameFramework.Controls
         }
         public override void Draw(GameTime gameTime)
         {
-            foreach(Sprite s in ChildSprites)
+            foreach(Control s in Controls)
             {
                 int t = s.Top;
                 s.Top = t - (int)(_pos * (_maxheight - Height));
@@ -51,7 +52,7 @@ namespace jxGameFramework.Controls
             //Graphics.Instance.SpriteBatch.DrawRectangle(DrawingRect, Color.Red);
 #endif
         }
-        public override void UpdateEvent(GameTime gameTime)
+        protected override void UpdateEvent(GameTime gameTime)
         {
             base.UpdateEvent(gameTime);
             if (_maxheight > this.Height)
@@ -77,7 +78,7 @@ namespace jxGameFramework.Controls
         }
         public override void Update(GameTime gameTime)
         {
-            foreach (Sprite s in ChildSprites)
+            foreach (Control s in Controls)
             {
                 if (_maxheight < s.Top + s.Height)
                     _maxheight = s.Top + s.Height + 5;

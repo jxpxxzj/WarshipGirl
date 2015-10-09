@@ -13,7 +13,7 @@ namespace WarshipGirl.Controls
 {
     class MapPanel : Control
     {
-        public Sprite MapSprite { get; set; }
+        public Control MapSprite { get; set; }
 
         public Map Map { get; private set; }
         Label SeaTitle;
@@ -86,7 +86,7 @@ namespace WarshipGirl.Controls
                 Top = 50,
             };
             float scale = (float)1.0 * 85 / 298;
-            MapSprite = new Sprite()
+            MapSprite = new Control()
             {
                 Texture=Sprite.CreateTextureFromFile(Map.PreviewImagePath),
                 Width = (int)(530 * scale),
@@ -96,10 +96,10 @@ namespace WarshipGirl.Controls
                 Color = Color.White,
             };
 
-            ChildSprites.Add(SeaTitle);
-            ChildSprites.Add(CreatorInfo);
-            ChildSprites.Add(MapTitle);
-            ChildSprites.Add(MapSprite);
+            Controls.Add(SeaTitle);
+            Controls.Add(CreatorInfo);
+            Controls.Add(MapTitle);
+            Controls.Add(MapSprite);
             base.Initialize();
             SeaTitle.Text = Map.MapName;
             CreatorInfo.Text = Map.Creator;

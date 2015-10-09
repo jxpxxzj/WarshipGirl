@@ -67,7 +67,7 @@
     <Compile Include="Media\AudioPlayer.cs" />
     <Compile Include="Components\Component.cs" />
     <Compile Include="Components\Sprite.cs" />
-    <Compile Include="Components\SpritesCollection.cs" />
+    <Compile Include="Controls\ControlCollection.cs" />
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\CheckBox.cs" />
     <Compile Include="Controls\ComboBox.cs" />

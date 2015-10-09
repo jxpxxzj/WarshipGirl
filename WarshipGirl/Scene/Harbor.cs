@@ -31,8 +31,8 @@ namespace WarshipGirl.Scene
         Button collection;
         Button settings;
 
-        Sprite hude;
-        Sprite expbar;
+        Control hude;
+        Control expbar;
 
         Label level;
 
@@ -64,7 +64,7 @@ namespace WarshipGirl.Scene
                 Height = 40,
                 Margin = Origins.BottomLeft
             };
-            hude = new Sprite()
+            hude = new Control()
             {
                 Left =-100,
                 Margin = Origins.CenterLeft,
@@ -72,7 +72,7 @@ namespace WarshipGirl.Scene
                 Height = 800,
                 Texture = TextureManager.LoadShipImage(8009,TextureManager.ShipSize.Large)
             };
-            expbar = new Sprite()
+            expbar = new Control()
             {
                 Margin=Origins.TopLeft,
                 Width=222,
@@ -167,19 +167,19 @@ namespace WarshipGirl.Scene
             //    LoopMode = LoopMode.Forever,
             //    EasingFunction = new Power()
             //};
-            ChildSprites.Add(hude);
-            ChildSprites.Add(collection);
-            ChildSprites.Add(settings);
-            ChildSprites.Add(poss);
-            ChildSprites.Add(dock);
-            ChildSprites.Add(fact);
-            ChildSprites.Add(trans);
-            ChildSprites.Add(expbar);
-            ChildSprites.Add(level);
-            ChildSprites.Add(oilres);
-            ChildSprites.Add(bulres);
-            ChildSprites.Add(irores);
-            ChildSprites.Add(alures);
+            Controls.Add(hude);
+            Controls.Add(collection);
+            Controls.Add(settings);
+            Controls.Add(poss);
+            Controls.Add(dock);
+            Controls.Add(fact);
+            Controls.Add(trans);
+            Controls.Add(expbar);
+            Controls.Add(level);
+            Controls.Add(oilres);
+            Controls.Add(bulres);
+            Controls.Add(irores);
+            Controls.Add(alures);
 
             this.Show += Harbor_Show;
             this.Leave += Harbor_Leave;

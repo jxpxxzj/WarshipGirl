@@ -122,13 +122,13 @@ namespace WarshipGirl.Scene
             menu_osu = Sprite.CreateTextureFromFile(@"Content\010c0951.png");
             top = Sprite.CreateTextureFromFile(@"Content\songselect-top.png");
 
-            ChildSprites.Add(spm);
-            ChildSprites.Add(b);
-            ChildSprites.Add(breturn);
-            ChildSprites.Add(combob);
-            ChildSprites.Add(groupcb);
-            ChildSprites.Add(sortcb);
-            ChildSprites.Add(tb);
+            Controls.Add(spm);
+            Controls.Add(b);
+            Controls.Add(breturn);
+            Controls.Add(tb);
+            Controls.Add(combob);
+            Controls.Add(groupcb);
+            Controls.Add(sortcb);
 
 
             base.Initialize();
@@ -136,7 +136,7 @@ namespace WarshipGirl.Scene
             CreateMap();
             p_Click((object)maps[0], null);
 
-            spm.ChildSprites.AddRange(maps.ToArray());
+            spm.Controls.AddRange(maps.ToArray());
 
             spm.ScrollSpeed = 150;
             b.Text = "开始颓废";

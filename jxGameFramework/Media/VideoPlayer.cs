@@ -61,7 +61,7 @@ namespace jxGameFramework.Media
                 Height = this.Height,
             };
             Surface.Texture = new Texture2D(GraphicsDevice, Decoder.width, Decoder.height, false, SurfaceFormat.Bgr32);
-            ChildSprites.Add(Surface);
+            Controls.Add(Surface);
             base.Initialize();
         }
         public override void Update(GameTime gameTime)

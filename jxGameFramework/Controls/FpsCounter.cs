@@ -63,7 +63,7 @@ namespace jxGameFramework.Controls
                 Right = 2,
                 Font = normal
             };
-            ChildSprites.Add(fpsvalue);
+            Controls.Add(fpsvalue);
             base.Initialize();
         }
         public override void Update(GameTime gameTime)

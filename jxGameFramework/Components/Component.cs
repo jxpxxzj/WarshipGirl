@@ -45,12 +45,16 @@ namespace jxGameFramework.Components
                 return Graphics.Instance.Game;
             }
         }
+        public bool Initialized { get; protected set; }
 
         public event EventHandler<EventArgs> EnabledChanged;
         public event EventHandler<EventArgs> UpdateOrderChanged;
 
         public virtual void Dispose() { }
-        public virtual void Initialize() { }
+        public virtual void Initialize()
+        {
+            Initialized = true;
+        }
         public virtual void Update(GameTime gameTime) { }
         protected virtual void OnEnabledChanged(object sender,EventArgs e)
         {

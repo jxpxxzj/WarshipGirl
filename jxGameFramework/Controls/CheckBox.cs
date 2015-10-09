@@ -91,8 +91,8 @@ namespace jxGameFramework.Controls
                 Margin = Origins.CenterLeft,
                 Left = 22,
             };
-            ChildSprites.Add(_title);
-            ChildSprites.Add(_checkcircle);
+            Controls.Add(_title);
+            Controls.Add(_checkcircle);
             this.Width = full.Width;
             this.Height = full.Height;
             base.Initialize();

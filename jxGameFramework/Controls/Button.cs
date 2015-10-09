@@ -47,7 +47,13 @@ namespace jxGameFramework.Controls
             this.Color = ClickColor;
             base.OnMouseDown(sender, e);
         }
-
+        internal override Control GetEventControl()
+        {
+            Control result = null;
+            if (CheckMouse())
+                result = this;
+            return result;
+        }
         public override void Initialize()
         {
             GDIpInterop gdip = new GDIpInterop(this.Width+1, this.Height+1);
@@ -72,7 +78,7 @@ namespace jxGameFramework.Controls
                 Margin = Origins.Center,
             };
 
-            ChildSprites.Add(_title);
+            Controls.Add(_title);
             this.Color = BaseColor;
             base.Initialize();
         }

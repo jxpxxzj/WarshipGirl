@@ -31,8 +31,12 @@ namespace jxGameFramework.Controls
 
             }
         }
+        public Label()
+        {
+            Font = new Font(DefaultFontFileName, 14);
+        }
         public bool AutoSize { get; set; } = true;
-        public Font Font { get; set; } = new Font(DefaultFontFileName,14);
+        public Font Font { get; set; } 
         public uint Size
         {
             get

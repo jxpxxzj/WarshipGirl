@@ -59,5 +59,9 @@ namespace jxGameFramework.Scene
             if (Leave != null)
                 Leave(sender, e);
         }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
     }
 }

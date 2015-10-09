@@ -17,7 +17,7 @@ namespace WarshipGirl.Controls
         public int Value { get; set; }
         public ResourceType Type { get; set; }
 
-        Sprite TypeSprite;
+        Control TypeSprite;
         Label LabelText;
         public bool isBeginning { get; set; }
         public override void Initialize()
@@ -38,7 +38,7 @@ namespace WarshipGirl.Controls
             this.Width = 134;
             this.Height = 34;
             this.Color = Color.White;
-            TypeSprite = new Sprite()
+            TypeSprite = new Control()
             {
                 Texture=restexture,
                 Color=Color.White,
@@ -59,8 +59,8 @@ namespace WarshipGirl.Controls
             };
             Value = 61616;
             LabelText.Text = Value.ToString();
-            ChildSprites.Add(TypeSprite);
-            ChildSprites.Add(LabelText);
+            Controls.Add(TypeSprite);
+            Controls.Add(LabelText);
             base.Initialize();
         }
         public override void Draw(GameTime gameTime)

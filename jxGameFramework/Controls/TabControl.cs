@@ -85,7 +85,7 @@ namespace jxGameFramework.Controls
                 Margin = Origins.TopCenter,
             };
 
-            ChildSprites.Add(_tabtitle);
+            Controls.Add(_tabtitle);
 
             base.Initialize();
         }
@@ -97,22 +97,16 @@ namespace jxGameFramework.Controls
 
         Sprite _presentPage;
         TabBar _presentTab;
-        Font fnt;
-        Font fntNoShadow;
+        Font fnt =new Font(DefaultFontFileName, 13)
+        {
+            EnableShadow = true,
+            ShadowColor = Color.Black,
+            ShadowYOffset = 1,
+        };
+        Font fntNoShadow = new Font(DefaultFontFileName, 13);
 
         public Origins TabMargin { get; set; } = Origins.TopLeft;
 
-        public override void Initialize()
-        {
-            fnt = new Font(DefaultFontFileName, 13)
-            {
-                EnableShadow = true,
-                ShadowColor = Color.Black,
-                ShadowYOffset = 1,
-            };
-            fntNoShadow = new Font(DefaultFontFileName, 13);
-            base.Initialize();
-        }
         private void SwitchTab(object sender,EventArgs e)
         {
             _presentTab = (TabBar)sender;
@@ -127,10 +121,12 @@ namespace jxGameFramework.Controls
         {
             SwitchTab(_tablist[TabID], EventArgs.Empty);
         }
-        public void AddTab(Control Panel,string tabTitle)
+        public void AddTab(Control Panel, string tabTitle, bool SwitchTo = false)
         {
             if(Panel !=null)
             {
+                if (!Panel.Initialized)
+                    Panel.Initialize();
                 Panel.Parent = this;
                 _pagelist.Add(Panel);
             }
@@ -146,17 +142,27 @@ namespace jxGameFramework.Controls
             bar.Parent = this;
             bar.TabID = _tablist.Count;
             bar.Title = tabTitle;
-            bar.Selected = true;
             bar.Click += SwitchTab;
-            _presentTab = bar;
-            
             foreach (TabBar t in _tablist)
             {
                 t.Selected = false;
             }
-            _tablist.Add(bar);           
+            _tablist.Add(bar);
+            SwitchTab(_tablist.Count - 1);     
         }
-
+        internal override Control GetEventControl()
+        {
+            Control result = null;
+            foreach(Control c in _pagelist)
+                if (c.CheckMouse())
+                    result = c.GetEventControl();
+            foreach (Control c in _tablist)
+                if (c.CheckMouse())
+                    result = c;
+            if (result != null)
+                return result;
+            return result;
+        }
         public override void Draw(GameTime gameTime)
         {
             if(_presentPage != null)
@@ -171,8 +177,8 @@ namespace jxGameFramework.Controls
         {
             foreach (TabBar s in _tablist)
                 s.Update(gameTime);
-            if(_presentPage!=null)
-                _presentPage.Update(gameTime);
+            foreach (Control c in _pagelist)
+                c.Update(gameTime);
         }
     }
 }

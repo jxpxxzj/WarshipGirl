@@ -37,10 +37,6 @@ namespace jxGameFramework.Components
     /// </summary>
     public class Sprite : DrawableComponent
     {
-        public Sprite()
-        {
-            ChildSprites = new SpriteCollection(this);
-        }
         public Sprite Parent { get; set; }
         public int Left { get; set; }
         public int Right { get; set; }
@@ -55,8 +51,6 @@ namespace jxGameFramework.Components
         public int Height { get; set; }
         public Color Color { get; set; } = Color.White;
         public List<Animation> AnimList = new List<Animation>();
-        //TODO: suppport component
-        public SpriteCollection ChildSprites { get; set; }
 
         Texture2D _texture;
         Color[] _texturepixel;
@@ -237,22 +231,6 @@ namespace jxGameFramework.Components
                 return new Rectangle(x, y, width, height);
             }
         }
-        public static Sprite Empty
-        {
-            get
-            {
-                var s = new Sprite()
-                {
-                    Top = 0,
-                    Left = 0,
-                    Width = 1,
-                    Height = 1,
-                    Color = Color.White,
-                    Margin = Origins.TopLeft,
-                };
-                return s;
-            }
-        }
 
         /// <summary>
         /// 从文件创建Texture
@@ -313,7 +291,6 @@ namespace jxGameFramework.Components
                 {
                     SpriteBatch.DrawArea(Texture, new Vector2(DestX,DestY), SourceRect, new Vector2(Width, Height), Color, Rotation, Origin, SpriteEffect, LayerDepth);
                 }
-                ChildSprites.Draw(gameTime);
 #if DEBUG
                 //
                 //Graphics.Instance.SpriteBatch.DrawRectangle(DestRect, Color.Black);
@@ -323,20 +300,8 @@ namespace jxGameFramework.Components
 #endif
             }
         }
-        public override void Initialize()
-        {
-            ChildSprites.Initialize();
-        }
-        public override void Dispose()
-        {
-            ChildSprites.Dispose();
-        }
         public override void Update(GameTime gameTime)
         {
-            if (Visible)
-            {
-                ChildSprites.Update(gameTime);
-            }
             int i = 0;
             while (i < AnimList.Count)
             {
